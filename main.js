@@ -20,9 +20,13 @@ const paletteResults = document.getElementById('paletteResults');
 // Initialize
 async function initPortfolio() {
   try {
-    const res = await fetch('data/projects.json');
-    if (!res.ok) throw new Error("Erreur de chargement des données");
-    allProjects = await res.json();
+    if (window.PROJECTS_DATA && Array.isArray(window.PROJECTS_DATA)) {
+      allProjects = window.PROJECTS_DATA;
+    } else {
+      const res = await fetch('data/projects.json');
+      if (!res.ok) throw new Error("Erreur de chargement des données");
+      allProjects = await res.json();
+    }
     renderProjects();
     setupCommandPalette();
     setupKeyboardShortcuts();

@@ -279,15 +279,21 @@
     </div>
   </div>
 
+  <script src="../data/projects.js"></script>
   <script>
     async function loadProjectDetails() {
       const params = new URLSearchParams(window.location.search);
       const projectId = params.get('id') || 'demineur-ultime';
 
       try {
-        const res = await fetch('../data/projects.json');
-        if (!res.ok) throw new Error("Data fetch error");
-        const projects = await res.json();
+        let projects = [];
+        if (window.PROJECTS_DATA && Array.isArray(window.PROJECTS_DATA)) {
+          projects = window.PROJECTS_DATA;
+        } else {
+          const res = await fetch('../data/projects.json');
+          if (!res.ok) throw new Error("Data fetch error");
+          projects = await res.json();
+        }
         const p = projects.find(item => item.id === projectId) || projects[0];
 
         document.title = `${p.title} | Portfolio Je-tu-il`;
