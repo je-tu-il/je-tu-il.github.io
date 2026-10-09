@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map 3D de Lieu — Carte en relief personnalisée | VoxelPrint</title>
+  <meta name="description"
+    content="Transformez n'importe quel lieu en carte 3D imprimée avec un relief topographique saisissant. Votre quartier, ville, montagne, en sculpture unique. Livraison 48h.">
+  <link rel="icon" type="image/png" href="./assets/VoxelPrint-Dv-J9yRy.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script type="module" crossorigin src="./assets/main-aBWUhs5b.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-B_Lcq4jG.css">
+</head>
+
+<body>
+  <a href="../../index.html" id="back-to-hub" style="position:fixed; top:12px; left:12px; z-index:99999; background:rgba(15,23,42,0.88); color:#38bdf8; padding:8px 14px; border-radius:9999px; text-decoration:none; font-family:system-ui,-apple-system,sans-serif; font-size:13px; font-weight:600; border:1px solid rgba(56,189,248,0.3); backdrop-filter:blur(8px); display:flex; align-items:center; gap:6px; box-shadow:0 4px 15px rgba(0,0,0,0.4);">&larr; Portfolio</a>
+  <div class="bg-grid"></div>
+  <div id="ambient-glow"></div>
+
+  <nav class="nav scrolled" id="main-nav">
+    <a href="./" class="nav-logo">
+      <img src="./assets/VoxelPrint-Dv-J9yRy.png" alt="VoxelPrint" style="height:32px;">
+      <span class="nav-brand">VoxelPrint</span>
+    </a>
+    <div class="nav-links" id="nav-links">
+      <a href="./">Accueil</a>
+      <a href="./products.html">Produits</a>
+      <a href="./#how-it-works">Comment ça marche</a>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="./cart.html" class="nav-cart">
+        🛒 <span>Panier</span>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </a>
+      <div class="nav-mobile-toggle" id="nav-toggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <div style="height:var(--nav-height);"></div>
+  <div class="trust-strip">
+    <div class="trust-badge highlight">✅ Satisfait ou remboursé 30 jours</div>
+    <div class="trust-badge">🚚 Livraison offerte dès 49€</div>
+    <div class="trust-badge">🇫🇷 Fabriqué en France</div>
+    <div class="trust-badge">⭐ 4,9/5 · +150 créations</div>
+    <div class="trust-badge">🔒 Paiement sécurisé</div>
+  </div>
+
+  <section class="product-hero" style="padding-top:var(--space-12);">
+    <div class="container">
+      <div class="product-layout">
+
+        <div class="product-gallery reveal-left">
+          <div class="gallery-placeholder" style="min-height:460px;width:100%;background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(26,122,191,0.15));">
+            <span style="font-size:6rem;z-index:1;position:relative;">🗺️</span>
+            <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-4);z-index:1;position:relative;">📸 Photo du produit à ajouter</p>
+          </div>
+          <span class="card-badge" style="top:var(--space-5);left:var(--space-5);background:var(--gradient-electric);">Nouveau</span>
+        </div>
+
+        <div class="product-info reveal-right">
+          <a href="./products.html" style="display:inline-flex;align-items:center;gap:var(--space-2);color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:var(--space-4);">← Retour aux produits</a>
+          <span class="product-category">Cartographie 3D</span>
+          <h1>Map 3D<br><span class="gradient-text">de Lieu</span></h1>
+
+          <div class="social-proof" style="margin-bottom:var(--space-5);">
+            <span class="proof-dot"></span>
+            <span>89 cartes livrées ce mois · ⭐ 4,9/5 · En stock — livraison 48h</span>
+          </div>
+
+          <p class="product-desc">
+            Transformez <strong>n'importe quel lieu sur Terre</strong> en carte 3D imprimée avec un relief topographique saisissant.
+            Votre quartier, votre ville natale, la montagne de votre premier sommet, l'endroit où vous vous êtes rencontrés.
+            Chaque détail du terrain est fidèlement reproduit en relief.
+          </p>
+
+          <div class="fascinations" style="margin-bottom:var(--space-6);">
+            <div class="fascination-item">
+              <div class="fas-icon">🏔️</div>
+              <p>Le massif du Mont-Blanc posé sur votre bureau — chaque col, chaque vallée, <strong>à la précision topographique</strong>. Personne ne croit que c'est imprimé.</p>
+            </div>
+            <div class="fascination-item">
+              <div class="fas-icon">🏡</div>
+              <p>Le village où vous avez grandi, sculpté en 3D — le cadeau qui fait fondre les parents.</p>
+            </div>
+            <div class="fascination-item">
+              <div class="fas-icon">💑</div>
+              <p>L'endroit exact où vous avez dit <strong>"oui"</strong> — immortalisé en relief, posé sur votre cheminée pour toujours.</p>
+            </div>
+          </div>
+
+          <div class="product-price-wrap">
+            <span class="card-price" id="product-price-display" style="font-size:var(--text-3xl);">49,99€</span>
+            <span class="badge">À partir de</span>
+          </div>
+
+          <div class="form-group" style="margin-bottom:var(--space-6);">
+            <label>Format</label>
+            <select id="product-option" style="max-width:320px;">
+              <option value="0">Standard — 20×20cm (49,99€)</option>
+              <option value="1">Grande — 30×30cm (69,99€)</option>
+              <option value="2">Premium avec cadre — 30×30cm (89,99€)</option>
+            </select>
+          </div>
+
+          <ul class="product-features" style="margin-bottom:var(--space-6);">
+            <li><span class="feature-icon">✓</span> N'importe quel lieu sur Terre — villes, montagnes, côtes</li>
+            <li><span class="feature-icon">✓</span> Relief topographique précis — données satellitaires réelles</li>
+            <li><span class="feature-icon">✓</span> Cadre & socle inclus selon option choisie</li>
+            <li><span class="feature-icon">✓</span> Impression PLA haute résolution — 0,1mm</li>
+            <li><span class="feature-icon">✓</span> Aperçu envoyé avant impression — votre accord requis</li>
+          </ul>
+
+          <div class="product-actions">
+            <button class="btn btn-primary btn-lg" id="add-to-cart-btn" style="flex:1;">
+              🗺️ Configurer &amp; ajouter au panier
+            </button>
+            <a href="#demo" class="btn btn-secondary btn-lg">Demander un aperçu</a>
+          </div>
+
+          <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-4);text-align:center;">
+            ✅ Satisfait ou remboursé 30j · 🔒 Paiement sécurisé · 🚚 Livraison offerte dès 49€
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="demo" style="background:var(--color-bg-secondary);border-top:var(--border-subtle);">
+    <div class="container" style="max-width:620px;">
+      <div class="section-header reveal">
+        <h2>Demander un <span class="gradient-text">Aperçu Gratuit</span></h2>
+        <p class="subtitle">
+          Indiquez-nous le lieu et recevez un aperçu 3D de votre carte par email. Gratuit, sans engagement.
+        </p>
+      </div>
+
+      <form id="demo-form-3d-map" class="reveal" style="background:var(--color-bg-glass);padding:var(--space-8);border-radius:var(--radius-2xl);border:var(--border-subtle);backdrop-filter:blur(12px);">
+        <div class="form-group">
+          <label for="demo-location">📍 Lieu à cartographier *</label>
+          <input type="text" id="demo-location" placeholder="Ex : Mont-Blanc, Alpes, France" required>
+        </div>
+        <div class="form-group">
+          <label for="demo-details">💬 Détails supplémentaires (optionnel)</label>
+          <input type="text" id="demo-details" placeholder="Ex : zone centrée sur le refuge, rayon 5km...">
+        </div>
+        <div class="form-group">
+          <label for="demo-email">📧 Votre email *</label>
+          <input type="email" id="demo-email" placeholder="votre@email.com" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
+          🗺️ Recevoir mon aperçu de carte gratuit
+        </button>
+        <p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-3);text-align:center;">
+          Aperçu envoyé sous 24h. Votre accord est requis avant toute impression.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 VoxelPrint. Tous droits réservés.</span>
+        <a href="./products.html" style="color:var(--color-text-muted);">← Retour aux produits</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

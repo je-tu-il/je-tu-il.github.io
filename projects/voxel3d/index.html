@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoxelPrint — Transformez vos Souvenirs en Sculptures 3D Uniques | Livraison 48h</title>
+  <meta name="description"
+    content="Illusions 3D dual-texte, cartes en relief de vos lieux préférés, parcours GPX immortalisés. Créations 100% personnalisées, imprimées en France. Livraison 48h. Satisfait ou remboursé.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="VoxelPrint — Sculptures 3D Personnalisées">
+  <meta property="og:description" content="Transformez un souvenir en chef-d'œuvre 3D. Livré en 48h.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="./assets/VoxelPrint-Dv-J9yRy.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.94/build/spline-viewer.js"></script>
+  <script type="module" crossorigin src="./assets/main-aBWUhs5b.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-B_Lcq4jG.css">
+</head>
+
+<body>
+  <a href="../../index.html" id="back-to-hub" style="position:fixed; top:12px; left:12px; z-index:99999; background:rgba(15,23,42,0.88); color:#38bdf8; padding:8px 14px; border-radius:9999px; text-decoration:none; font-family:system-ui,-apple-system,sans-serif; font-size:13px; font-weight:600; border:1px solid rgba(56,189,248,0.3); backdrop-filter:blur(8px); display:flex; align-items:center; gap:6px; box-shadow:0 4px 15px rgba(0,0,0,0.4);">&larr; Portfolio</a>
+  <!-- Background -->
+  <div class="bg-grid"></div>
+  <div id="ambient-glow"></div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="main-nav">
+    <a href="./" class="nav-logo">
+      <img src="./assets/VoxelPrint-Dv-J9yRy.png" alt="VoxelPrint logo">
+      <span class="nav-brand">VoxelPrint</span>
+    </a>
+    <div class="nav-links" id="nav-links">
+      <a href="#products-preview">Nos créations</a>
+      <a href="#how-it-works">Comment ça marche</a>
+      <a href="#testimonials">Avis clients</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="./cart.html" class="nav-cart">
+        🛒 <span>Panier</span>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </a>
+      <div class="nav-mobile-toggle" id="nav-toggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==============================
+       HERO — Above the fold complet
+       ============================== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-3d-bg">
+      <spline-viewer url="https://prod.spline.design/6Wq1Q7YGyUk1U1v6/scene.splinecode" loading="lazy"></spline-viewer>
+    </div>
+    <div class="particles-container" id="particles"></div>
+
+    <div class="hero-content">
+      <!-- Trust badges ABOVE the fold — désamorce les objections immédiatement -->
+      <div class="trust-strip-hero reveal">
+        <div class="trust-item">
+          <div class="trust-icon">✓</div>
+          Satisfait ou remboursé 30j
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🚚</div>
+          Livraison offerte dès 49€
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">⭐</div>
+          4,9/5 · +150 créations
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🇫🇷</div>
+          Fabriqué en France
+        </div>
+      </div>
+
+      <!-- Eyebrow -->
+      <div class="hero-eyebrow reveal" style="transition-delay:100ms">
+        <span class="dot"></span>
+        Impression 3D artisanale &amp; personnalisée
+      </div>
+
+      <!-- Titre principal -->
+      <h1 class="hero-title reveal" style="transition-delay:200ms">
+        Transformez un Souvenir<br>
+        en <span class="gradient-text-electric">Chef-d'Œuvre 3D</span>
+      </h1>
+
+      <!-- Sous-titre court, percutant -->
+      <p class="hero-subtitle reveal" style="transition-delay:300ms">
+        Livré en <strong>48h</strong> directement chez vous.<br>
+        Chaque pièce est unique, entièrement personnalisée, imprimée avec passion.
+      </p>
+
+      <!-- CTA bas-friction (pas "Commander maintenant") -->
+      <div class="hero-cta reveal" style="transition-delay:400ms">
+        <a href="#products-preview" class="btn btn-primary btn-lg">
+          🎨 Construire ma création → voir les prix
+        </a>
+        <a href="#how-it-works" class="btn btn-secondary btn-lg">
+          Comment ça marche ?
+        </a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator-wrap">
+      <div class="scroll-mouse"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ==============================
+       SOCIAL PROOF TICKER
+       ============================== -->
+  <div class="ticker-section">
+    <div class="ticker-track" id="ticker">
+      <!-- JS duplique ce contenu pour boucle infinie -->
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        <span class="ticker-star">⭐⭐⭐⭐⭐</span>
+        "Le cadeau parfait — ma femme a adoré" — Marie L.
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        +150 créations livrées avec succès
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        <span class="ticker-star">⭐⭐⭐⭐⭐</span>
+        "Qualité incroyable, livraison ultra rapide !" — Thomas B.
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        🚚 Livraison offerte dès 49€ d'achat
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        <span class="ticker-star">⭐⭐⭐⭐⭐</span>
+        "Mon parcours marathon en 3D sur mon bureau, je l'adore !" — Julien R.
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        🇫🇷 100% fabriqué en France — PLA haute qualité
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        <span class="ticker-star">⭐⭐⭐⭐⭐</span>
+        "L'effet dual-texte est bluffant, tout le monde demande comment c'est fait !" — Sophie M.
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-dot"></span>
+        ✅ 30 jours satisfait ou remboursé — sans question
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================
+       PRODUITS — Fascinations
+       ============================== -->
+  <section class="section" id="products-preview">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Nos <span class="gradient-text">Créations</span></h2>
+        <p class="subtitle">
+          Trois univers, une seule promesse : transformer votre histoire en objet unique,
+          imprimé en 3D avec une précision millimétrique.
+        </p>
+      </div>
+
+      <div class="grid grid-3 stagger-children">
+
+        <!-- Produit 1 — Dual Texte -->
+        <div class="card glass-panel tilt-card" id="preview-dual-text">
+          <div class="card-image">
+            <div class="gallery-placeholder" style="height:260px;background:linear-gradient(135deg,rgba(26,122,191,0.2),rgba(46,204,214,0.1));">
+              <span style="font-size:4rem;z-index:1;position:relative;">🔤</span>
+            </div>
+            <span class="card-badge">⭐ Best-seller</span>
+          </div>
+          <div class="card-body">
+            <span class="badge" style="margin-bottom:var(--space-3);display:inline-flex;">Illusion Optique</span>
+            <div class="card-title">Dual Texte Illusion 3D</div>
+            <p class="card-description">
+              Deux mots différents. Un seul objet. Un effet bluffant qui change selon l'angle de vue.
+            </p>
+            <!-- Fascinations intrigantes -->
+            <div class="fascinations" style="margin-bottom:var(--space-4);">
+              <div class="fascination-item">
+                <div class="fas-icon">💍</div>
+                <p>La sculpture qui affiche <strong>"MARIE"</strong> de face et <strong>"PIERRE"</strong> de côté — le cadeau de mariage qu'ils n'oublieront jamais.</p>
+              </div>
+              <div class="fascination-item">
+                <div class="fas-icon">🎁</div>
+                <p>Un objet qui fait <strong>"Wow, comment c'est possible ?!"</strong> à chaque fois que quelqu'un le découvre.</p>
+              </div>
+            </div>
+            <div class="card-price">À partir de 29,99€</div>
+            <div class="card-actions">
+              <a href="./product-dual-text.html" class="btn btn-primary" style="flex:1;">Construire et voir les prix →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Produit 2 — Map 3D -->
+        <div class="card glass-panel tilt-card" id="preview-3d-map">
+          <div class="card-image">
+            <div class="gallery-placeholder" style="height:260px;background:linear-gradient(135deg,rgba(0,229,255,0.15),rgba(26,122,191,0.12));">
+              <span style="font-size:4rem;z-index:1;position:relative;">🗺️</span>
+            </div>
+            <span class="card-badge" style="background:var(--gradient-electric);">Nouveau</span>
+          </div>
+          <div class="card-body">
+            <span class="badge" style="margin-bottom:var(--space-3);display:inline-flex;">Cartographie 3D</span>
+            <div class="card-title">Map 3D de Lieu</div>
+            <p class="card-description">
+              L'endroit où vous avez dit "oui", votre quartier d'enfance, la montagne de votre premier sommet — en relief 3D.
+            </p>
+            <div class="fascinations" style="margin-bottom:var(--space-4);">
+              <div class="fascination-item">
+                <div class="fas-icon">🏔️</div>
+                <p>Le massif du Mont-Blanc posé sur votre bureau, avec chaque col, chaque vallée — <strong>à la précision topographique</strong>.</p>
+              </div>
+              <div class="fascination-item">
+                <div class="fas-icon">📍</div>
+                <p><strong>N'importe quel lieu sur Terre</strong> transformé en carte sculptée en moins de 48h.</p>
+              </div>
+            </div>
+            <div class="card-price">À partir de 49,99€</div>
+            <div class="card-actions">
+              <a href="./product-3d-map.html" class="btn btn-primary" style="flex:1;">Construire et voir les prix →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Produit 3 — GPX Map -->
+        <div class="card glass-panel tilt-card" id="preview-gpx-map">
+          <div class="card-image">
+            <div class="gallery-placeholder" style="height:260px;background:linear-gradient(135deg,rgba(46,204,214,0.1),rgba(26,122,191,0.2));">
+              <span style="font-size:4rem;z-index:1;position:relative;">🏃</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="badge" style="margin-bottom:var(--space-3);display:inline-flex;">Parcours GPX</span>
+            <div class="card-title">Map 3D depuis GPX</div>
+            <p class="card-description">
+              Votre trail, votre marathon, votre sortie vélo du dimanche — immortalisé en relief 3D.
+            </p>
+            <div class="fascinations" style="margin-bottom:var(--space-4);">
+              <div class="fascination-item">
+                <div class="fas-icon">🚴</div>
+                <p>Votre parcours du <strong>Tour de France amateur</strong> avec chaque dénivelé, chaque col — comme une médaille 3D.</p>
+              </div>
+              <div class="fascination-item">
+                <div class="fas-icon">⛰️</div>
+                <p>Envoyez simplement votre fichier GPX. <strong>On s'occupe de tout</strong>. Livré en 48h.</p>
+              </div>
+            </div>
+            <div class="card-price">À partir de 59,99€</div>
+            <div class="card-actions">
+              <a href="./product-gpx-map.html" class="btn btn-primary" style="flex:1;">Construire et voir les prix →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       STATS
+       ============================== -->
+  <section class="section" style="background:var(--color-bg-secondary);border-top:var(--border-subtle);border-bottom:var(--border-subtle);padding:var(--space-16) 0;">
+    <div class="container">
+      <div class="stats-grid stagger-children">
+        <div class="stat-item reveal">
+          <div class="stat-number" data-counter="150" data-suffix="+">0</div>
+          <div class="stat-label">Créations livrées</div>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number" data-counter="100" data-suffix="%">0</div>
+          <div class="stat-label">Satisfaction client</div>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number" data-counter="48" data-suffix="h">0</div>
+          <div class="stat-label">Délai moyen de livraison</div>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number" data-counter="30" data-suffix="j">0</div>
+          <div class="stat-label">Satisfait ou remboursé</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       COMMENT ÇA MARCHE
+       ============================== -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>De votre <span class="gradient-text">idée</span> à votre création</h2>
+        <p class="subtitle">3 étapes simples, moins de 2 minutes pour configurer. Livré en 48h.</p>
+      </div>
+      <div class="steps-container stagger-children">
+        <div class="step-item reveal">
+          <div class="step-number pulse-glow">1</div>
+          <h4>Choisissez &amp; configurez</h4>
+          <p>Sélectionnez votre création et personnalisez-la : textes, lieu, fichier GPX... C'est vous qui décidez.</p>
+        </div>
+        <div class="step-item reveal">
+          <div class="step-number">2</div>
+          <h4>On imprime pour vous</h4>
+          <p>Votre pièce unique est modélisée et imprimée en PLA haute qualité dans nos ateliers en France.</p>
+        </div>
+        <div class="step-item reveal">
+          <div class="step-number">3</div>
+          <h4>Reçue en 48h</h4>
+          <p>Livraison rapide et soignée. Ouvrez le colis et préparez-vous à être bluffé par le résultat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       TÉMOIGNAGES
+       ============================== -->
+  <section class="section" id="testimonials" style="background:var(--color-bg-secondary);border-top:var(--border-subtle);">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Ils ont <span class="gradient-text">adoré</span> leur création</h2>
+        <p class="subtitle">Des centaines de clients satisfaits. Voici quelques-uns de leurs retours.</p>
+      </div>
+      <div class="testimonial-grid stagger-children">
+
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">
+            <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+          </div>
+          <p class="testimonial-text">
+            "J'ai commandé l'illusion dual-texte avec les prénoms de mes parents pour leur anniversaire de mariage. Ils n'en revenaient pas. Tout le monde voulait savoir comment c'était fait !"
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">S</div>
+            <div>
+              <div class="author-name">Sophie M.</div>
+              <div class="author-meta">Commande Dual Texte · 10cm</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">
+            <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+          </div>
+          <p class="testimonial-text">
+            "Ma carte 3D du Mont-Blanc est posée sur mon bureau depuis 2 mois. Chaque jour des collègues me demandent où j'ai trouvé ça. La qualité est vraiment impressionnante."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">T</div>
+            <div>
+              <div class="author-name">Thomas B.</div>
+              <div class="author-meta">Commande Map 3D · 20cm</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">
+            <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+          </div>
+          <p class="testimonial-text">
+            "J'ai envoyé mon fichier GPX de mon marathon de Paris et reçu une sculpture 3D de mon parcours 2 jours plus tard. C'est incroyable. Je l'ai offert en cadeau à mon coach."
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">J</div>
+            <div>
+              <div class="author-name">Julien R.</div>
+              <div class="author-meta">Commande GPX · Marathon de Paris</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       LEAD MAGNET — Capture email
+       ============================== -->
+  <section class="section optin-section" id="contact">
+    <div class="container">
+      <div class="optin-card reveal" style="max-width:680px;margin:0 auto;">
+        <div class="optin-badge">🎁 Offre exclusive — Nouveaux inscrits</div>
+
+        <h2 style="margin-bottom:var(--space-4);">
+          Recevez le <span class="gradient-text-gold">Guide Cadeau 3D Parfait</span><br>
+          <span style="font-size:0.6em;font-weight:400;color:var(--color-text-secondary);">+ -10% sur votre première commande</span>
+        </h2>
+
+        <p style="max-width:480px;margin:0 auto;font-size:var(--text-base);">
+          Ce guide PDF gratuit vous révèle les <strong style="color:var(--color-text-primary);">7 idées de cadeaux 3D personnalisés</strong>
+          qui font systématiquement l'effet "Wow" — avec les occasions parfaites pour chacun.
+        </p>
+
+        <form class="optin-form" id="newsletter-form">
+          <input type="email" placeholder="votre@email.com" required id="optin-email">
+          <button type="submit" class="btn btn-gold">📩 Recevoir le guide gratuit</button>
+        </form>
+
+        <div class="optin-perks">
+          <div class="optin-perk">
+            <span>🔒</span> Zéro spam, jamais
+          </div>
+          <div class="optin-perk">
+            <span>📩</span> Guide envoyé instantanément
+          </div>
+          <div class="optin-perk">
+            <span>🎁</span> Code promo -10% inclus
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       FAQ — Désamorce les objections
+       ============================== -->
+  <section class="section" id="faq" style="background:var(--color-bg-secondary);border-top:var(--border-subtle);">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Vos <span class="gradient-text">questions</span>, nos réponses</h2>
+        <p class="subtitle">Tout ce qu'il faut savoir avant de commander.</p>
+      </div>
+
+      <div class="faq-list stagger-children">
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Comment fonctionne la personnalisation ?
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Après votre commande, nous vous contactons par email pour recueillir vos informations de personnalisation (textes, coordonnées GPS, fichier GPX...). Vous recevez un aperçu avant impression. Votre accord est requis avant que nous ne lancions l'impression finale.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Quel est le délai de livraison réel ?
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              48h après validation de votre aperçu. Comptez généralement 24h pour la modélisation + validation, puis 24-48h pour l'impression et l'expédition. Délai total moyen : 3 à 5 jours ouvrés porte-à-porte.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Et si le résultat ne me plaît pas ?
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Nous offrons une garantie satisfait ou remboursé de 30 jours, sans condition. Si vous n'êtes pas 100% satisfait de votre création, nous vous remboursons intégralement ou refaisons la pièce. Votre satisfaction est notre priorité absolue.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Quelle est la qualité d'impression ?
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Nous utilisons du PLA haute qualité imprimé en résolution 0,1mm — la finesse d'un cheveu. Chaque pièce est vérifiée manuellement avant expédition. Le PLA est un matériau écologique, biodégradable, sans odeur et très résistant.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            Puis-je offrir ça comme cadeau directement ?
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Absolument ! Indiquez l'adresse de livraison de la personne concernée. Nous pouvons également inclure un message personnalisé dans le colis sur simple demande lors de votre commande.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       FOOTER
+       ============================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="./" class="nav-logo" style="margin-bottom:var(--space-4);">
+            <img src="./assets/VoxelPrint-Dv-J9yRy.png" alt="VoxelPrint" style="height:32px;">
+            <span class="nav-brand">VoxelPrint</span>
+          </a>
+          <p>Créations 3D personnalisées, imprimées en France avec passion et précision. Chaque pièce raconte votre histoire.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Créations</h4>
+          <a href="./product-dual-text.html">Dual Texte Illusion 3D</a>
+          <a href="./product-3d-map.html">Map 3D de Lieu</a>
+          <a href="./product-gpx-map.html">Map 3D depuis GPX</a>
+          <a href="./products.html">Tous les produits</a>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="#how-it-works">Comment ça marche</a>
+          <a href="#testimonials">Avis clients</a>
+          <a href="#faq">FAQ</a>
+          <a href="./cart.html">Mon panier</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="mailto:contact@voxelprint.fr">contact@voxelprint.fr</a>
+          <a href="#contact">Newsletter &amp; -10%</a>
+          <a href="./lp.html">Landing Page</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 VoxelPrint. Tous droits réservés.</span>
+        <span>Fait avec ❤️ et beaucoup de PLA 🇫🇷</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Discount Popup -->
+  <div class="discount-popup" id="discount-popup">
+    <div class="glass">
+      <span class="discount-close" onclick="document.getElementById('discount-popup').classList.remove('active')">✕</span>
+      <div style="font-size:2rem;margin-bottom:var(--space-3);">🎁</div>
+      <h4 style="margin-bottom:var(--space-2);">Guide Cadeau 3D offert</h4>
+      <p style="font-size:var(--text-sm);margin-bottom:var(--space-4);">
+        + votre code promo <strong style="color:var(--color-accent-cyan);">-10%</strong> sur votre 1ère commande.
+      </p>
+      <form class="discount-form" id="popup-form">
+        <input type="email" placeholder="votre@email.com" required>
+        <button type="submit" class="btn btn-gold">📩 Je veux mon guide !</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+
+</html>

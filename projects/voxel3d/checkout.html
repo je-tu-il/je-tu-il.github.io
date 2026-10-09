@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commander — Voxel</title>
+    <meta name="description" content="Finalisez votre commande Voxel - Impressions 3D sur mesure.">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔮</text></svg>">
+  <script type="module" crossorigin src="./assets/main-aBWUhs5b.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-B_Lcq4jG.css">
+</head>
+
+<body>
+  <a href="../../index.html" id="back-to-hub" style="position:fixed; top:12px; left:12px; z-index:99999; background:rgba(15,23,42,0.88); color:#38bdf8; padding:8px 14px; border-radius:9999px; text-decoration:none; font-family:system-ui,-apple-system,sans-serif; font-size:13px; font-weight:600; border:1px solid rgba(56,189,248,0.3); backdrop-filter:blur(8px); display:flex; align-items:center; gap:6px; box-shadow:0 4px 15px rgba(0,0,0,0.4);">&larr; Portfolio</a>
+    <div class="bg-grid"></div>
+    <div id="ambient-glow"></div>
+
+    <nav class="nav scrolled">
+        <a href="./" class="nav-logo"><span class="logo-icon">🔮</span><span class="gradient-text">Voxel</span></a>
+        <div class="nav-links">
+            <a href="./">Accueil</a>
+            <a href="./products.html">Produits</a>
+            <a href="./cart.html">Panier</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="./cart.html" class="nav-cart">🛒 <span>Panier</span><span class="cart-badge">0</span></a>
+            <div class="nav-mobile-toggle" id="nav-toggle"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <section class="cart-container checkout-container">
+        <div class="container">
+            <h1 class="reveal" style="margin-bottom: var(--space-2);">Passer <span class="gradient-text">Commande</span>
+            </h1>
+            <p style="color: var(--color-text-muted); margin-bottom: var(--space-8);" class="reveal">Finalisez votre
+                commande en remplissant vos informations ci-dessous.</p>
+
+            <!-- Progress steps -->
+            <div class="flex justify-center gap-6 reveal" style="margin-bottom: var(--space-10);">
+                <div class="flex items-center gap-2">
+                    <span
+                        style="width:32px;height:32px;border-radius:50%;background:var(--color-bg-card);border:var(--border-subtle);display:flex;align-items:center;justify-content:center;font-size:var(--text-sm);">✓</span>
+                    <span style="font-size:var(--text-sm);color:var(--color-text-muted);">Panier</span>
+                </div>
+                <span style="color: var(--color-text-muted);">→</span>
+                <div class="flex items-center gap-2">
+                    <span
+                        style="width:32px;height:32px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;font-size:var(--text-sm);color:var(--color-bg-primary);font-weight:700;">2</span>
+                    <span style="font-size:var(--text-sm);font-weight:600;">Informations</span>
+                </div>
+                <span style="color: var(--color-text-muted);">→</span>
+                <div class="flex items-center gap-2">
+                    <span
+                        style="width:32px;height:32px;border-radius:50%;background:var(--color-bg-card);border:var(--border-subtle);display:flex;align-items:center;justify-content:center;font-size:var(--text-sm);">3</span>
+                    <span style="font-size:var(--text-sm);color:var(--color-text-muted);">Paiement</span>
+                </div>
+            </div>
+
+            <div class="cart-layout">
+                <!-- Checkout Form -->
+                <div class="reveal">
+                    <form id="checkout-form"
+                        style="background: var(--color-bg-card); padding: var(--space-8); border-radius: var(--radius-xl); border: var(--border-subtle);">
+                        <h3 style="margin-bottom: var(--space-6);">📋 Vos informations</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="checkout-firstname">Prénom *</label>
+                                <input type="text" id="checkout-firstname" placeholder="Jean" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="checkout-lastname">Nom *</label>
+                                <input type="text" id="checkout-lastname" placeholder="Dupont" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-email">Email *</label>
+                            <input type="email" id="checkout-email" placeholder="jean.dupont@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-phone">Téléphone</label>
+                            <input type="tel" id="checkout-phone" placeholder="06 12 34 56 78">
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-address">Adresse de livraison</label>
+                            <textarea id="checkout-address" rows="3"
+                                placeholder="12 rue de la Paix, 75000 Paris"></textarea>
+                        </div>
+
+                        <div
+                            style="margin-top: var(--space-6); padding-top: var(--space-6); border-top: var(--border-subtle);">
+                            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;"
+                                id="stripe-pay-btn">
+                                🔒 Payer et Commander
+                            </button>
+                            <p
+                                style="font-size: var(--text-xs); color: var(--color-text-muted); text-align: center; margin-top: var(--space-3);">
+                                Paiement sécurisé. Vous pouvez aussi réserver sans payer maintenant.
+                            </p>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="cart-summary reveal" style="transition-delay: 200ms;">
+                    <h3>Votre commande</h3>
+                    <div id="checkout-summary-items"></div>
+                    <div id="checkout-totals" style="margin-top: var(--space-4);"></div>
+                    <a href="./cart.html"
+                        style="display: block; text-align: center; font-size: var(--text-sm); margin-top: var(--space-4);">
+                        ← Modifier le panier
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" style="margin-top: var(--space-16);">
+        <div class="container">
+            <div class="footer-bottom">
+                <span>© 2026 Voxel. Tous droits réservés.</span>
+                <span>Paiement 100% sécurisé</span>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

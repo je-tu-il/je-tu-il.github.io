@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gens Mort | Monde Virtuel d'Agents IA Autonomes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090e18;
+      --card: #111827;
+      --border: #1f2937;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.3);
+      --cyan: #38bdf8;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 65px 20px 40px;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 90% 80%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+    }
+    #back-to-hub {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 99999;
+      background: rgba(17, 24, 39, 0.85);
+      color: #38bdf8;
+      padding: 9px 16px;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      transition: all 0.2s ease;
+    }
+    #back-to-hub:hover {
+      background: rgba(56, 189, 248, 0.2);
+      transform: translateX(-2px);
+    }
+    .container {
+      max-width: 1060px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #818cf8;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    p.subtitle {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+    }
+    @media (max-width: 860px) {
+      .sim-grid { grid-template-columns: 1fr; }
+    }
+    .canvas-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .canvas-wrap {
+      width: 100%;
+      height: 380px;
+      background: #060911;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    #simCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: crosshair;
+    }
+    .sim-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .sim-stat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--cyan);
+    }
+    .btn-sim {
+      background: #1f2937;
+      border: 1px solid #374151;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-sim:hover { background: #374151; }
+    .btn-sim.btn-accent {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+    /* Side Inspector & Logs */
+    .inspector-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .agent-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .agent-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .agent-name {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .agent-role {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .thought-bubble {
+      background: #172033;
+      border-left: 3px solid var(--accent);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #e2e8f0;
+      font-style: italic;
+    }
+    .dialog-log {
+      max-height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+      padding-right: 4px;
+    }
+    .log-item {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      line-height: 1.4;
+    }
+    .log-item strong { color: var(--cyan); }
+  </style>
+</head>
+<body>
+  <a href="../../index.html" id="back-to-hub">&larr; Portfolio</a>
+
+  <div class="container">
+    <header>
+      <div class="badge">🧠 IA Générative Autonome • Next.js & Pixi.js</div>
+      <h1>Gens Mort - Autonomous AI World</h1>
+      <p class="subtitle">Simulation sociale d'agents dotés de mémoire épisodique, de plans de journée dynamiques et de dialogues générés en temps réel par LLM.</p>
+    </header>
+
+    <div class="sim-grid">
+      <!-- 2D Canvas Tilemap Simulation -->
+      <div class="canvas-panel">
+        <div class="canvas-wrap">
+          <canvas id="simCanvas"></canvas>
+        </div>
+
+        <div class="sim-bar">
+          <div class="sim-stat" id="tickCount">TICK : 00124 • HEURE : 14h20</div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-sim" onclick="togglePause()">
+              <span id="pauseBtnText">⏸️ Pause</span>
+            </button>
+            <button class="btn-sim btn-accent" onclick="triggerEvent()">
+              <span>⚡ Événement Spontané</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inspector & Logs -->
+      <div class="inspector-card">
+        <div class="agent-header">
+          <div class="agent-avatar" id="agentAvatar">👨‍🔬</div>
+          <div>
+            <div class="agent-name" id="agentName">Arthur (Philosophe)</div>
+            <div class="agent-role" id="agentState">Humeur : Pensif • Destination : La Taverne</div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">Pensée Interne Actuelle :</div>
+          <div class="thought-bubble" id="agentThought">
+            "Je devrais retrouver Lucas près du puits pour discuter des nouveaux manuscrits découverts ce matin."
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted); margin-bottom:6px;">Journal des Dialogues Récents :</div>
+          <div class="dialog-log" id="dialogLog">
+            <div class="log-item"><strong>Arthur :</strong> Salut Clara, as-tu terminé la réparation de la lanterne ?</div>
+            <div class="log-item"><strong>Clara :</strong> Oui ! L'assemblage 3D est parfait, elle brille sur la place.</div>
+            <div class="log-item"><strong>Lucas :</strong> Le marché ferme bientôt, retrouvons-nous à la taverne.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let isPaused = false;
+    let ticks = 124;
+
+    // POIs on map
+    const pois = [
+      { name: "La Taverne", x: 100, y: 80, color: "#f59e0b", icon: "🍺" },
+      { name: "Le Puits", x: 280, y: 190, color: "#38bdf8", icon: "⛲" },
+      { name: "L'Atelier", x: 460, y: 90, color: "#10b981", icon: "🔨" },
+      { name: "La Bibliothèque", x: 380, y: 300, color: "#a855f7", icon: "📚" }
+    ];
+
+    // Agents
+    const agents = [
+      { id: 1, name: "Arthur", role: "Philosophe", avatar: "👨‍🔬", x: 120, y: 140, tx: 280, ty: 190, color: "#6366f1", mood: "Pensif", thought: "Je devrais retrouver Lucas près du puits.", bubble: "", bubbleTimer: 0 },
+      { id: 2, name: "Clara", role: "Ingénieure 3D", avatar: "👩‍🔧", x: 440, y: 120, tx: 460, ty: 90, color: "#ec4899", mood: "Créative", thought: "La tolérance mécanique de la v11 est excellente.", bubble: "", bubbleTimer: 0 },
+      { id: 3, name: "Lucas", role: "Archiviste", avatar: "👨‍💼", x: 260, y: 220, tx: 380, ty: 300, color: "#14b8a6", mood: "Curieux", thought: "Il faut cataloguer ces nouvelles cartes anciennes.", bubble: "", bubbleTimer: 0 }
+    ];
+
+    let selectedAgent = agents[0];
+
+    function selectAgent(agent) {
+      selectedAgent = agent;
+      document.getElementById('agentAvatar').innerText = agent.avatar;
+      document.getElementById('agentName').innerText = `${agent.name} (${agent.role})`;
+      document.getElementById('agentState').innerText = `Humeur : ${agent.mood}`;
+      document.getElementById('agentThought').innerText = `"${agent.thought}"`;
+    }
+
+    function togglePause() {
+      isPaused = !isPaused;
+      document.getElementById('pauseBtnText').innerText = isPaused ? "▶️ Reprendre" : "⏸️ Pause";
+    }
+
+    function triggerEvent() {
+      const phrases = [
+        ["Arthur", "Clara", "As-tu vu le nouveau mécanisme de l'atelier ?"],
+        ["Clara", "Arthur", "Oui ! Il fonctionne avec un rendement incroyable."],
+        ["Lucas", "Arthur", "Je viens d'inscrire notre découverte au grand livre."],
+        ["Arthur", "Lucas", "Parfait, célébrons cela à la taverne ce soir !"]
+      ];
+      const p = phrases[Math.floor(Math.random() * phrases.length)];
+      
+      const a1 = agents.find(a => a.name === p[0]);
+      if (a1) {
+        a1.bubble = p[2];
+        a1.bubbleTimer = 180;
+      }
+
+      const log = document.getElementById('dialogLog');
+      const item = document.createElement('div');
+      item.className = 'log-item';
+      item.innerHTML = `<strong>${p[0]} :</strong> ${p[2]}`;
+      log.prepend(item);
+    }
+
+    function update() {
+      if (isPaused) return;
+      ticks++;
+      if (ticks % 30 === 0) {
+        document.getElementById('tickCount').innerText = `TICK : 00${ticks} • HEURE : ${14 + Math.floor(ticks / 600)}h${(ticks % 60).toString().padStart(2, '0')}`;
+      }
+
+      agents.forEach(agent => {
+        // Move towards target
+        const dx = agent.tx - agent.x;
+        const dy = agent.ty - agent.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist > 3) {
+          agent.x += (dx / dist) * 1.2;
+          agent.y += (dy / dist) * 1.2;
+        } else {
+          // Pick new POI
+          const nextPoi = pois[Math.floor(Math.random() * pois.length)];
+          agent.tx = nextPoi.x + (Math.random() - 0.5) * 40;
+          agent.ty = nextPoi.y + (Math.random() - 0.5) * 40;
+        }
+
+        if (agent.bubbleTimer > 0) agent.bubbleTimer--;
+        else agent.bubble = "";
+      });
+
+      // Random spontaneous meeting dialogue
+      if (Math.random() < 0.008) {
+        triggerEvent();
+      }
+    }
+
+    function render() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const w = rect.width;
+      const h = rect.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Draw Grid / Pathways
+      ctx.strokeStyle = '#111827';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 30) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 30) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      // Draw POIs
+      pois.forEach(poi => {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+        ctx.beginPath();
+        ctx.arc(poi.x, poi.y, 35, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = poi.color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.font = '18px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(poi.icon, poi.x, poi.y + 6);
+
+        ctx.font = '11px Plus Jakarta Sans, sans-serif';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText(poi.name, poi.x, poi.y + 26);
+      });
+
+      // Draw Agents
+      agents.forEach(agent => {
+        const isSel = agent === selectedAgent;
+
+        if (isSel) {
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(agent.x, agent.y, 18, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        ctx.fillStyle = agent.color;
+        ctx.beginPath();
+        ctx.arc(agent.x, agent.y, 12, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.font = '12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(agent.avatar, agent.x, agent.y + 4);
+
+        ctx.font = '10px monospace';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(agent.name, agent.x, agent.y - 16);
+
+        // Chat Bubble
+        if (agent.bubble) {
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '11px sans-serif';
+          const txtWidth = ctx.measureText(agent.bubble).width;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.roundRect(agent.x - txtWidth / 2 - 8, agent.y - 40, txtWidth + 16, 20, 6);
+          ctx.fill();
+          ctx.stroke();
+
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(agent.bubble, agent.x, agent.y - 26);
+        }
+      });
+    }
+
+    function loop() {
+      update();
+      render();
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      agents.forEach(agent => {
+        if (Math.hypot(agent.x - clickX, agent.y - clickY) < 25) {
+          selectAgent(agent);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

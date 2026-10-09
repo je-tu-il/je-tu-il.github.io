@@ -1,0 +1,782 @@
+[
+    {
+        "title": "Haloule",
+        "url": "https://www.haloule.com/search/label/true?max-results=5",
+        "folder_path": "Barre de favoris > Site > Actus > Tech"
+    },
+    {
+        "title": "Trictrac.tv",
+        "url": "https://trictrac.tv/",
+        "folder_path": "Barre de favoris > Site > Actus > Tech"
+    },
+    {
+        "title": "iClarified",
+        "url": "https://www.iclarified.com/",
+        "folder_path": "Barre de favoris > Site > Actus > Tech"
+    },
+    {
+        "title": "Google Labs",
+        "url": "https://labs.google/",
+        "folder_path": "Barre de favoris > Site > Actus > Tech"
+    },
+    {
+        "title": "M4ng",
+        "url": "https://m4ng.fr/",
+        "folder_path": "Barre de favoris > Site > Actus > Tech"
+    },
+    {
+        "title": "Yahoo Finance",
+        "url": "https://finance.yahoo.com/",
+        "folder_path": "Barre de favoris > Site > Actus > Tech"
+    },
+    {
+        "title": "NFX (Invest)",
+        "url": "https://www.nfx.com/",
+        "folder_path": "Barre de favoris > Site > Actus > Tech"
+    },
+    {
+        "title": "USPTO",
+        "url": "https://www.uspto.gov/",
+        "folder_path": "Barre de favoris > Site > Actus > Tech"
+    },
+    {
+        "title": "CoinMarketCap",
+        "url": "https://coinmarketcap.com/",
+        "folder_path": "Barre de favoris > Site > Actus > Crypto"
+    },
+    {
+        "title": "Robinhood Crypto",
+        "url": "https://robinhood.com/eu/en/about/crypto/",
+        "folder_path": "Barre de favoris > Site > Actus > Crypto"
+    },
+    {
+        "title": "Coin Academy",
+        "url": "https://coinacademy.fr/",
+        "folder_path": "Barre de favoris > Site > Actus > Crypto"
+    },
+    {
+        "title": "Cryptonaute",
+        "url": "https://cryptonaute.fr/",
+        "folder_path": "Barre de favoris > Site > Actus > Crypto"
+    },
+    {
+        "title": "Blackhatrussia",
+        "url": "https://blackhatrussia.com/",
+        "folder_path": "Barre de favoris > Site > Actus > Cyber"
+    },
+    {
+        "title": "ShanghaiBlackGoons",
+        "url": "https://shanghaiblackgoons.com/",
+        "folder_path": "Barre de favoris > Site > Actus > Cyber"
+    },
+    {
+        "title": "Blankhack",
+        "url": "https://blankhack.com/",
+        "folder_path": "Barre de favoris > Site > Actus > Cyber"
+    },
+    {
+        "title": "Hackaday",
+        "url": "https://hackaday.com/",
+        "folder_path": "Barre de favoris > Site > Actus > Cyber"
+    },
+    {
+        "title": "Daily Dark Web",
+        "url": "https://dailydarkweb.net/",
+        "folder_path": "Barre de favoris > Site > Actus > Cyber"
+    },
+    {
+        "title": "Mobile Hacker",
+        "url": "https://www.mobile-hacker.com/",
+        "folder_path": "Barre de favoris > Site > Actus > Cyber"
+    },
+    {
+        "title": "madameb0nplan",
+        "url": "https://www.instagram.com/madameb0nplan",
+        "folder_path": "Barre de favoris > Site > Actus > Veille Insta"
+    },
+    {
+        "title": "Maxime Painchaud",
+        "url": "https://www.instagram.com/maxime.astuces/",
+        "folder_path": "Barre de favoris > Site > Actus > Veille Insta"
+    },
+    {
+        "title": "Tony | PowerPoint",
+        "url": "https://www.instagram.com/tonyppt_/",
+        "folder_path": "Barre de favoris > Site > Actus > Veille Insta"
+    },
+    {
+        "title": "Jaydenkingtech",
+        "url": "https://www.instagram.com/jaydenkingtech/",
+        "folder_path": "Barre de favoris > Site > Actus > Veille Insta"
+    },
+    {
+        "title": "Votes Assemblée",
+        "url": "https://www.instagram.com/votes_assemblee_nationale/?g=5",
+        "folder_path": "Barre de favoris > Site > Actus > Veille Insta"
+    },
+    {
+        "title": "(1) Instagram",
+        "url": "https://www.instagram.com/githubprojects",
+        "folder_path": "Barre de favoris > Site > Actus > Veille Insta"
+    },
+    {
+        "title": "(1) Instagram",
+        "url": "https://www.instagram.com/maxtechexplore/",
+        "folder_path": "Barre de favoris > Site > Actus > Veille Insta"
+    },
+    {
+        "title": "Telegram Web",
+        "url": "https://web.telegram.org/k/",
+        "folder_path": "Barre de favoris > Site > Réseaux"
+    },
+    {
+        "title": "Google Agenda - juin 2025",
+        "url": "https://calendar.google.com/calendar/u/0/r/month/2025/6/1",
+        "folder_path": "Barre de favoris > Site > Réseaux"
+    },
+    {
+        "title": "WhatsApp",
+        "url": "https://web.whatsapp.com/",
+        "folder_path": "Barre de favoris > Site > Réseaux"
+    },
+    {
+        "title": "Discord",
+        "url": "https://discord.com/channels/@me",
+        "folder_path": "Barre de favoris > Site > Réseaux"
+    },
+    {
+        "title": "Reddit",
+        "url": "https://www.reddit.com/?feed=home",
+        "folder_path": "Barre de favoris > Site > Réseaux"
+    },
+    {
+        "title": "TikTok",
+        "url": "https://www.tiktok.com/fr/",
+        "folder_path": "Barre de favoris > Site > Réseaux"
+    },
+    {
+        "title": "Snapchat",
+        "url": "https://www.snapchat.com/",
+        "folder_path": "Barre de favoris > Site > Réseaux"
+    },
+    {
+        "title": "Apple Podcasts",
+        "url": "https://podcasts.apple.com/fr/browse",
+        "folder_path": "Barre de favoris > Site > Réseaux"
+    },
+    {
+        "title": "Proton Mail",
+        "url": "https://mail.proton.me/u/1/inbox?welcome=true&ref=product-switch",
+        "folder_path": "Barre de favoris > Site > Réseaux"
+    },
+    {
+        "title": "Manychat",
+        "url": "https://manychat.com/",
+        "folder_path": "Barre de favoris > Site > Réseaux > Gestion"
+    },
+    {
+        "title": "YouTube",
+        "url": "https://www.youtube.com/",
+        "folder_path": "Barre de favoris > Site > Réseaux"
+    },
+    {
+        "title": "Smspva (SMS Virtuels)",
+        "url": "https://smspva.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Numéros & Appels"
+    },
+    {
+        "title": "Onlinesim",
+        "url": "https://onlinesim.io/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Numéros & Appels"
+    },
+    {
+        "title": "TextNow",
+        "url": "https://www.textnow.com/download",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Numéros & Appels"
+    },
+    {
+        "title": "PopTox (Appels)",
+        "url": "https://www.poptox.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Numéros & Appels"
+    },
+    {
+        "title": "Ievaphone",
+        "url": "https://ievaphone.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Numéros & Appels"
+    },
+    {
+        "title": "Asterisk",
+        "url": "https://www.asterisk.org/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Numéros & Appels"
+    },
+    {
+        "title": "Nonsurtaxe.com",
+        "url": "https://nonsurtaxe.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Numéros & Appels"
+    },
+    {
+        "title": "Bloctel",
+        "url": "https://www.bloctel.gouv.fr/tableau-de-bord",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Numéros & Appels"
+    },
+    {
+        "title": "Temp Mail",
+        "url": "https://temp-mail.org/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Mails Jetables"
+    },
+    {
+        "title": "MailTicking",
+        "url": "https://www.mailticking.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Mails Jetables"
+    },
+    {
+        "title": "Emailnator",
+        "url": "https://www.emailnator.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Mails Jetables"
+    },
+    {
+        "title": "DyzovMail",
+        "url": "https://dyzov.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Mails Jetables"
+    },
+    {
+        "title": "AnonymousEmail",
+        "url": "https://anonymousemail.me/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Mails Jetables"
+    },
+    {
+        "title": "Onion Mail",
+        "url": "https://onionmail.org/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Mails Jetables"
+    },
+    {
+        "title": "Gmail Gen",
+        "url": "https://github.com/ShadowHackrs/gmail-account-creator",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Mails Jetables"
+    },
+    {
+        "title": "Dolphin Anty",
+        "url": "https://dolphin-anty.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Multi-Comptes"
+    },
+    {
+        "title": "AdsPower",
+        "url": "https://www.adspower.com/fr/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Multi-Comptes"
+    },
+    {
+        "title": "Incogniton",
+        "url": "https://incogniton.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Multi-Comptes"
+    },
+    {
+        "title": "Multilogin",
+        "url": "https://multilogin.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Multi-Comptes"
+    },
+    {
+        "title": "/r/VPN wiki",
+        "url": "https://www.reddit.com/r/VPN/wiki/index",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Vpn"
+    },
+    {
+        "title": "VPN over SSH",
+        "url": "https://wiki.archlinux.org/index.php/VPN_over_SSH",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Vpn"
+    },
+    {
+        "title": "/r/VPNTorrents",
+        "url": "https://www.reddit.com/r/VPNTorrents",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Vpn"
+    },
+    {
+        "title": "ProtonVPN",
+        "url": "https://protonvpn.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Vpn"
+    },
+    {
+        "title": "NordVPN",
+        "url": "https://nordvpn.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Vpn"
+    },
+    {
+        "title": "ExpressVPN",
+        "url": "https://www.expressvpn.com/vpnmentor1",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Vpn"
+    },
+    {
+        "title": "PeerVPN",
+        "url": "https://peervpn.net/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Vpn"
+    },
+    {
+        "title": "OpenVPN",
+        "url": "https://openvpn.net/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Vpn"
+    },
+    {
+        "title": "WireGuard VPN",
+        "url": "https://www.wireguard.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Vpn"
+    },
+    {
+        "title": "Private Internet Access",
+        "url": "https://www.privateinternetaccess.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp > Vpn"
+    },
+    {
+        "title": "privacytools.io",
+        "url": "https://www.privacytools.io/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp"
+    },
+    {
+        "title": "TunnelBear",
+        "url": "https://www.tunnelbear.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp"
+    },
+    {
+        "title": "n2n",
+        "url": "https://github.com/ntop/n2n",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp"
+    },
+    {
+        "title": "sshuttle",
+        "url": "https://github.com/sshuttle/sshuttle",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp"
+    },
+    {
+        "title": "ZeroTier",
+        "url": "https://www.zerotier.com/",
+        "folder_path": "Barre de favoris > Site > OpSec & Temp"
+    },
+    {
+        "title": "DS218 (Local)",
+        "url": "http://192.168.1.134:5000/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Serveur & Cloud"
+    },
+    {
+        "title": "DS218 (QuickConnect)",
+        "url": "https://famreymond.fr3.quickconnect.to/#/signin",
+        "folder_path": "Barre de favoris > Site > Fichiers > Serveur & Cloud"
+    },
+    {
+        "title": "Syncthing",
+        "url": "https://127.0.0.1:8384/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Serveur & Cloud"
+    },
+    {
+        "title": "Backblaze",
+        "url": "https://www.backblaze.com/cloud-backup/pricing",
+        "folder_path": "Barre de favoris > Site > Fichiers > Serveur & Cloud"
+    },
+    {
+        "title": "OneDrive",
+        "url": "https://onedrive.live.com/?id=root&cid=5DF3BDFF5ABF769C&qt=recyclebin",
+        "folder_path": "Barre de favoris > Site > Fichiers > Serveur & Cloud"
+    },
+    {
+        "title": "MEGA",
+        "url": "https://mega.nz/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Serveur & Cloud"
+    },
+    {
+        "title": "Smash",
+        "url": "https://fromsmash.com/fr",
+        "folder_path": "Barre de favoris > Site > Fichiers > Transfert"
+    },
+    {
+        "title": "WeTransfer",
+        "url": "https://wetransfer.com/?msockid=2cb47a7103ac63fa2ba06c3602b56290",
+        "folder_path": "Barre de favoris > Site > Fichiers > Transfert"
+    },
+    {
+        "title": "SwissTransfer",
+        "url": "https://www.swisstransfer.com/fr-fr",
+        "folder_path": "Barre de favoris > Site > Fichiers > Transfert"
+    },
+    {
+        "title": "GrosFichiers",
+        "url": "https://www.grosfichiers.com/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Transfert"
+    },
+    {
+        "title": "LocalSend",
+        "url": "https://localsend.org/fr",
+        "folder_path": "Barre de favoris > Site > Fichiers > Transfert"
+    },
+    {
+        "title": "PairDrop",
+        "url": "https://pairdrop.net/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Transfert"
+    },
+    {
+        "title": "ToffeeShare",
+        "url": "https://toffeeshare.com/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Transfert"
+    },
+    {
+        "title": "fileQRier",
+        "url": "https://fileqrier.com/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Transfert"
+    },
+    {
+        "title": "OnionShare",
+        "url": "https://onionshare.org/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Partage Privé"
+    },
+    {
+        "title": "Enclosed",
+        "url": "https://enclosed.cc/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Partage Privé"
+    },
+    {
+        "title": "Wormhole",
+        "url": "https://wormhole.app/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Partage Privé"
+    },
+    {
+        "title": "BiteBlob",
+        "url": "https://biteblob.com/PrivateDrop",
+        "folder_path": "Barre de favoris > Site > Fichiers > Partage Privé"
+    },
+    {
+        "title": "Hide Message",
+        "url": "https://thisisshubhamkumar.github.io/hidemessage/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Partage Privé"
+    },
+    {
+        "title": "Steganography Online",
+        "url": "https://stylesuxx.github.io/steganography/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Partage Privé"
+    },
+    {
+        "title": "CryptDrive",
+        "url": "https://cryptpad.fr/drive/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Partage Privé"
+    },
+    {
+        "title": "iLovePDF",
+        "url": "https://www.ilovepdf.com/fr",
+        "folder_path": "Barre de favoris > Site > Fichiers > Docs"
+    },
+    {
+        "title": "PDF24 Tools",
+        "url": "https://tools.pdf24.org/fr/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Docs"
+    },
+    {
+        "title": "eBook Convert",
+        "url": "https://ebook.online-convert.com/fr",
+        "folder_path": "Barre de favoris > Site > Fichiers > Docs"
+    },
+    {
+        "title": "Pandoc",
+        "url": "https://pandoc.org/try/",
+        "folder_path": "Barre de favoris > Site > Fichiers > Docs"
+    },
+    {
+        "title": "MD Editor",
+        "url": "https://mdeditor.net/#app",
+        "folder_path": "Barre de favoris > Site > Fichiers > Docs"
+    },
+    {
+        "title": "Overleaf (LaTeX)",
+        "url": "https://www.overleaf.com/project",
+        "folder_path": "Barre de favoris > Site > Fichiers > Docs"
+    },
+    {
+        "title": "MakerWorld",
+        "url": "https://makerworld.com/fr/3d-models",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "Printables",
+        "url": "https://www.printables.com/@CUBE3DWORLD/models",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "Thingiverse",
+        "url": "https://www.thingiverse.com/",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "Cults3D",
+        "url": "https://cults3d.com/fr/profil/cr%C3%A9%C3%A9",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "Tinkercad",
+        "url": "https://www.tinkercad.com/dashboard/designs/3d",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "Planner 5D",
+        "url": "https://planner5d.com/fr",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "Pinshape",
+        "url": "https://pinshape.com/",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "Printpal Tools",
+        "url": "https://printpal.io/tools",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "TRELLIS 2 (Img to 3D)",
+        "url": "https://trellis2.com/",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "3Drop Engine",
+        "url": "https://three-drop.com/?w=b",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "SAM 3D",
+        "url": "https://ai.meta.com/research/sam3d/",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "3D Text Illusion",
+        "url": "https://richardbt.com/projects/3d-dual-text-illusion-generator",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "ItsLitho",
+        "url": "https://tool.itslitho.com/UploadImg",
+        "folder_path": "Barre de favoris > Site > Créa > 3D"
+    },
+    {
+        "title": "Photopea",
+        "url": "https://www.photopea.com/",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Pixlr",
+        "url": "https://pixlr.com/fr/",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Squoosh",
+        "url": "https://squoosh.app/",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "ResizePixel",
+        "url": "https://www.resizepixel.com/fr",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Adobe Resize",
+        "url": "https://www.adobe.com/express/feature/image/resize?utm_source=chatgpt.com",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Adobe Crop",
+        "url": "https://www.adobe.com/express/feature/image/crop",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Remove.bg",
+        "url": "https://www.remove.bg/fr",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Filigrane Facile",
+        "url": "https://filigrane.beta.gouv.fr/",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "ICO Converter",
+        "url": "https://www.icoconverter.com/",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Vecteezy",
+        "url": "https://www.vecteezy.com/",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Icon-icons",
+        "url": "https://icon-icons.com/fr/",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Clipdrop",
+        "url": "https://clipdrop.co/",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Magnific AI",
+        "url": "https://magnific.ai/",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Lupa AI",
+        "url": "https://app.lupaupscaler.com/",
+        "folder_path": "Barre de favoris > Site > Créa > Image & Vecteurs"
+    },
+    {
+        "title": "Audio Speed Changer",
+        "url": "https://mp3cut.net/change-speed",
+        "folder_path": "Barre de favoris > Site > Créa > Audio"
+    },
+    {
+        "title": "MP3Louder",
+        "url": "https://www.mp3louder.com/",
+        "folder_path": "Barre de favoris > Site > Créa > Audio"
+    },
+    {
+        "title": "Vocalremover",
+        "url": "https://vocalremover.org/fr/",
+        "folder_path": "Barre de favoris > Site > Créa > Audio"
+    },
+    {
+        "title": "Convert to it!",
+        "url": "https://p2r3.github.io/convert/",
+        "folder_path": "Barre de favoris > Site > Créa > Audio"
+    },
+    {
+        "title": "QR Scanner",
+        "url": "https://qrscanner.net/fr",
+        "folder_path": "Barre de favoris > Site > Système > Pratique"
+    },
+    {
+        "title": "Bitly",
+        "url": "https://bitly.com/",
+        "folder_path": "Barre de favoris > Site > Système > Pratique"
+    },
+    {
+        "title": "Torrent Creator",
+        "url": "https://lyderwang.github.io/torrent-creator/",
+        "folder_path": "Barre de favoris > Site > Système > Pratique"
+    },
+    {
+        "title": "Ninite",
+        "url": "https://ninite.com/",
+        "folder_path": "Barre de favoris > Site > Système > Hard & Soft"
+    },
+    {
+        "title": "Driverscloud",
+        "url": "https://www.driverscloud.com/fr",
+        "folder_path": "Barre de favoris > Site > Système > Hard & Soft"
+    },
+    {
+        "title": "Dead Pixel Test",
+        "url": "https://deadpixeltest.org/",
+        "folder_path": "Barre de favoris > Site > Système > Hard & Soft"
+    },
+    {
+        "title": "Screen Burn Fix",
+        "url": "https://www.youtube.com/watch?v=LMK5aUPpak4",
+        "folder_path": "Barre de favoris > Site > Système > Hard & Soft"
+    },
+    {
+        "title": "iFixit",
+        "url": "https://fr.ifixit.com/",
+        "folder_path": "Barre de favoris > Site > Système > Hard & Soft"
+    },
+    {
+        "title": "Manuels Et Notices",
+        "url": "https://manuelsetnotices.fr/",
+        "folder_path": "Barre de favoris > Site > Système > Hard & Soft"
+    },
+    {
+        "title": "CarCareKiosk",
+        "url": "https://fr.carcarekiosk.com/",
+        "folder_path": "Barre de favoris > Site > Système > Hard & Soft"
+    },
+    {
+        "title": "Gorgeous-GRUB",
+        "url": "https://github.com/jacksaur/Gorgeous-GRUB",
+        "folder_path": "Barre de favoris > Site > Système > Custom & Scripts"
+    },
+    {
+        "title": "Pling",
+        "url": "https://www.pling.com/",
+        "folder_path": "Barre de favoris > Site > Système > Custom & Scripts"
+    },
+    {
+        "title": "Catppuccin",
+        "url": "https://catppuccin.com/",
+        "folder_path": "Barre de favoris > Site > Système > Custom & Scripts"
+    },
+    {
+        "title": "VsThemes",
+        "url": "https://vsthemes.org/ru/",
+        "folder_path": "Barre de favoris > Site > Système > Custom & Scripts"
+    },
+    {
+        "title": "TM: YT Redirect",
+        "url": "https://greasyfork.org/en/scripts/500460-redirect-youtube-channel-to-videos?utm_source=chatgpt.com",
+        "folder_path": "Barre de favoris > Site > Système > Custom & Scripts"
+    },
+    {
+        "title": "TM: Sponsor Skipper",
+        "url": "https://greasyfork.org/fr/scripts/453320-simple-sponsor-skipper",
+        "folder_path": "Barre de favoris > Site > Système > Custom & Scripts"
+    },
+    {
+        "title": "TM: CS.RIN.RU",
+        "url": "https://github.com/Altansar69/CS.RIN.RU-Enhanced-external/blob/main/README.md",
+        "folder_path": "Barre de favoris > Site > Système > Custom & Scripts"
+    },
+    {
+        "title": "TM: AdGuard Extra",
+        "url": "https://github.com/AdguardTeam/AdGuardExtra",
+        "folder_path": "Barre de favoris > Site > Système > Custom & Scripts"
+    },
+    {
+        "title": "TM: Script ChatGPT",
+        "url": "https://chatgpt.com/c/68c27c61-aae4-8323-b3e9-8c27bdd59171",
+        "folder_path": "Barre de favoris > Site > Système > Custom & Scripts"
+    },
+    {
+        "title": "Minesweeper Global",
+        "url": "https://web-minesweeper-global.vercel.app/",
+        "folder_path": "Barre de favoris > Site > Projets > Dev"
+    },
+    {
+        "title": "Voxel 3D",
+        "url": "https://voxel3d.vercel.app/",
+        "folder_path": "Barre de favoris > Site > Projets > Dev"
+    },
+    {
+        "title": "Console Firebase",
+        "url": "https://console.firebase.google.com/u/0/",
+        "folder_path": "Barre de favoris > Site > Projets > Dev"
+    },
+    {
+        "title": "MindSchem",
+        "url": "https://orgapy.netlify.app/",
+        "folder_path": "Barre de favoris > Site > Projets > Dev"
+    },
+    {
+        "title": "Tournoi Echecs",
+        "url": "https://echecsql.netlify.app/",
+        "folder_path": "Barre de favoris > Site > Projets > Dev"
+    },
+    {
+        "title": "n8n (Workflow)",
+        "url": "https://n8n.io/",
+        "folder_path": "Barre de favoris > Site > Projets > Automatisation"
+    },
+    {
+        "title": "Paramètres",
+        "url": "chrome://settings/",
+        "folder_path": "Barre de favoris > Site > Navigateur"
+    },
+    {
+        "title": "Paramètres – Confidentialité et sécurité",
+        "url": "chrome://settings/clearBrowserData",
+        "folder_path": "Barre de favoris > Site > Navigateur"
+    },
+    {
+        "title": "Experiments",
+        "url": "chrome://flags/",
+        "folder_path": "Barre de favoris > Site > Navigateur"
+    }
+]

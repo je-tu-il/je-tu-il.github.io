@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Travel Investing Simulator | Trading Historique Immersif</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090e17;
+      --card: #111827;
+      --border: #1f2937;
+      --green: #10b981;
+      --red: #ef4444;
+      --accent: #38bdf8;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --paper: #fef3c7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 65px 20px 40px;
+      background-image: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.1) 0%, transparent 60%);
+    }
+    #back-to-hub {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 99999;
+      background: rgba(17, 24, 39, 0.85);
+      color: #38bdf8;
+      padding: 9px 16px;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      transition: all 0.2s ease;
+    }
+    #back-to-hub:hover {
+      background: rgba(56, 189, 248, 0.2);
+      transform: translateX(-2px);
+    }
+    .container {
+      max-width: 1040px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent);
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    p.subtitle {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+    }
+    @media (max-width: 860px) {
+      .grid-layout { grid-template-columns: 1fr; }
+    }
+    .trading-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .asset-selector {
+      display: flex;
+      gap: 8px;
+    }
+    .asset-pill {
+      background: #1f2937;
+      border: 1px solid #374151;
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .asset-pill.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+    .current-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .price-change {
+      font-size: 13px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+    .canvas-container {
+      background: #080d16;
+      border: 1px solid #1f2937;
+      border-radius: 12px;
+      position: relative;
+      height: 320px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    #chartCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .timeline-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      background: rgba(0,0,0,0.3);
+      padding: 10px 14px;
+      border-radius: 10px;
+    }
+    .timeline-controls span {
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .timeline-slider {
+      flex: 1;
+      accent-color: var(--accent);
+    }
+    .trade-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.2fr;
+      gap: 12px;
+    }
+    .btn-action {
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-buy {
+      background: #10b981;
+      color: #000;
+    }
+    .btn-buy:hover { background: #059669; }
+    .btn-sell {
+      background: #ef4444;
+      color: #fff;
+    }
+    .btn-sell:hover { background: #dc2626; }
+    .btn-next {
+      background: #38bdf8;
+      color: #000;
+    }
+    .btn-next:hover { background: #0284c7; }
+
+    /* Side Column: Vintage Newspaper & Portfolio */
+    .newspaper-card {
+      background: #fdfbf7;
+      color: #1c1917;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
+      position: relative;
+      border: 1px solid #e7e5e4;
+    }
+    .newspaper-header {
+      border-bottom: 2px solid #1c1917;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .newspaper-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .newspaper-date {
+      font-size: 10px;
+      color: #78716c;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .news-body {
+      font-size: 11px;
+      line-height: 1.45;
+      color: #44403c;
+    }
+    .portfolio-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .portfolio-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 13px;
+    }
+    .stat-label { color: var(--muted); }
+    .stat-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <a href="../../index.html" id="back-to-hub">&larr; Portfolio</a>
+
+  <div class="container">
+    <header>
+      <div class="badge">📈 Simulateur Financier Historique • Next.js & Python</div>
+      <h1>Time Travel Investing Simulator</h1>
+      <p class="subtitle">Voyagez dans le passé, lisez les actualités du jour et testez vos stratégies avec de véritables données boursières historiques.</p>
+    </header>
+
+    <div class="grid-layout">
+      <!-- Main Trading Window -->
+      <div class="trading-panel">
+        <div class="chart-header">
+          <div class="asset-selector">
+            <button class="asset-pill active" onclick="loadStock('AAPL')">AAPL (Apple)</button>
+            <button class="asset-pill" onclick="loadStock('AMZN')">AMZN (Amazon)</button>
+            <button class="asset-pill" onclick="loadStock('AMD')">AMD (Semiconductors)</button>
+          </div>
+
+          <div>
+            <span class="current-price" id="priceDisplay">$110.89</span>
+            <span class="price-change" id="changeDisplay" style="color:var(--green);">+1.24%</span>
+          </div>
+        </div>
+
+        <div class="canvas-container">
+          <canvas id="chartCanvas"></canvas>
+        </div>
+
+        <div class="timeline-controls">
+          <span>Date : <strong id="dateDisplay" style="color:#fff;">2023-09-15</strong></span>
+          <input type="range" class="timeline-slider" id="timeSlider" min="20" max="100" value="30" oninput="onSliderMove(this.value)">
+          <span id="progressDisplay">Jour 30</span>
+        </div>
+
+        <div class="trade-actions">
+          <button class="btn-action btn-buy" onclick="buyStock()">
+            <span>🟢 Acheter 10 actions</span>
+          </button>
+          <button class="btn-action btn-sell" onclick="sellStock()">
+            <span>🔴 Vendre 10 actions</span>
+          </button>
+          <button class="btn-action btn-next" onclick="nextDay()">
+            <span>⏩ Avancer d'1 jour</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Side Column -->
+      <div>
+        <!-- Vintage Newspaper -->
+        <div class="newspaper-card">
+          <div class="newspaper-header">
+            <div class="newspaper-title">The Global Financial Herald</div>
+            <div class="newspaper-date" id="newsDate">Édition du 15 Septembre 2023</div>
+          </div>
+          <div class="headline" id="newsHeadline">Lancement Mondial : La Tech poursuit sa croissance face aux taux d'intérêt</div>
+          <div class="news-body" id="newsText">
+            Les analystes de Wall Street soulignent la vigueur de la demande des consommateurs et l'accélération des investissements dans l'intelligence artificielle malgré les resserrements monétaires.
+          </div>
+        </div>
+
+        <!-- Portfolio Card -->
+        <div class="portfolio-card">
+          <div class="portfolio-title">
+            <span>💼 Mon Portefeuille</span>
+            <span style="font-size:11px; color:var(--muted);">Simulateur</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Capital Cash</span>
+            <span class="stat-val" id="cashDisplay">$10,000.00</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Actions détenues</span>
+            <span class="stat-val" id="sharesDisplay">0 AAPL</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Valeur Portefeuille</span>
+            <span class="stat-val" id="totalValDisplay">$10,000.00</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Performance Globale</span>
+            <span class="stat-val" id="pnlDisplay" style="color:var(--green);">0.00%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let stockData = [];
+    let currentIdx = 30;
+    let currentSymbol = 'AAPL';
+
+    // Portfolio State
+    let cash = 10000;
+    let shares = 0;
+    let initialCapital = 10000;
+
+    const canvas = document.getElementById('chartCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const sampleNews = [
+      { headline: "L'inflation donne des signes de ralentissement", body: "Les banques centrales envisagent une pause dans les hausses de taux directeurs, dynamisant le secteur technologique." },
+      { headline: "Record de ventes trimestrielles annoncé", body: "Les résultats financiers dépassent les prévisions du consensus grâce à une forte adoption internationale." },
+      { headline: "Tensions géopolitiques et volatilité sur les marchés", body: "Les cours de l'énergie fluctuent alors que les investisseurs rééquilibrent leurs portefeuilles vers les valeurs refuges." },
+      { headline: "Percée technologique majeure dans les puces IA", body: "Une nouvelle génération de semi-conducteurs promet de multiplier par 4 les rendements de calcul." }
+    ];
+
+    async function loadStock(symbol) {
+      currentSymbol = symbol;
+      document.querySelectorAll('.asset-pill').forEach(p => {
+        p.classList.toggle('active', p.innerText.includes(symbol));
+      });
+
+      try {
+        const res = await fetch(`data/${symbol}.json`);
+        if (!res.ok) throw new Error("Fetch failed");
+        stockData = await res.json();
+      } catch (e) {
+        // Fallback synthetic series
+        stockData = generateFallbackData(120);
+      }
+
+      const slider = document.getElementById('timeSlider');
+      slider.max = stockData.length - 1;
+      slider.value = Math.min(40, stockData.length - 1);
+      currentIdx = parseInt(slider.value);
+      updateView();
+    }
+
+    function generateFallbackData(count) {
+      const arr = [];
+      let base = 120;
+      const start = new Date(2023, 7, 1);
+      for (let i = 0; i < count; i++) {
+        base += (Math.random() - 0.48) * 3;
+        const d = new Date(start.getTime() + i * 86400000);
+        arr.push({
+          d: d.toISOString().split('T')[0],
+          o: Math.round(base * 100) / 100,
+          h: Math.round((base + Math.random() * 2) * 100) / 100,
+          l: Math.round((base - Math.random() * 2) * 100) / 100,
+          c: Math.round((base + (Math.random() - 0.5)) * 100) / 100,
+          v: 15000000
+        });
+      }
+      return arr;
+    }
+
+    function onSliderMove(val) {
+      currentIdx = parseInt(val);
+      updateView();
+    }
+
+    function nextDay() {
+      if (currentIdx < stockData.length - 1) {
+        currentIdx++;
+        document.getElementById('timeSlider').value = currentIdx;
+        updateView();
+      }
+    }
+
+    function buyStock() {
+      const current = stockData[currentIdx];
+      const cost = current.c * 10;
+      if (cash >= cost) {
+        cash -= cost;
+        shares += 10;
+        updatePortfolio();
+      } else {
+        alert("Fonds insuffisants !");
+      }
+    }
+
+    function sellStock() {
+      const current = stockData[currentIdx];
+      if (shares >= 10) {
+        shares -= 10;
+        cash += current.c * 10;
+        updatePortfolio();
+      } else {
+        alert("Pas assez d'actions à vendre !");
+      }
+    }
+
+    function updatePortfolio() {
+      const current = stockData[currentIdx];
+      const stockVal = shares * current.c;
+      const total = cash + stockVal;
+      const pnl = ((total - initialCapital) / initialCapital) * 100;
+
+      document.getElementById('cashDisplay').innerText = `$${cash.toFixed(2)}`;
+      document.getElementById('sharesDisplay').innerText = `${shares} ${currentSymbol}`;
+      document.getElementById('totalValDisplay').innerText = `$${total.toFixed(2)}`;
+      
+      const pnlEl = document.getElementById('pnlDisplay');
+      pnlEl.innerText = `${pnl >= 0 ? '+' : ''}${pnl.toFixed(2)}%`;
+      pnlEl.style.color = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+    }
+
+    function updateView() {
+      if (!stockData || stockData.length === 0) return;
+      const current = stockData[currentIdx];
+      const prev = stockData[Math.max(0, currentIdx - 1)];
+
+      document.getElementById('priceDisplay').innerText = `$${current.c.toFixed(2)}`;
+      const chg = ((current.c - prev.c) / prev.c) * 100;
+      const chgEl = document.getElementById('changeDisplay');
+      chgEl.innerText = `${chg >= 0 ? '+' : ''}${chg.toFixed(2)}%`;
+      chgEl.style.color = chg >= 0 ? 'var(--green)' : 'var(--red)';
+
+      document.getElementById('dateDisplay').innerText = current.d;
+      document.getElementById('progressDisplay').innerText = `Jour ${currentIdx + 1} / ${stockData.length}`;
+
+      // Update Newspaper
+      const news = sampleNews[currentIdx % sampleNews.length];
+      document.getElementById('newsDate').innerText = `Édition du ${current.d}`;
+      document.getElementById('newsHeadline').innerText = news.headline;
+      document.getElementById('newsText').innerText = news.body;
+
+      updatePortfolio();
+      drawChart();
+    }
+
+    function drawChart() {
+      // Resize canvas to display size
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const w = rect.width;
+      const h = rect.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Visible window: last 40 days up to currentIdx
+      const windowSize = 40;
+      const start = Math.max(0, currentIdx - windowSize + 1);
+      const visibleData = stockData.slice(start, currentIdx + 1);
+
+      if (visibleData.length < 2) return;
+
+      let minP = Infinity, maxP = -Infinity;
+      visibleData.forEach(p => {
+        if (p.l < minP) minP = p.l;
+        if (p.h > maxP) maxP = p.h;
+      });
+      const padding = (maxP - minP) * 0.1 || 2;
+      minP -= padding;
+      maxP += padding;
+
+      // Draw Grid Lines
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      for (let i = 1; i <= 4; i++) {
+        const y = (h / 5) * i;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+
+        const priceLabel = (maxP - (maxP - minP) * (y / h)).toFixed(1);
+        ctx.fillStyle = '#64748b';
+        ctx.font = '10px monospace';
+        ctx.fillText(`$${priceLabel}`, w - 45, y - 4);
+      }
+
+      // Draw Area & Line
+      const stepX = (w - 60) / Math.max(1, visibleData.length - 1);
+
+      // Area gradient
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, 'rgba(56, 189, 248, 0.3)');
+      grad.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+
+      ctx.beginPath();
+      visibleData.forEach((p, i) => {
+        const x = i * stepX + 10;
+        const y = h - ((p.c - minP) / (maxP - minP)) * (h - 20) - 10;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.lineTo((visibleData.length - 1) * stepX + 10, h);
+      ctx.lineTo(10, h);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Line
+      ctx.beginPath();
+      visibleData.forEach((p, i) => {
+        const x = i * stepX + 10;
+        const y = h - ((p.c - minP) / (maxP - minP)) * (h - 20) - 10;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Current Price Dot
+      const lastX = (visibleData.length - 1) * stepX + 10;
+      const lastY = h - ((visibleData[visibleData.length - 1].c - minP) / (maxP - minP)) * (h - 20) - 10;
+      ctx.beginPath();
+      ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
+      ctx.fillStyle = '#38bdf8';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    window.addEventListener('resize', drawChart);
+    window.addEventListener('DOMContentLoaded', () => loadStock('AAPL'));
+  </script>
+</body>
+</html>

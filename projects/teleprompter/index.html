@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teleprompter</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root {
+  --eyeline: 20vh;
+  --font-size: 2.4rem;
+  --line-height: 1.55;
+  --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display',
+               'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══ VANISHING INTERFACE ═══ */
+body.is-scrolling { cursor: none; }
+body.is-scrolling .settings { opacity: 0; pointer-events: none; }
+body.is-scrolling .eyeline::after { opacity: 0; }
+
+/* ═══ VIEWPORT ═══ */
+.viewport {
+  position: fixed;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 68vw;
+  height: 100vh;
+  overflow: hidden;
+  contain: layout style paint;
+  -webkit-mask-image: linear-gradient(to bottom,
+    transparent 0%, #000 9%, #000 68%, transparent 100%);
+  mask-image: linear-gradient(to bottom,
+    transparent 0%, #000 9%, #000 68%, transparent 100%);
+}
+
+.content {
+  position: absolute;
+  top: 0; left: 0; width: 100%;
+  padding-top: var(--eyeline);
+  padding-bottom: calc(100vh - var(--eyeline));
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+}
+
+.line {
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  padding: 0.15em 0;
+  color: rgba(255,255,255,0.95);
+}
+
+.line.emphasis {
+  font-weight: 600;
+  padding-top: 0.5em;
+}
+
+/* ═══ EYELINE MARKER ═══ */
+.eyeline {
+  position: fixed;
+  top: var(--eyeline);
+  left: 50%; transform: translateX(-50%);
+  width: 64vw; height: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+.eyeline::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg,
+    transparent, rgba(255,70,70,0.35) 15%, rgba(255,70,70,0.35) 85%, transparent);
+}
+.eyeline::after {
+  content: '▸';
+  position: absolute;
+  top: -0.55em; left: -1.4em;
+  font-size: 0.75rem;
+  color: rgba(255,70,70,0.5);
+  transition: opacity 0.4s var(--ease-out);
+}
+
+/* ═══ SETTINGS PANEL ═══ */
+.settings {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  padding: 20px 32px 24px;
+  background: rgba(14,14,14,0.88);
+  z-index: 100;
+  transition: transform 0.55s var(--spring), opacity 0.35s var(--ease-out);
+  transform: translateY(0);
+}
+.settings.collapsed {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* Progress bar */
+.progress-track {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.04);
+}
+.progress-fill {
+  height: 100%;
+  background: rgba(255,255,255,0.22);
+  transform-origin: left;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+/* Status */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-bottom: 14px;
+}
+.status-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.2s;
+}
+.status-dot.speaking { background: #34c759; }
+.status-text {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.25);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  user-select: none;
+}
+
+/* ═══ iOS SPEED SLIDER ═══ */
+.speed-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 380px;
+  margin: 0 auto 16px;
+}
+.speed-icon {
+  font-size: 0.75rem;
+  opacity: 0.35;
+  user-select: none;
+  flex-shrink: 0;
+}
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.13);
+  border-radius: 1.5px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  cursor: grab;
+  box-shadow: 0 0.5px 4px rgba(0,0,0,0.35);
+  transition: transform 0.12s ease;
+}
+.slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.12);
+}
+.slider::-moz-range-thumb {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  cursor: grab;
+  box-shadow: 0 0.5px 4px rgba(0,0,0,0.35);
+}
+.slider::-moz-range-track {
+  height: 3px;
+  background: rgba(255,255,255,0.13);
+  border-radius: 1.5px;
+  border: none;
+}
+.speed-value {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  min-width: 34px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* ═══ BUTTONS ═══ */
+.btn-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 7px 13px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  letter-spacing: 0.02em;
+  user-select: none;
+  white-space: nowrap;
+}
+.btn:hover { color: #fff; background: rgba(255,255,255,0.07); }
+.btn.active { color: #fff; background: rgba(255,255,255,0.13); }
+.btn:disabled { opacity: 0.25; pointer-events: none; }
+.btn-sep {
+  width: 1px; height: 16px;
+  background: rgba(255,255,255,0.07);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* ═══ EDITOR OVERLAY ═══ */
+.editor {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  background: #000;
+  transition: opacity 0.35s var(--ease-out);
+}
+.editor.hidden {
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+.editor-inner {
+  width: 90vw;
+  max-width: 620px;
+}
+.editor-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.editor-sub {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 22px;
+  font-weight: 400;
+}
+.script-area {
+  width: 100%;
+  height: 300px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 11px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  padding: 18px 20px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+.script-area:focus { border-color: rgba(255,255,255,0.15); }
+.script-area::placeholder { color: rgba(255,255,255,0.15); }
+.editor-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+.editor-btns .btn {
+  flex: 1;
+  padding: 11px;
+  font-size: 0.82rem;
+}
+.btn-primary { background: rgba(255,255,255,0.1) !important; color: #fff !important; }
+.editor-hint {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.18);
+  margin-top: 18px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+}
+
+/* ═══ PIP PLACEHOLDER ═══ */
+.pip-placeholder {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 50;
+}
+.pip-placeholder.visible { display: flex; }
+.pip-placeholder span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.03em;
+}
+.pip-placeholder .pip-icon {
+  font-size: 2rem;
+  opacity: 0.15;
+}
+</style>
+</head>
+<body>
+  <a href="../../index.html" id="back-to-hub" style="position:fixed; top:12px; left:12px; z-index:99999; background:rgba(15,23,42,0.88); color:#38bdf8; padding:8px 14px; border-radius:9999px; text-decoration:none; font-family:system-ui,-apple-system,sans-serif; font-size:13px; font-weight:600; border:1px solid rgba(56,189,248,0.3); backdrop-filter:blur(8px); display:flex; align-items:center; gap:6px; box-shadow:0 4px 15px rgba(0,0,0,0.4);">&larr; Portfolio</a>
+
+<!-- Teleprompter viewport -->
+<div class="viewport" id="viewport">
+  <div class="content" id="content"></div>
+</div>
+
+<!-- Eyeline marker -->
+<div class="eyeline" id="eyeline"></div>
+
+<!-- PiP placeholder -->
+<div class="pip-placeholder" id="pipPlaceholder">
+  <span class="pip-icon">⬜</span>
+  <span>Teleprompter is in Picture-in-Picture</span>
+  <span style="font-size:0.65rem;opacity:0.6">Controls remain available below</span>
+</div>
+
+<!-- Settings panel -->
+<div class="settings" id="settings">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="status-bar">
+    <div class="status-dot" id="statusDot"></div>
+    <span class="status-text" id="statusText">Ready</span>
+  </div>
+  <div class="speed-row">
+    <span class="speed-icon">◼︎</span>
+    <input type="range" class="slider" id="speedSlider" min="0.3" max="8" step="0.1" value="2">
+    <span class="speed-icon">◼︎◼︎</span>
+    <span class="speed-value" id="speedValue">2.0×</span>
+  </div>
+  <div class="btn-row">
+    <button class="btn" id="btnPlay">▶ Start</button>
+    <button class="btn" id="btnReset">↺ Reset</button>
+    <div class="btn-sep"></div>
+    <button class="btn" id="btnVoice">🎤 Voice</button>
+    <button class="btn" id="btnPip">⬜ PiP</button>
+    <button class="btn" id="btnMirror">⇆ Mirror</button>
+    <div class="btn-sep"></div>
+    <button class="btn" id="btnFontDown">A−</button>
+    <button class="btn" id="btnFontUp">A+</button>
+    <button class="btn" id="btnEdit">✎ Edit</button>
+  </div>
+</div>
+
+<!-- Editor overlay -->
+<div class="editor" id="editor">
+  <div class="editor-inner">
+    <h1 class="editor-title">Teleprompter</h1>
+    <p class="editor-sub">Paste your script below</p>
+    <textarea class="script-area" id="scriptInput"
+      placeholder="Enter or paste your script here…"></textarea>
+    <div class="editor-btns">
+      <button class="btn btn-primary" id="btnLoad">Load Script</button>
+      <button class="btn" id="btnDemo">Demo</button>
+    </div>
+    <p class="editor-hint">
+      Space = Play / Pause &nbsp;·&nbsp; ↑↓ = Speed &nbsp;·&nbsp; Esc = Reset
+      &nbsp;·&nbsp; F = Fullscreen &nbsp;·&nbsp; V = Voice &nbsp;·&nbsp; M = Mirror
+      &nbsp;·&nbsp; +/− = Font size
+    </p>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════
+   CONSTANTS
+   ═══════════════════════════════════════════════════ */
+const LERP         = 0.055;   // Speed interpolation factor
+const V_DEBOUNCE   = 200;     // Voice result debounce (ms)
+const SILENCE_MS   = 1400;    // Silence → pause threshold
+const AUTOHIDE_MS  = 2800;    // Mouse idle → vanish
+const DT_CAP       = 48;      // Max frame delta (ms) to avoid jumps
+const MIN_SPD      = 0.3;
+const MAX_SPD      = 8;
+const MIN_FONT     = 1.2;
+const MAX_FONT     = 5;
+const FONT_STEP    = 0.2;
+
+/* ═══════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════ */
+const S = Object.freeze({ SETUP: 0, IDLE: 1, SCROLL: 2, PAUSE: 3 });
+let state        = S.SETUP;
+let scrollOff    = 0;         // Current Y offset (negative = scrolled up)
+let scrollSpeed  = 2;         // User-set speed (px/frame @60fps)
+let curSpeed     = 0;         // Interpolated current speed
+let tgtSpeed     = 0;         // Target speed for this frame
+let fontSize     = 2.4;
+let voiceOn      = false;
+let speaking     = false;
+let mirrorOn     = false;
+let inPiP        = false;
+let lastFrame    = 0;
+let rafId        = null;
+let hideTimer    = null;
+let silenceTimer = null;
+let lastVoiceT   = 0;
+let recognition  = null;
+let pipWin       = null;
+
+/* ═══════════════════════════════════════════════════
+   DOM REFS (cached once)
+   ═══════════════════════════════════════════════════ */
+const $ = id => document.getElementById(id);
+const viewport      = $('viewport');
+const content       = $('content');
+const eyeline       = $('eyeline');
+const settings      = $('settings');
+const editor        = $('editor');
+const scriptInput   = $('scriptInput');
+const btnPlay       = $('btnPlay');
+const btnReset      = $('btnReset');
+const btnVoice      = $('btnVoice');
+const btnPip        = $('btnPip');
+const btnMirror     = $('btnMirror');
+const btnFontUp     = $('btnFontUp');
+const btnFontDown   = $('btnFontDown');
+const btnEdit       = $('btnEdit');
+const btnLoad       = $('btnLoad');
+const btnDemo       = $('btnDemo');
+const speedSlider   = $('speedSlider');
+const speedValue    = $('speedValue');
+const statusDot     = $('statusDot');
+const statusText    = $('statusText');
+const progressFill  = $('progressFill');
+const pipPlaceholder = $('pipPlaceholder');
+
+/* ═══════════════════════════════════════════════════
+   DEMO SCRIPT
+   ═══════════════════════════════════════════════════ */
+const DEMO = `# Welcome to Teleprompter
+
+This is a professional teleprompter interface designed for content creators, presenters, and speakers.
+
+The text scrolls smoothly upward, aligned with the reading guide positioned just beneath your camera. Keep your eyes on the marker line to maintain natural eye contact with your audience.
+
+# Getting Started
+
+Paste your script into the editor, adjust the scroll speed to match your natural reading pace, then press Start or hit the spacebar.
+
+The speed slider at the bottom gives you precise control. Use the up and down arrow keys for quick adjustments while presenting.
+
+# Voice Synchronization
+
+Enable Voice mode to let the teleprompter follow your speaking pace. The scroll automatically adjusts based on your voice activity — pausing when you pause and resuming when you speak.
+
+This is especially useful for unrehearsed content or when you need to ad-lib and deviate from the script temporarily.
+
+# Picture-in-Picture
+
+Use the PiP button to float the teleprompter above all other windows. This is perfect for video calls, live streams, or recording sessions where you need your script visible while using other applications.
+
+The teleprompter stays always-on-top so you never lose sight of your next line.
+
+# Mirror Mode
+
+For traditional beam-splitter teleprompter setups, toggle Mirror mode to horizontally flip the text. The mirrored text reflects correctly on the glass in front of your camera.
+
+# Tips for Natural Delivery
+
+Speak naturally and conversationally. The teleprompter is a guide, not a script to be read word for word. Feel free to improvise and make the content your own.
+
+Practice with the speed control to find your comfortable pace. Most people read at about one hundred and fifty words per minute on camera, which is slightly slower than natural speech.
+
+Remember to breathe, smile, and maintain energy in your delivery. Your audience connects with your presence, not just your words.
+
+Vary your pacing. Slow down for important points. Speed up through transitions. Let the teleprompter follow you, not the other way around.
+
+# Keyboard Shortcuts
+
+Space bar toggles play and pause. Arrow keys adjust speed. Escape resets to the beginning. Press F for fullscreen, V for voice, M for mirror, and plus or minus to change font size.
+
+# Final Notes
+
+This teleprompter is optimized for performance. It uses hardware-accelerated transforms for scrolling, minimal DOM operations, and efficient state management to run smoothly even on older hardware.
+
+The interface automatically hides during scrolling to give you a clean, distraction-free reading experience. Simply move your mouse to reveal the controls when needed.
+
+Good luck with your presentation.`;
+
+/* ═══════════════════════════════════════════════════
+   STATE MACHINE
+   ═══════════════════════════════════════════════════ */
+function setState(next) {
+  if (state === next) return;
+  state = next;
+
+  switch (state) {
+    case S.SETUP:
+      editor.classList.remove('hidden');
+      pipPlaceholder.classList.remove('visible');
+      stopLoop();
+      document.body.classList.remove('is-scrolling');
+      clearHide();
+      break;
+
+    case S.IDLE:
+      editor.classList.add('hidden');
+      stopLoop();
+      document.body.classList.remove('is-scrolling');
+      clearHide();
+      scrollOff = 0;
+      curSpeed = 0;
+      applyTransform();
+      break;
+
+    case S.SCROLL:
+      editor.classList.add('hidden');
+      document.body.classList.add('is-scrolling');
+      scheduleHide();
+      startLoop();
+      break;
+
+    case S.PAUSE:
+      document.body.classList.remove('is-scrolling');
+      clearHide();
+      startLoop();          // Keep loop alive for deceleration
+      break;
+  }
+  updateUI();
+}
+
+/* ═══════════════════════════════════════════════════
+   SCROLL ENGINE  (rAF + translate3d)
+   ═══════════════════════════════════════════════════ */
+function animWin() {
+  return (inPiP && pipWin && !pipWin.closed) ? pipWin : window;
+}
+
+function startLoop() {
+  if (rafId !== null) return;
+  lastFrame = performance.now();
+  rafId = animWin().requestAnimationFrame(frame);
+}
+
+function stopLoop() {
+  if (rafId !== null) {
+    animWin().cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+}
+
+function frame(ts) {
+  const dt = Math.min(ts - lastFrame, DT_CAP);
+  lastFrame = ts;
+  const norm = dt / 16.667;           // Normalise to 60 fps
+
+  // Target speed
+  tgtSpeed = state === S.SCROLL
+    ? (voiceOn ? (speaking ? scrollSpeed : 0) : scrollSpeed)
+    : 0;
+
+  // Smooth interpolation (lerp)
+  curSpeed += (tgtSpeed - curSpeed) * LERP;
+
+  // Dead-zone: stop micro-drift
+  if (Math.abs(curSpeed) < 0.008) {
+    curSpeed = 0;
+    if (state === S.PAUSE) { stopLoop(); return; }
+  }
+
+  // Advance position
+  scrollOff -= curSpeed * norm;
+
+  // Clamp
+  const maxScroll = Math.min(0, -(content.scrollHeight - viewport.clientHeight));
+  scrollOff = Math.max(maxScroll, Math.min(0, scrollOff));
+
+  // Paint (single composited property)
+  applyTransform();
+
+  // Progress
+  if (maxScroll < 0) {
+    progressFill.style.transform = 'scaleX(' + (scrollOff / maxScroll) + ')';
+  }
+
+  // End-of-script
+  if (scrollOff <= maxScroll + 1) {
+    setState(S.PAUSE);
+    statusText.textContent = 'End of script';
+    return;
+  }
+
+  rafId = animWin().requestAnimationFrame(frame);
+}
+
+function applyTransform() {
+  const mirror = mirrorOn ? ' scaleX(-1)' : '';
+  content.style.transform = 'translate3d(0,' + scrollOff + 'px,0)' + mirror;
+}
+
+/* ═══════════════════════════════════════════════════
+   VOICE ENGINE  (Web Speech API)
+   ═══════════════════════════════════════════════════ */
+function initVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return;
+  recognition = new SR();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 1;
+  recognition.lang = navigator.language || '';
+
+  recognition.onresult = () => {
+    const now = performance.now();
+    if (now - lastVoiceT < V_DEBOUNCE) return;      // Aggressive debounce
+    lastVoiceT = now;
+
+    speaking = true;
+    statusDot.classList.add('speaking');
+
+    clearTimeout(silenceTimer);
+    silenceTimer = setTimeout(() => {
+      speaking = false;
+      statusDot.classList.remove('speaking');
+    }, SILENCE_MS);
+  };
+
+  recognition.onerror = e => {
+    if (e.error === 'not-allowed') {
+      statusText.textContent = 'Mic access denied';
+      voiceOn = false;
+      btnVoice.classList.remove('active');
+      return;
+    }
+    if (e.error === 'no-speech' || e.error === 'aborted') return;
+    // Auto-restart on transient errors
+    if (voiceOn && state === S.SCROLL) {
+      setTimeout(() => { try { recognition.start(); } catch(_){} }, 800);
+    }
+  };
+
+  recognition.onend = () => {
+    if (voiceOn && state === S.SCROLL) {
+      try { recognition.start(); } catch(_){}
+    }
+  };
+}
+
+function toggleVoice() {
+  voiceOn = !voiceOn;
+  if (voiceOn) {
+    if (!recognition) initVoice();
+    if (!recognition) { voiceOn = false; return; }
+    if (state === S.SCROLL) try { recognition.start(); } catch(_){}
+    btnVoice.classList.add('active');
+    statusText.textContent = 'Voice sync on';
+  } else {
+    speaking = false;
+    if (recognition) try { recognition.stop(); } catch(_){}
+    btnVoice.classList.remove('active');
+    statusDot.classList.remove('speaking');
+    statusText.textContent = 'Voice sync off';
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   PICTURE-IN-PICTURE  (Document PiP API)
+   ═══════════════════════════════════════════════════ */
+async function togglePiP() {
+  if (inPiP) {
+    if (pipWin && !pipWin.closed) pipWin.close();
+    return;
+  }
+  try {
+    pipWin = await documentPictureInPicture.requestWindow({
+      width:  Math.min(900, Math.round(screen.width * 0.55)),
+      height: Math.min(420, Math.round(screen.height * 0.32)),
+    });
+
+    // Clone styles into PiP document
+    const style = pipWin.document.createElement('style');
+    style.textContent = document.querySelector('style').textContent;
+    pipWin.document.head.appendChild(style);
+    pipWin.document.body.style.cssText =
+      'margin:0;padding:0;background:#000;overflow:hidden;';
+
+    // Stop rAF in main window before DOM move
+    const wasRunning = rafId !== null;
+    stopLoop();
+
+    // Move teleprompter elements to PiP window
+    pipWin.document.body.appendChild(viewport);
+    pipWin.document.body.appendChild(eyeline);
+
+    inPiP = true;
+    btnPip.classList.add('active');
+    pipPlaceholder.classList.add('visible');
+
+    // Restart rAF in PiP context
+    if (wasRunning) startLoop();
+
+    // Handle PiP close
+    pipWin.addEventListener('pagehide', () => {
+      const running = rafId !== null;
+      stopLoop();
+      // Move elements back
+      document.body.prepend(eyeline);
+      document.body.prepend(viewport);
+      inPiP = false;
+      pipWin = null;
+      btnPip.classList.remove('active');
+      pipPlaceholder.classList.remove('visible');
+      if (running) startLoop();
+    });
+
+  } catch (e) {
+    console.warn('PiP unavailable:', e);
+    statusText.textContent = 'PiP not supported';
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   UI HELPERS
+   ═══════════════════════════════════════════════════ */
+function togglePlay() {
+  if (state === S.IDLE || state === S.PAUSE) {
+    setState(S.SCROLL);
+    if (voiceOn && recognition) try { recognition.start(); } catch(_){}
+  } else if (state === S.SCROLL) {
+    setState(S.PAUSE);
+    if (voiceOn && recognition) try { recognition.stop(); } catch(_){}
+  }
+}
+
+function reset() {
+  if (voiceOn && recognition) try { recognition.stop(); } catch(_){}
+  setState(S.IDLE);
+}
+
+function loadScript(text) {
+  const paras = text.split(/\n\s*\n/).filter(p => p.trim());
+  const frag = document.createDocumentFragment();
+
+  for (let i = 0; i < paras.length; i++) {
+    const raw = paras[i].trim();
+    const isH = raw.startsWith('#');
+    const div = document.createElement('div');
+    div.className = isH ? 'line emphasis' : 'line';
+    div.textContent = isH ? raw.replace(/^#+\s*/, '') : raw;
+    frag.appendChild(div);
+  }
+
+  content.textContent = '';         // Clear (no innerHTML parse cost)
+  content.appendChild(frag);        // Single reflow
+  setState(S.IDLE);
+}
+
+function updateUI() {
+  switch (state) {
+    case S.SCROLL:
+      btnPlay.textContent = '⏸ Pause';
+      statusText.textContent = voiceOn ? 'Voice sync active' : 'Scrolling';
+      break;
+    case S.PAUSE:
+      btnPlay.textContent = '▶ Resume';
+      if (statusText.textContent !== 'End of script')
+        statusText.textContent = 'Paused';
+      break;
+    case S.IDLE:
+      btnPlay.textContent = '▶ Start';
+      statusText.textContent = 'Ready';
+      progressFill.style.transform = 'scaleX(0)';
+      break;
+  }
+}
+
+function setSpeed(v) {
+  scrollSpeed = Math.max(MIN_SPD, Math.min(MAX_SPD, +v || 2));
+  speedSlider.value = scrollSpeed;
+  speedValue.textContent = scrollSpeed.toFixed(1) + '×';
+}
+
+function setFontSize(delta) {
+  fontSize = Math.max(MIN_FONT, Math.min(MAX_FONT, fontSize + delta));
+  document.documentElement.style.setProperty('--font-size', fontSize + 'rem');
+}
+
+function toggleMirror() {
+  mirrorOn = !mirrorOn;
+  btnMirror.classList.toggle('active', mirrorOn);
+  applyTransform();
+}
+
+function toggleFullscreen() {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else document.documentElement.requestFullscreen().catch(()=>{});
+}
+
+/* ═══════════════════════════════════════════════════
+   AUTO-HIDE (vanishing interface)
+   ═══════════════════════════════════════════════════ */
+function scheduleHide() {
+  clearHide();
+  hideTimer = setTimeout(() => {
+    if (state === S.SCROLL) document.body.classList.add('is-scrolling');
+  }, AUTOHIDE_MS);
+}
+
+function clearHide() {
+  clearTimeout(hideTimer);
+  hideTimer = null;
+}
+
+/* ═══════════════════════════════════════════════════
+   EVENT WIRING
+   ═══════════════════════════════════════════════════ */
+function init() {
+  // Feature detection
+  const hasSpeech = 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
+  const hasPiP    = 'documentPictureInPicture' in window;
+  if (!hasSpeech) btnVoice.disabled = true;
+  if (!hasPiP)    btnPip.disabled = true;
+
+  // Buttons
+  btnPlay.addEventListener('click', togglePlay);
+  btnReset.addEventListener('click', reset);
+  btnVoice.addEventListener('click', toggleVoice);
+  btnPip.addEventListener('click', togglePiP);
+  btnMirror.addEventListener('click', toggleMirror);
+  btnFontUp.addEventListener('click', () => setFontSize(FONT_STEP));
+  btnFontDown.addEventListener('click', () => setFontSize(-FONT_STEP));
+  btnEdit.addEventListener('click', () => {
+    if (voiceOn && recognition) try { recognition.stop(); } catch(_){}
+    stopLoop();
+    state = S.SETUP;                 // Direct set to avoid transition side-effects
+    editor.classList.remove('hidden');
+    document.body.classList.remove('is-scrolling');
+  });
+  btnLoad.addEventListener('click', () => {
+    const txt = scriptInput.value.trim();
+    if (txt) loadScript(txt);
+  });
+  btnDemo.addEventListener('click', () => {
+    scriptInput.value = DEMO;
+    loadScript(DEMO);
+  });
+
+  // Speed slider
+  speedSlider.addEventListener('input', () => setSpeed(speedSlider.value));
+
+  // Viewport tap → toggle play
+  viewport.addEventListener('click', () => {
+    if (state === S.IDLE || state === S.SCROLL || state === S.PAUSE) togglePlay();
+  });
+
+  // Mouse move → reveal UI
+  let mouseMoveRaf = false;
+  document.addEventListener('mousemove', () => {
+    if (mouseMoveRaf) return;
+    mouseMoveRaf = true;
+    requestAnimationFrame(() => {
+      mouseMoveRaf = false;
+      document.body.classList.remove('is-scrolling');
+      if (state === S.SCROLL) scheduleHide();
+    });
+  });
+
+  // Keep settings visible while interacting
+  settings.addEventListener('mouseenter', clearHide);
+  settings.addEventListener('mouseleave', () => {
+    if (state === S.SCROLL) scheduleHide();
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+
+    switch (e.code) {
+      case 'Space':
+        e.preventDefault(); togglePlay(); break;
+      case 'Escape':
+        e.preventDefault();
+        if (state !== S.SETUP) reset();
+        break;
+      case 'ArrowUp': case 'ArrowRight':
+        e.preventDefault(); setSpeed(scrollSpeed + 0.3); break;
+      case 'ArrowDown': case 'ArrowLeft':
+        e.preventDefault(); setSpeed(scrollSpeed - 0.3); break;
+      case 'KeyF':
+        e.preventDefault(); toggleFullscreen(); break;
+      case 'KeyM':
+        e.preventDefault(); toggleMirror(); break;
+      case 'KeyV':
+        e.preventDefault();
+        if (!btnVoice.disabled) toggleVoice();
+        break;
+      case 'KeyP':
+        e.preventDefault();
+        if (!btnPip.disabled) togglePiP();
+        break;
+      case 'KeyE':
+        e.preventDefault(); btnEdit.click(); break;
+      case 'Equal': case 'NumpadAdd':
+        e.preventDefault(); setFontSize(FONT_STEP); break;
+      case 'Minus': case 'NumpadSubtract':
+        e.preventDefault(); setFontSize(-FONT_STEP); break;
+    }
+  });
+
+  // Initial speed display
+  setSpeed(scrollSpeed);
+}
+
+init();
+</script>
+</body>
+</html>
+

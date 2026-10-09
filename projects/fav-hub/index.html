@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fav Bookmarks Hub | Bibliothèque Intelligente de Ressources</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #111827;
+      --border: #1f293d;
+      --accent: #f59e0b;
+      --accent-glow: rgba(245, 158, 11, 0.25);
+      --cyan: #38bdf8;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 65px 20px 60px;
+      background-image: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.1) 0%, transparent 60%);
+    }
+    #back-to-hub {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 99999;
+      background: rgba(17, 24, 39, 0.85);
+      color: #38bdf8;
+      padding: 9px 16px;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      transition: all 0.2s ease;
+    }
+    #back-to-hub:hover {
+      background: rgba(56, 189, 248, 0.2);
+      transform: translateX(-2px);
+    }
+    .container {
+      max-width: 1000px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fbbf24;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .search-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    #favSearch {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 16px;
+      color: #fff;
+    }
+    .favs-count {
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--muted);
+    }
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .link-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .link-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(245, 158, 11, 0.4);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+    }
+    .link-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .link-folder {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .link-url {
+      font-size: 11px;
+      color: var(--cyan);
+      word-break: break-all;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../index.html" id="back-to-hub">&larr; Portfolio</a>
+
+  <div class="container">
+    <header>
+      <div class="badge">⭐ Projet Fav & GestFav • Organisation Web</div>
+      <h1>Fav Bookmarks Hub</h1>
+      <p class="subtitle">Catalogue de ressources web collectées et ordonnées. Synchronisé avec l'extension Chrome GestFav et l'assistant IA.</p>
+    </header>
+
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="favSearch" placeholder="Rechercher par titre, URL ou catégorie..." oninput="filterFavs(this.value)">
+      <span class="favs-count" id="countDisplay">Chargement...</span>
+    </div>
+
+    <div class="links-grid" id="linksGrid"></div>
+  </div>
+
+  <script>
+    let allFavs = [];
+
+    async function loadFavs() {
+      try {
+        const res = await fetch('Site.json');
+        if (!res.ok) throw new Error("Fetch failed");
+        allFavs = await res.json();
+      } catch (err) {
+        // Fallback curated bookmarks
+        allFavs = [
+          { title: "Google Labs", url: "https://labs.google/", folder_path: "Tech > IA" },
+          { title: "Hugging Face", url: "https://huggingface.co/", folder_path: "Dev > IA" },
+          { title: "GitHub Docs", url: "https://docs.github.com/", folder_path: "Dev > Outils" },
+          { title: "MDN Web Docs", url: "https://developer.mozilla.org/", folder_path: "Dev > Référence" },
+          { title: "Haloule", url: "https://www.haloule.com/", folder_path: "Actus > Tech" },
+          { title: "iClarified", url: "https://www.iclarified.com/", folder_path: "Actus > Apple" }
+        ];
+      }
+      renderFavs(allFavs);
+    }
+
+    function renderFavs(items) {
+      document.getElementById('countDisplay').innerText = `${items.length} ressource(s)`;
+      const container = document.getElementById('linksGrid');
+      if (items.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:var(--muted); padding:40px;">Aucun favori trouvé.</div>';
+        return;
+      }
+      container.innerHTML = items.map(f => {
+        const cleanFolder = (f.folder_path || '').replace('Barre de favoris > ', '');
+        return `
+          <a href="${f.url}" target="_blank" rel="noopener noreferrer" class="link-card">
+            <div>
+              <div class="link-title">🔗 ${f.title}</div>
+              <div class="link-folder">📁 ${cleanFolder || 'Favoris'}</div>
+            </div>
+            <div class="link-url">${f.url}</div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    function filterFavs(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) {
+        renderFavs(allFavs);
+        return;
+      }
+      const filtered = allFavs.filter(f => 
+        (f.title && f.title.toLowerCase().includes(q)) ||
+        (f.url && f.url.toLowerCase().includes(q)) ||
+        (f.folder_path && f.folder_path.toLowerCase().includes(q))
+      );
+      renderFavs(filtered);
+    }
+
+    window.addEventListener('DOMContentLoaded', loadFavs);
+  </script>
+</body>
+</html>

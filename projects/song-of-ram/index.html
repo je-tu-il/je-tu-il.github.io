@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Song of my RAM | Sonification & Visualiseur de Mémoire Vive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090e;
+      --card: #0f131c;
+      --border: #1e2638;
+      --accent: #a855f7;
+      --accent-glow: rgba(168, 85, 247, 0.3);
+      --cyan: #38bdf8;
+      --text: #f3f4f6;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 65px 20px 40px;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 10% 80%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+    }
+    #back-to-hub {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 99999;
+      background: rgba(17, 24, 39, 0.85);
+      color: #38bdf8;
+      padding: 9px 16px;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      transition: all 0.2s ease;
+    }
+    #back-to-hub:hover {
+      background: rgba(56, 189, 248, 0.2);
+      transform: translateX(-2px);
+    }
+    .container {
+      max-width: 960px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: var(--accent);
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    p.subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+    }
+    @media (max-width: 820px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+    .viz-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .viz-canvas-box {
+      width: 100%;
+      height: 320px;
+      background: #04060a;
+      border: 1px solid #1a2233;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    #memoryCanvas {
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+      display: block;
+    }
+    .memory-overlay {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--cyan);
+      pointer-events: none;
+      background: rgba(0,0,0,0.6);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .hex-stream {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #94a3b8;
+      background: #04060a;
+      border: 1px solid #1a2233;
+      padding: 10px 14px;
+      border-radius: 8px;
+      height: 60px;
+      overflow: hidden;
+      white-space: nowrap;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .hex-stream span.highlight {
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .play-bar {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-play {
+      flex: 1;
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px var(--accent-glow);
+      transition: all 0.2s;
+    }
+    .btn-play:hover { transform: translateY(-2px); }
+    .btn-play.active { background: #ef4444; box-shadow: 0 10px 25px rgba(239,68,68,0.3); }
+
+    /* Controls Panel */
+    .controls-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .control-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .param-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .param-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .param-label span:last-child {
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    input[type=range] {
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .bank-select {
+      background: #1a2233;
+      border: 1px solid #2d3b55;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      outline: none;
+    }
+    .info-box {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../index.html" id="back-to-hub">&larr; Portfolio</a>
+
+  <div class="container">
+    <header>
+      <div class="badge">🎶 Sonification de Mémoire • Python & Web Audio</div>
+      <h1>Song of my RAM</h1>
+      <p class="subtitle">Expérience cybernétique convertissant les octets de mémoire vive (RAM) en oscillateurs audio et en textures graphiques bitmap.</p>
+    </header>
+
+    <div class="main-grid">
+      <!-- Visualizer & Stream -->
+      <div class="viz-card">
+        <div class="viz-canvas-box">
+          <canvas id="memoryCanvas"></canvas>
+          <div class="memory-overlay" id="memAddr">PAGE : 0x7FFF0040 • 64 KB CHUNK</div>
+        </div>
+
+        <div class="hex-stream" id="hexStream">
+          00 00 FF 1A 8C 4D 2E 90 AB CC 10 02 88 FA 33 00 12 77 99 44 EE FF 00 11 A2 3C D4 E5 ...
+        </div>
+
+        <div class="play-bar">
+          <button class="btn-play" id="playBtn" onclick="toggleAudio()">
+            <span id="playIcon">▶</span>
+            <span id="playText">Démarrer la Sonification Audio</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Parameters -->
+      <div class="controls-card">
+        <div class="control-title">🎛️ Synthétiseur de RAM</div>
+
+        <div class="param-row">
+          <div class="param-label">
+            <span>Segment Mémoire :</span>
+          </div>
+          <select class="bank-select" id="bankSelect" onchange="changeBank()">
+            <option value="kernel">Windows Kernel / Pages Non-Paginées</option>
+            <option value="heap">Heap Utilisateur (Allocations dynamiques)</option>
+            <option value="stack">Stack / Pile d'exécution binaire</option>
+            <option value="entropy">Entropie Cryptographique Élevée</option>
+          </select>
+        </div>
+
+        <div class="param-row">
+          <div class="param-label">
+            <span>Vitesse de scan mémoire :</span>
+            <span id="speedVal">45 Hz</span>
+          </div>
+          <input type="range" id="scanSpeed" min="10" max="120" value="45" oninput="updateSpeed(this.value)">
+        </div>
+
+        <div class="param-row">
+          <div class="param-label">
+            <span>Fréquence fondamentale (Base Pitch) :</span>
+            <span id="pitchVal">180 Hz</span>
+          </div>
+          <input type="range" id="basePitch" min="60" max="440" value="180" oninput="updatePitch(this.value)">
+        </div>
+
+        <div class="param-row">
+          <div class="param-label">
+            <span>Résonance Filtre (Q Factor) :</span>
+            <span id="resVal">4.2</span>
+          </div>
+          <input type="range" id="filterRes" min="1" max="15" value="4" oninput="updateRes(this.value)">
+        </div>
+
+        <div class="info-box">
+          <strong>Principe :</strong> En C++/Python (Win32 API), le projet lit <code>PROCESS_VM_READ</code> et projette les valeurs de 0 à 255 directement dans les oscillateurs audio et le canal chromatique RGBA.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('memoryCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let isPlaying = false;
+    let audioCtx = null;
+    let osc1 = null;
+    let osc2 = null;
+    let filter = null;
+    let gainNode = null;
+
+    let scanSpeed = 45;
+    let baseFreq = 180;
+    let currentBank = 'kernel';
+
+    // Canvas memory buffer: 64x64 grid
+    const memWidth = 64;
+    const memHeight = 48;
+    const memoryBuffer = new Uint8Array(memWidth * memHeight);
+
+    function initMemory() {
+      for (let i = 0; i < memoryBuffer.length; i++) {
+        if (currentBank === 'kernel') {
+          // repetitive structures with periodic pointers
+          memoryBuffer[i] = (i % 8 === 0) ? 255 : (i % 3 === 0 ? 0 : Math.floor(Math.sin(i * 0.1) * 127 + 128));
+        } else if (currentBank === 'heap') {
+          memoryBuffer[i] = (Math.random() > 0.6) ? Math.floor(Math.random() * 255) : 0;
+        } else if (currentBank === 'stack') {
+          memoryBuffer[i] = Math.floor((i / memoryBuffer.length) * 200) ^ (i % 32);
+        } else {
+          // Cryptographic random entropy
+          memoryBuffer[i] = Math.floor(Math.random() * 256);
+        }
+      }
+    }
+    initMemory();
+
+    function changeBank() {
+      currentBank = document.getElementById('bankSelect').value;
+      initMemory();
+    }
+
+    function updateSpeed(v) {
+      scanSpeed = parseInt(v);
+      document.getElementById('speedVal').innerText = v + " Hz";
+    }
+
+    function updatePitch(v) {
+      baseFreq = parseInt(v);
+      document.getElementById('pitchVal').innerText = v + " Hz";
+      if (osc1) osc1.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+    }
+
+    function updateRes(v) {
+      document.getElementById('resVal').innerText = v;
+      if (filter) filter.Q.setValueAtTime(parseFloat(v), audioCtx.currentTime);
+    }
+
+    function toggleAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Audio Graph: Osc1 + Osc2 -> BiquadFilter -> Gain -> Destination
+        osc1 = audioCtx.createOscillator();
+        osc2 = audioCtx.createOscillator();
+        filter = audioCtx.createBiquadFilter();
+        gainNode = audioCtx.createGain();
+
+        osc1.type = 'sawtooth';
+        osc2.type = 'triangle';
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(800, audioCtx.currentTime);
+        filter.Q.setValueAtTime(4.2, audioCtx.currentTime);
+
+        osc1.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+        osc2.frequency.setValueAtTime(baseFreq * 1.5, audioCtx.currentTime);
+
+        gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        osc1.start();
+        osc2.start();
+      }
+
+      isPlaying = !isPlaying;
+      if (isPlaying) {
+        audioCtx.resume();
+        document.getElementById('playText').innerText = "Couper le Son";
+        document.getElementById('playIcon').innerText = "⏹";
+        document.getElementById('playBtn').classList.add('active');
+      } else {
+        audioCtx.suspend();
+        document.getElementById('playText').innerText = "Démarrer la Sonification Audio";
+        document.getElementById('playIcon').innerText = "▶";
+        document.getElementById('playBtn').classList.remove('active');
+      }
+    }
+
+    let scanCursor = 0;
+    let lastTick = performance.now();
+
+    function draw() {
+      const now = performance.now();
+      const interval = 1000 / scanSpeed;
+
+      if (now - lastTick > interval) {
+        lastTick = now;
+
+        // Shift cursor
+        scanCursor = (scanCursor + 16) % memoryBuffer.length;
+
+        // Modulate memory bank dynamically
+        for (let j = 0; j < 8; j++) {
+          const idx = (scanCursor + j) % memoryBuffer.length;
+          if (currentBank === 'entropy') {
+            memoryBuffer[idx] = Math.floor(Math.random() * 256);
+          } else {
+            memoryBuffer[idx] = (memoryBuffer[idx] + 7) % 256;
+          }
+        }
+
+        // Apply audio modulation based on current byte
+        const activeByte = memoryBuffer[scanCursor];
+        if (isPlaying && audioCtx) {
+          const freqMod = baseFreq + (activeByte / 255) * 350;
+          osc1.frequency.setTargetAtTime(freqMod, audioCtx.currentTime, 0.05);
+          osc2.frequency.setTargetAtTime(freqMod * (activeByte % 2 === 0 ? 1.25 : 1.5), audioCtx.currentTime, 0.05);
+          filter.frequency.setTargetAtTime(400 + activeByte * 8, audioCtx.currentTime, 0.05);
+        }
+
+        // Update Hex Display
+        let hexStr = "";
+        for (let k = 0; k < 20; k++) {
+          const b = memoryBuffer[(scanCursor + k) % memoryBuffer.length];
+          const hex = b.toString(16).toUpperCase().padStart(2, '0');
+          if (k === 0) hexStr += `<span class="highlight">${hex}</span> `;
+          else hexStr += hex + " ";
+        }
+        document.getElementById('hexStream').innerHTML = hexStr + "...";
+        document.getElementById('memAddr').innerText = `PAGE : 0x7FFF${(scanCursor * 4).toString(16).toUpperCase().padStart(4, '0')} • VALEUR: ${activeByte}`;
+      }
+
+      // Render Memory Bitmap Canvas
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+
+      const cellW = canvas.width / memWidth;
+      const cellH = canvas.height / memHeight;
+
+      for (let y = 0; y < memHeight; y++) {
+        for (let x = 0; x < memWidth; x++) {
+          const idx = y * memWidth + x;
+          const val = memoryBuffer[idx];
+
+          if (idx === scanCursor) {
+            ctx.fillStyle = '#ffffff';
+          } else {
+            // Chromatic mapping: Byte -> RGB Heatmap
+            const r = Math.floor(val * 0.8);
+            const g = Math.floor(val * 0.3 + 30);
+            const b = Math.floor(255 - val * 0.7);
+            ctx.fillStyle = `rgb(${r},${g},${b})`;
+          }
+          ctx.fillRect(x * cellW, y * cellH, cellW + 0.5, cellH + 0.5);
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  </script>
+</body>
+</html>

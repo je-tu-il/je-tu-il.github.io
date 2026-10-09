@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Panier — Voxel</title>
+  <meta name="description" content="Votre panier d'achats Voxel - Impressions 3D sur mesure.">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔮</text></svg>">
+  <script type="module" crossorigin src="./assets/main-aBWUhs5b.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-B_Lcq4jG.css">
+</head>
+
+<body>
+  <a href="../../index.html" id="back-to-hub" style="position:fixed; top:12px; left:12px; z-index:99999; background:rgba(15,23,42,0.88); color:#38bdf8; padding:8px 14px; border-radius:9999px; text-decoration:none; font-family:system-ui,-apple-system,sans-serif; font-size:13px; font-weight:600; border:1px solid rgba(56,189,248,0.3); backdrop-filter:blur(8px); display:flex; align-items:center; gap:6px; box-shadow:0 4px 15px rgba(0,0,0,0.4);">&larr; Portfolio</a>
+  <div class="bg-grid"></div>
+  <div id="ambient-glow"></div>
+
+  <nav class="nav scrolled">
+    <a href="./" class="nav-logo"><span class="logo-icon">🔮</span><span class="gradient-text">Voxel</span></a>
+    <div class="nav-links">
+      <a href="./">Accueil</a>
+      <a href="./products.html">Produits</a>
+      <a href="./#how-it-works">Comment ça marche</a>
+      <a href="./#contact">Contact</a>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="./cart.html" class="nav-cart" style="border-color: var(--color-accent-cyan);">
+        🛒 <span>Panier</span><span class="cart-badge">0</span>
+      </a>
+      <div class="nav-mobile-toggle" id="nav-toggle"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <section class="cart-container">
+    <div class="container">
+      <h1 class="reveal" style="margin-bottom: var(--space-8);">Mon <span class="gradient-text">Panier</span></h1>
+      <div id="cart-content">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" style="margin-top: var(--space-16);">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 Voxel. Tous droits réservés.</span>
+        <a href="./products.html">← Continuer mes achats</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>

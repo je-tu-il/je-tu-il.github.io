@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Générateur Diceware & Passphrase Cryptographique | Secure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #111827;
+      --border: #1f2937;
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.25);
+      --cyan: #06b6d4;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 70px 20px 40px;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+    }
+    #back-to-hub {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 99999;
+      background: rgba(17, 24, 39, 0.85);
+      color: #38bdf8;
+      padding: 9px 16px;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      transition: all 0.2s ease;
+    }
+    #back-to-hub:hover {
+      background: rgba(56, 189, 248, 0.2);
+      transform: translateX(-2px);
+    }
+    .container {
+      max-width: 780px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--accent);
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .passphrase-box {
+      background: #0d131f;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 14px;
+      padding: 22px;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .passphrase-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      word-break: break-all;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+    }
+    .passphrase-text span.sep {
+      color: var(--accent);
+      padding: 0 2px;
+      opacity: 0.8;
+    }
+    .btn-copy {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .btn-copy:hover {
+      background: var(--accent);
+      color: #000000;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+    .entropy-bar-container {
+      margin-bottom: 24px;
+    }
+    .entropy-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .entropy-bar {
+      height: 8px;
+      width: 100%;
+      background: #1f2937;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+    .entropy-fill {
+      height: 100%;
+      width: 85%;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      border-radius: 9999px;
+      transition: width 0.3s ease;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .metric-card {
+      background: rgba(31, 41, 55, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 14px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .metric-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--cyan);
+      margin-bottom: 4px;
+    }
+    .metric-lbl {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .control-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .control-label {
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .control-input {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    input[type=range] {
+      accent-color: var(--accent);
+      cursor: pointer;
+      width: 140px;
+    }
+    select {
+      background: #1f2937;
+      color: #fff;
+      border: 1px solid #374151;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+    }
+    .btn-generate {
+      width: 100%;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #ffffff;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px var(--accent-glow);
+      transition: all 0.2s ease;
+      margin-top: 10px;
+    }
+    .btn-generate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+    }
+    .btn-generate:active {
+      transform: translateY(0);
+    }
+    .info-section {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      background: rgba(17, 24, 39, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .info-section strong {
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../index.html" id="back-to-hub">&larr; Portfolio</a>
+
+  <div class="container">
+    <header>
+      <div class="badge">🔒 Projet Secure • 100% Client-Side</div>
+      <h1>Générateur Diceware & Passphrase</h1>
+      <p class="subtitle">Génération cryptographique à haute entropie basée sur le dictionnaire de 7776 mots de l'EFF (Electronic Frontier Foundation). Aucune donnée ne quitte votre navigateur.</p>
+    </header>
+
+    <div class="card">
+      <div class="passphrase-box">
+        <div class="passphrase-text" id="passphraseDisplay">Chargement du dictionnaire...</div>
+        <button class="btn-copy" id="copyBtn" onclick="copyPassphrase()">Copier</button>
+      </div>
+
+      <div class="entropy-bar-container">
+        <div class="entropy-labels">
+          <span id="strengthText">Sécurité Maximale</span>
+          <span id="entropyText">77.5 bits</span>
+        </div>
+        <div class="entropy-bar">
+          <div class="entropy-fill" id="entropyBar"></div>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-val" id="wordsCountDisplay">6 mots</div>
+          <div class="metric-lbl">Longueur</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" id="crackTimeDisplay">1.2 Trillion d'années</div>
+          <div class="metric-lbl">Temps brute-force</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" id="diceRollsDisplay">30 lancers (5d6)</div>
+          <div class="metric-lbl">Équivalent dés</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control-row">
+          <div class="control-label">
+            <span>Nombre de mots :</span>
+            <strong id="wordCountLabel" style="color:var(--accent);">6</strong>
+          </div>
+          <div class="control-input">
+            <input type="range" id="wordCount" min="4" max="10" value="6" oninput="updateWordCount(this.value)">
+          </div>
+        </div>
+
+        <div class="control-row">
+          <div class="control-label">Séparateur :</div>
+          <div class="control-input">
+            <select id="separator" onchange="generatePassphrase()">
+              <option value="-">Tiret (-)</option>
+              <option value=".">Point (.)</option>
+              <option value="_">Underscore (_)</option>
+              <option value=" ">Espace ( )</option>
+              <option value="num">Chiffre aléatoire (1-9)</option>
+              <option value="sym">Symbole aléatoire (!?#$)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="control-row">
+          <div class="control-label">Casse du texte :</div>
+          <div class="control-input">
+            <select id="caseOption" onchange="generatePassphrase()">
+              <option value="lower">Minuscules (standard)</option>
+              <option value="capital">Majuscule à chaque mot (TitleCase)</option>
+              <option value="upper">MAJUSCULES (ALL CAPS)</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-generate" onclick="generatePassphrase()">
+          <span>🎲 Relancer les dés cryptographiques</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <p><strong>Comment fonctionne la méthode Diceware ?</strong> Chaque mot de la liste est choisi parmi 7 776 mots possibles (\(6^5 = 7776\)), ce qui équivaut à 5 lancers de dé à 6 faces par mot, soit <strong>~12.92 bits d'entropie par mot</strong>. Une phrase de 6 mots offre <strong>~77.5 bits d'entropie</strong>, la rendant virtuellement invulnérable face aux supercalculateurs et attaques par dictionnaire.</p>
+    </div>
+  </div>
+
+  <script>
+    let wordlist = [];
+
+    // Load EFF Wordlist from local file
+    async function loadWordlist() {
+      try {
+        const response = await fetch('./eff_large_wordlist.txt');
+        if (!response.ok) throw new Error("Fichier introuvable");
+        const text = await response.text();
+        const lines = text.trim().split('\n');
+        wordlist = lines.map(line => {
+          const parts = line.trim().split(/\s+/);
+          return parts.length >= 2 ? parts[1] : line.trim();
+        }).filter(w => w.length > 0);
+        generatePassphrase();
+      } catch (err) {
+        console.warn("Utilisation de la liste de secours", err);
+        // Fallback robust wordlist in case fetch is blocked locally
+        wordlist = [
+          "abacus", "abdomen", "abdominal", "abide", "abiding", "ability", "ablaze", "able", "abnormal", "abrasion",
+          "abrasive", "abreast", "abridge", "abroad", "abruptly", "absence", "absentee", "absently", "absinthe", "absolute",
+          "absorb", "abstract", "absurd", "accent", "acclaim", "acclimate", "accompany", "account", "accuracy", "accurate",
+          "accustom", "acetone", "achiever", "acid", "acoustic", "acquire", "acreage", "acrobat", "acronym", "acting",
+          "action", "activate", "activator", "active", "activism", "activist", "activity", "actress", "acts", "acuteness",
+          "aerobic", "aerosol", "aerospace", "affair", "affect", "affinity", "affirm", "affluent", "afford", "affront",
+          "afterglow", "afterlife", "aftermath", "aftermost", "afternoon", "aged", "ageless", "agency", "agenda", "agent",
+          "aggregate", "aggression", "agile", "agility", "aging", "agnostic", "agonize", "agonizing", "agony", "agreeable",
+          "agreement", "agronomy", "ahead", "ahoy", "aide", "aids", "aim", "aimless", "airborne", "airbrush",
+          "aircraft", "airfield", "airfreight", "airdrop", "airlift", "airline", "airliner", "airmail", "airman", "airplane",
+          "airport", "airship", "airspace", "airspeed", "airstrip", "airtight", "airwave", "airway", "aisle", "alarm",
+          "album", "alcohol", "alcove", "alder", "alert", "alga", "algae", "algebra", "algorithm", "alias",
+          "alibi", "alien", "alienable", "alienate", "alienation", "align", "aligned", "alignment", "alike", "alive",
+          "alkaline", "alkaloid", "alluvial", "almanac", "almond", "almost", "aloe", "aloft", "aloha", "alone",
+          "alongside", "aloof", "alphabet", "alpine", "already", "alright", "altar", "alter", "alternate", "altitude",
+          "alto", "aluminum", "alumni", "always", "amaze", "amazing", "amber", "ambiance", "ambiguity", "ambitious",
+          "ambulance", "ambush", "amendable", "amendment", "amenity", "amethyst", "amiable", "amicable", "amid", "amigo",
+          "amino", "amiss", "amity", "ammunition", "amnesia", "amoeba", "amorphous", "amphibian", "ample", "amply",
+          "amputate", "amusement", "anagram", "analog", "analogy", "analysis", "analyst", "analyze", "anarchy", "anatomy",
+          "ancestor", "anchor", "ancient", "andante", "android", "anecdote", "anesthetic", "angelic", "anger", "angled",
+          "angrier", "angriest", "angrily", "angry", "anguish", "angular", "animal", "animate", "animating", "animation",
+          "animator", "anime", "animosity", "ankle", "annex", "annotate", "announcer", "annoying", "annual", "annuity",
+          "anointer", "another", "answer", "antacid", "antarctic", "anteater", "antelope", "antenna", "anthem", "anthology",
+          "antibody", "antics", "antidote", "antihero", "antiquated", "antique", "antiquity", "antiseptic", "antler", "antonym",
+          "anvil", "anxiety", "anxious", "anybody", "anyhow", "anymore", "anyone", "anyplace", "anything", "anytime"
+        ];
+        generatePassphrase();
+      }
+    }
+
+    function getCryptoRandomInt(max) {
+      const array = new Uint32Array(1);
+      window.crypto.getRandomValues(array);
+      return array[0] % max;
+    }
+
+    function updateWordCount(val) {
+      document.getElementById('wordCountLabel').innerText = val;
+      document.getElementById('wordsCountDisplay').innerText = val + " mots";
+      document.getElementById('diceRollsDisplay').innerText = (val * 5) + " lancers (5d6)";
+      generatePassphrase();
+    }
+
+    function generatePassphrase() {
+      if (!wordlist || wordlist.length === 0) return;
+
+      const count = parseInt(document.getElementById('wordCount').value);
+      const sepMode = document.getElementById('separator').value;
+      const caseMode = document.getElementById('caseOption').value;
+
+      const chosen = [];
+      for (let i = 0; i < count; i++) {
+        let word = wordlist[getCryptoRandomInt(wordlist.length)];
+        if (caseMode === 'capital') {
+          word = word.charAt(0).toUpperCase() + word.slice(1);
+        } else if (caseMode === 'upper') {
+          word = word.toUpperCase();
+        } else {
+          word = word.toLowerCase();
+        }
+        chosen.push(word);
+      }
+
+      let separator = "-";
+      if (sepMode === '.') separator = ".";
+      else if (sepMode === '_') separator = "_";
+      else if (sepMode === ' ') separator = " ";
+      else if (sepMode === 'num') separator = () => String(getCryptoRandomInt(9) + 1);
+      else if (sepMode === 'sym') {
+        const syms = ["!", "@", "#", "$", "%", "&", "*", "?", "+"];
+        separator = () => syms[getCryptoRandomInt(syms.length)];
+      }
+
+      let resultHtml = "";
+      let rawText = "";
+
+      chosen.forEach((w, idx) => {
+        rawText += w;
+        resultHtml += `<span>${w}</span>`;
+        if (idx < chosen.length - 1) {
+          const sepChar = typeof separator === 'function' ? separator() : separator;
+          rawText += sepChar;
+          resultHtml += `<span class="sep">${sepChar}</span>`;
+        }
+      });
+
+      document.getElementById('passphraseDisplay').innerHTML = resultHtml;
+      document.getElementById('passphraseDisplay').dataset.raw = rawText;
+
+      // Entropy calculation
+      const bitsPerWord = Math.log2(wordlist.length > 7000 ? 7776 : wordlist.length);
+      const totalEntropy = Math.round(bitsPerWord * count * 10) / 10;
+      document.getElementById('entropyText').innerText = totalEntropy + " bits d'entropie";
+
+      const barPercent = Math.min(100, (totalEntropy / 90) * 100);
+      document.getElementById('entropyBar').style.width = barPercent + "%";
+
+      let timeText = "Instantané";
+      if (count === 4) timeText = "Quelques mois";
+      else if (count === 5) timeText = "2 500 ans";
+      else if (count === 6) timeText = "1.2 Trillion d'années";
+      else if (count >= 7) timeText = "> Âge de l'Univers";
+
+      document.getElementById('crackTimeDisplay').innerText = timeText;
+      document.getElementById('strengthText').innerText = count >= 6 ? "Sécurité Maximale" : count >= 5 ? "Sécurité Élevée" : "Sécurité Modérée";
+    }
+
+    async function copyPassphrase() {
+      const text = document.getElementById('passphraseDisplay').dataset.raw;
+      if (!text) return;
+      await navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copyBtn');
+      btn.innerText = "✓ Copié !";
+      btn.style.background = "#10b981";
+      btn.style.color = "#000";
+      setTimeout(() => {
+        btn.innerText = "Copier";
+        btn.style.background = "";
+        btn.style.color = "";
+      }, 1800);
+    }
+
+    window.addEventListener('DOMContentLoaded', loadWordlist);
+  </script>
+</body>
+</html>

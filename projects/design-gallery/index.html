@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Design & Graphisme | Illustrations & Logotypes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #121826;
+      --border: #1f293d;
+      --accent: #f43f5e;
+      --cyan: #38bdf8;
+      --text: #f3f4f6;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 65px 20px 60px;
+      background-image: radial-gradient(circle at 50% 0%, rgba(244, 63, 94, 0.1) 0%, transparent 60%);
+    }
+    #back-to-hub {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 99999;
+      background: rgba(17, 24, 39, 0.85);
+      color: #38bdf8;
+      padding: 9px 16px;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      transition: all 0.2s ease;
+    }
+    #back-to-hub:hover {
+      background: rgba(56, 189, 248, 0.2);
+      transform: translateX(-2px);
+    }
+    .container {
+      max-width: 1100px;
+      width: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      color: #fb7185;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover { color: #fff; border-color: rgba(255,255,255,0.2); }
+    .filter-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .gallery-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .gallery-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(244, 63, 94, 0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .card-img-wrap {
+      width: 100%;
+      height: 240px;
+      background: #080c14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 12px;
+    }
+    .card-img-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+      transition: transform 0.4s ease;
+    }
+    .gallery-card:hover .card-img-wrap img {
+      transform: scale(1.05);
+    }
+    .card-content {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .card-category {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    /* Lightbox Modal */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(16px);
+      z-index: 100000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    #lightbox.open { display: flex; }
+    .lightbox-inner {
+      max-width: 900px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    #lightboxImg {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: 12px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      font-size: 28px;
+      color: #fff;
+      cursor: pointer;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <a href="../../index.html" id="back-to-hub">&larr; Portfolio</a>
+
+  <div class="container">
+    <header>
+      <div class="badge">🎨 Direction Artistique & Graphisme</div>
+      <h1>Portfolio Arts Graphiques & Illustration</h1>
+      <p class="subtitle">Création d'identités visuelles, mascottes vectorielles, illustrations de jeux de cartes et chartes graphiques.</p>
+    </header>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterGallery('all')">Tous les projets</button>
+      <button class="filter-btn" onclick="filterGallery('champibad')">Champibad (Mascotte & Logo)</button>
+      <button class="filter-btn" onclick="filterGallery('danse')">La Danse des Œufs (Cartes)</button>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Item 1: Champibad Mascot -->
+      <div class="gallery-card" data-cat="champibad" onclick="openLightbox('assets/champibad.png', 'Champibad • Mascotte Vectorielle de Badminton')">
+        <div class="card-img-wrap">
+          <img src="assets/champibad.png" alt="Champibad Mascotte">
+        </div>
+        <div class="card-content">
+          <div class="card-category">Mascotte & Branding</div>
+          <div class="card-title">Champibad : Mascotte Officielle</div>
+          <div class="card-desc">Conception d'une mascotte dynamique de champignon volant armé d'une raquette pour club sportif.</div>
+        </div>
+      </div>
+
+      <!-- Item 2: WHOSBAD SVG -->
+      <div class="gallery-card" data-cat="champibad" onclick="openLightbox('assets/WHOSBAD-03.svg', 'Who\'s Bad ? • Typographie & Emblème Vectoriel')">
+        <div class="card-img-wrap">
+          <img src="assets/WHOSBAD-03.svg" alt="Who's Bad SVG">
+        </div>
+        <div class="card-content">
+          <div class="card-category">Typographie & Vector</div>
+          <div class="card-title">Who's Bad ? Emblème Textile</div>
+          <div class="card-desc">Logo vectoriel haute résolution optimisé pour sérigraphie textile et écussons brodés.</div>
+        </div>
+      </div>
+
+      <!-- Item 3: Danse des Oeufs Planche 1 -->
+      <div class="gallery-card" data-cat="danse" onclick="openLightbox('assets/danse-1.jpg', 'La Danse des Œufs • Planche de Cartes 1')">
+        <div class="card-img-wrap">
+          <img src="assets/danse-1.jpg" alt="La Danse des Oeufs 1">
+        </div>
+        <div class="card-content">
+          <div class="card-category">Jeu de Société & Illustration</div>
+          <div class="card-title">La Danse des Œufs • Planche #1</div>
+          <div class="card-desc">Direction artistique complète et illustrations pour le jeu de cartes festif 'La Danse des Œufs'.</div>
+        </div>
+      </div>
+
+      <!-- Item 4: Danse des Oeufs Planche 2 -->
+      <div class="gallery-card" data-cat="danse" onclick="openLightbox('assets/danse-2.jpg', 'La Danse des Œufs • Planche de Cartes 2')">
+        <div class="card-img-wrap">
+          <img src="assets/danse-2.jpg" alt="La Danse des Oeufs 2">
+        </div>
+        <div class="card-content">
+          <div class="card-category">Jeu de Société & Illustration</div>
+          <div class="card-title">La Danse des Œufs • Planche #2</div>
+          <div class="card-desc">Déclinaison des postures et défis physiques représentés sur les cartes d'action.</div>
+        </div>
+      </div>
+
+      <!-- Item 5: Danse des Oeufs Planche 3 -->
+      <div class="gallery-card" data-cat="danse" onclick="openLightbox('assets/danse-3.jpg', 'La Danse des Œufs • Planche de Cartes 3')">
+        <div class="card-img-wrap">
+          <img src="assets/danse-3.jpg" alt="La Danse des Oeufs 3">
+        </div>
+        <div class="card-content">
+          <div class="card-category">Jeu de Société & Illustration</div>
+          <div class="card-title">La Danse des Œufs • Planche #3</div>
+          <div class="card-desc">Règles de jeu visuelles, dos de cartes et fiches de score pour l'impression finale.</div>
+        </div>
+      </div>
+
+      <!-- Item 6: Carte Individuelle 1 -->
+      <div class="gallery-card" data-cat="danse" onclick="openLightbox('assets/danse-card-1.png', 'Focus Carte d\'Action • Finition Haute Définition')">
+        <div class="card-img-wrap">
+          <img src="assets/danse-card-1.png" alt="Danse Card 1">
+        </div>
+        <div class="card-content">
+          <div class="card-category">Détail Graphique</div>
+          <div class="card-title">Focus Carte d'Action</div>
+          <div class="card-desc">Gros plan sur les tracés et le choix typographique garantissant une lisibilité instantanée en partie.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="lightbox" onclick="closeLightbox(event)">
+    <div class="lightbox-inner">
+      <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+      <img id="lightboxImg" src="" alt="Zoom">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+  </div>
+
+  <script>
+    function filterGallery(cat) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(cat));
+      });
+
+      const cards = document.querySelectorAll('.gallery-card');
+      cards.forEach(card => {
+        if (cat === 'all' || card.dataset.cat === cat) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function openLightbox(src, caption) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxCaption').innerText = caption;
+      document.getElementById('lightbox').classList.add('open');
+    }
+
+    function closeLightbox(e) {
+      if (!e || e.target.id === 'lightbox' || e.target.className === 'lightbox-close') {
+        document.getElementById('lightbox').classList.remove('open');
+      }
+    }
+  </script>
+</body>
+</html>

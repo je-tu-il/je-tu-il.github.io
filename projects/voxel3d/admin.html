@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — VoxelPrint</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       VoxelPrint Admin Panel — Design System
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand-blue:        #1a7abf;
+      --brand-cyan:        #2eccd6;
+      --color-bg-primary:  #030a10;
+      --color-bg-secondary:#060f18;
+      --color-bg-card:     #0b1825;
+      --color-bg-glass:    rgba(11,24,37,0.85);
+      --color-text-primary:#f0f8ff;
+      --color-text-secondary:#8ba8c0;
+      --color-text-muted:  #4d6e87;
+      --color-accent-cyan: #2eccd6;
+      --color-accent-blue: #1a7abf;
+      --color-accent-electric:#00e5ff;
+      --color-accent-gold: #f5a623;
+      --color-accent-green:#00e676;
+      --color-accent-magenta:#e040fb;
+      --color-accent-red:  #ff5252;
+      --color-accent-yellow:#ffb300;
+      --gradient-primary:  linear-gradient(135deg,#2eccd6,#1a7abf);
+      --gradient-gold:     linear-gradient(135deg,#f5a623,#f7c948);
+      --gradient-green:    linear-gradient(135deg,#00e676,#00b248);
+      --gradient-red:      linear-gradient(135deg,#ff5252,#c62828);
+      --gradient-blue:     linear-gradient(135deg,#00e5ff,#1a7abf);
+      --gradient-magenta:  linear-gradient(135deg,#e040fb,#aa00ff);
+      --border-subtle:     1px solid rgba(46,204,214,0.10);
+      --border-accent:     1px solid rgba(46,204,214,0.22);
+      --shadow-card:       0 8px 32px rgba(3,10,16,0.55),inset 0 1px 0 rgba(46,204,214,0.07);
+      --shadow-lg:         0 16px 60px rgba(0,0,0,0.7);
+      --radius-sm:         0.375rem;
+      --radius-md:         0.625rem;
+      --radius-lg:         1rem;
+      --radius-xl:         1.5rem;
+      --font-heading:      'Outfit', sans-serif;
+      --font-body:         'Inter', sans-serif;
+      --sidebar-w:         240px;
+      --topbar-h:          60px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--color-bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: rgba(46,204,214,0.25); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(46,204,214,0.45); }
+
+    /* UTILITY */
+    .gradient-text { background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .text-muted { color: var(--color-text-muted); }
+    .text-sm { font-size: 0.8125rem; }
+    .text-xs { font-size: 0.75rem; }
+    .flex { display: flex; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .flex-wrap { flex-wrap: wrap; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+
+    /* LOGIN */
+    #admin-login {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(46,204,214,0.08) 0%, transparent 60%), var(--color-bg-primary);
+      z-index: 9999;
+    }
+    #admin-login::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%232eccd6' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    }
+    .admin-login-card {
+      position: relative; background: var(--color-bg-glass); border: var(--border-accent); border-radius: var(--radius-xl);
+      padding: 3rem 2.5rem; width: 100%; max-width: 420px; margin: 1rem; backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-lg), 0 0 80px rgba(46,204,214,0.05); text-align: center;
+    }
+    .login-brand-icon { font-size: 3.5rem; display: block; margin-bottom: 1.25rem; filter: drop-shadow(0 0 20px rgba(46,204,214,0.4)); }
+    .login-title { font-family: var(--font-heading); font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .login-subtitle { color: var(--color-text-muted); font-size: 0.875rem; margin-bottom: 2rem; }
+    .login-form { text-align: left; }
+    .login-form label { display: block; font-size: 0.8125rem; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 0.4rem; letter-spacing: 0.03em; }
+    .login-form input[type="password"] {
+      width: 100%; padding: 0.8rem 1rem; background: rgba(11,24,37,0.8); border: var(--border-accent); border-radius: var(--radius-md);
+      color: var(--color-text-primary); font-family: var(--font-body); font-size: 1rem; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s; margin-bottom: 1.25rem;
+    }
+    .login-form input[type="password"]:focus { border-color: var(--color-accent-cyan); box-shadow: 0 0 0 3px rgba(46,204,214,0.15); }
+    .login-error {
+      display: none; color: var(--color-accent-magenta); font-size: 0.8125rem; margin-bottom: 1rem;
+      padding: 0.5rem 0.75rem; background: rgba(224,64,251,0.08); border: 1px solid rgba(224,64,251,0.2);
+      border-radius: var(--radius-sm); text-align: center;
+    }
+    .btn-login {
+      width: 100%; padding: 0.85rem; background: var(--gradient-primary); border: none; border-radius: var(--radius-md);
+      color: #fff; font-family: var(--font-heading); font-size: 1rem; font-weight: 600; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 6px 24px rgba(46,204,214,0.3);
+    }
+    .btn-login:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 10px 32px rgba(46,204,214,0.4); }
+    .login-footer { margin-top: 1.5rem; font-size: 0.75rem; color: var(--color-text-muted); }
+
+    /* ADMIN SHELL */
+    #admin-shell { display: none; min-height: 100vh; }
+    #admin-shell.visible { display: flex; }
+
+    /* SIDEBAR */
+    .admin-sidebar {
+      position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh;
+      background: var(--color-bg-secondary); border-right: var(--border-subtle);
+      display: flex; flex-direction: column; overflow-y: auto; z-index: 200; transition: transform 0.3s ease;
+    }
+    .sidebar-header { padding: 1.25rem 1.25rem 1rem; border-bottom: var(--border-subtle); flex-shrink: 0; }
+    .sidebar-logo { display: flex; align-items: center; gap: 0.625rem; text-decoration: none; }
+    .sidebar-logo-icon { font-size: 1.5rem; filter: drop-shadow(0 0 8px rgba(46,204,214,0.4)); }
+    .sidebar-logo-text { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; }
+    .sidebar-logo-badge {
+      display: inline-block; margin-left: 0.25rem; font-size: 0.55rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; background: rgba(46,204,214,0.15); color: var(--color-accent-cyan);
+      border: 1px solid rgba(46,204,214,0.25); border-radius: 3px; padding: 0.05rem 0.35rem; vertical-align: middle;
+    }
+    .sidebar-nav { padding: 0.75rem; flex: 1; }
+    .sidebar-section-label {
+      font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--color-text-muted); padding: 0.5rem 0.5rem 0.375rem; margin-bottom: 0.25rem;
+    }
+    .admin-nav-item {
+      display: flex; align-items: center; gap: 0.625rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-md);
+      cursor: pointer; font-size: 0.875rem; font-weight: 500; color: var(--color-text-secondary);
+      transition: background 0.15s, color 0.15s; user-select: none; margin-bottom: 0.125rem;
+      border: 1px solid transparent; position: relative;
+    }
+    .admin-nav-item:hover { background: rgba(46,204,214,0.06); color: var(--color-text-primary); }
+    .admin-nav-item.active { background: linear-gradient(135deg,rgba(46,204,214,0.14),rgba(26,122,191,0.10)); color: var(--color-accent-cyan); border-color: rgba(46,204,214,0.18); }
+    .admin-nav-item.active::before { content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 3px; background: var(--gradient-primary); border-radius: 0 2px 2px 0; }
+    .nav-icon { font-size: 1.05rem; flex-shrink: 0; }
+    .nav-badge { margin-left: auto; background: rgba(46,204,214,0.18); color: var(--color-accent-cyan); font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 9999px; min-width: 1.3rem; text-align: center; }
+    .sidebar-footer { padding: 1rem; border-top: var(--border-subtle); flex-shrink: 0; }
+    .sidebar-user { display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.75rem; }
+    .sidebar-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-size: 0.875rem; flex-shrink: 0; }
+    .sidebar-user-info { flex: 1; min-width: 0; }
+    .sidebar-user-name { font-size: 0.8125rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sidebar-user-role { font-size: 0.7rem; color: var(--color-text-muted); }
+    .btn-logout { width: 100%; padding: 0.55rem 0.75rem; background: rgba(224,64,251,0.07); border: 1px solid rgba(224,64,251,0.2); border-radius: var(--radius-md); color: var(--color-accent-magenta); font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: background 0.15s; font-family: var(--font-body); }
+    .btn-logout:hover { background: rgba(224,64,251,0.14); }
+
+    /* TOPBAR */
+    .admin-topbar { display: none; position: fixed; top: 0; left: 0; right: 0; height: var(--topbar-h); background: var(--color-bg-secondary); border-bottom: var(--border-subtle); align-items: center; justify-content: space-between; padding: 0 1rem; z-index: 210; }
+    .topbar-logo { font-family: var(--font-heading); font-weight: 700; font-size: 1rem; }
+    .topbar-menu-btn { background: transparent; border: var(--border-subtle); border-radius: var(--radius-sm); color: var(--color-text-primary); padding: 0.4rem 0.6rem; cursor: pointer; font-size: 1rem; }
+
+    /* MAIN */
+    .admin-main { margin-left: var(--sidebar-w); min-height: 100vh; padding: 2rem; flex: 1; }
+    .page-header { margin-bottom: 2rem; }
+    .page-title { font-family: var(--font-heading); font-size: 1.625rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .page-subtitle { color: var(--color-text-muted); font-size: 0.875rem; }
+    .page-header-row { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+
+    /* PANELS */
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+
+    /* KPI CARDS */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1.25rem; }
+    .kpi-card { background: var(--color-bg-card); border: var(--border-subtle); border-radius: var(--radius-lg); padding: 1.25rem 1.25rem 1rem; position: relative; overflow: hidden; box-shadow: var(--shadow-card); transition: border-color 0.2s, transform 0.2s; }
+    .kpi-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--kpi-gradient, var(--gradient-primary)); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+    .kpi-card:hover { border-color: rgba(46,204,214,0.2); transform: translateY(-1px); }
+    .kpi-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+    .kpi-icon { font-size: 1.25rem; }
+    .kpi-trend { font-size: 0.7rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 9999px; }
+    .kpi-trend.up { background: rgba(0,230,118,0.12); color: var(--color-accent-green); }
+    .kpi-trend.neutral { background: rgba(139,168,192,0.12); color: var(--color-text-muted); }
+    .kpi-value { font-family: var(--font-heading); font-size: 1.875rem; font-weight: 800; line-height: 1; background: var(--kpi-gradient, var(--gradient-primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.375rem; }
+    .kpi-label { font-size: 0.78rem; color: var(--color-text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+    .kpi-sub { font-size: 0.72rem; color: var(--color-text-muted); margin-top: 0.25rem; }
+
+    /* SECTION CARD */
+    .section-card { background: var(--color-bg-card); border: var(--border-subtle); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-card); margin-bottom: 1.25rem; }
+    .section-title { font-family: var(--font-heading); font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; color: var(--color-text-primary); }
+    .section-title-divider { height: 1px; flex: 1; background: linear-gradient(90deg,rgba(46,204,214,0.15),transparent); margin-left: 0.5rem; }
+
+    /* GRIDS */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+    .three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; margin-bottom: 1.25rem; }
+
+    /* FUNNEL */
+    .funnel-wrap { overflow-x: auto; }
+    .funnel-steps { display: flex; align-items: stretch; gap: 0; min-width: 600px; }
+    .funnel-step { flex: 1; display: flex; flex-direction: column; position: relative; }
+    .funnel-step-body { background: rgba(46,204,214,0.06); border: 1px solid rgba(46,204,214,0.12); border-right: none; padding: 1rem 0.75rem; flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.25rem; }
+    .funnel-step:last-child .funnel-step-body { border-right: 1px solid rgba(46,204,214,0.12); }
+    .funnel-step-name { font-size: 0.72rem; font-weight: 600; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+    .funnel-step-count { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .funnel-step-conv { font-size: 0.72rem; font-weight: 600; color: var(--color-text-muted); }
+    .funnel-step-conv.warn { color: var(--color-accent-yellow); }
+    .funnel-bar-row { height: 8px; background: rgba(46,204,214,0.06); overflow: hidden; margin-top: 0.5rem; }
+    .funnel-bar-fill { height: 100%; background: var(--gradient-primary); border-radius: 4px; transition: width 0.8s ease; }
+
+    /* BAR CHART */
+    .bar-chart { display: flex; flex-direction: column; gap: 1rem; }
+    .bar-row { display: flex; flex-direction: column; gap: 0.35rem; }
+    .bar-label-row { display: flex; justify-content: space-between; align-items: center; }
+    .bar-label { font-size: 0.8125rem; font-weight: 500; }
+    .bar-value { font-size: 0.8rem; font-weight: 700; color: var(--color-accent-cyan); }
+    .bar-track { height: 8px; background: rgba(255,255,255,0.05); border-radius: 9999px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 9999px; transition: width 0.9s ease; }
+
+    /* ACTIVITY FEED */
+    .activity-feed { display: flex; flex-direction: column; }
+    .activity-item { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.75rem 0; border-bottom: var(--border-subtle); }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent-cyan); margin-top: 0.35rem; flex-shrink: 0; box-shadow: 0 0 6px rgba(46,204,214,0.5); }
+    .activity-content { flex: 1; min-width: 0; }
+    .activity-title { font-size: 0.8125rem; font-weight: 500; margin-bottom: 0.15rem; }
+    .activity-time { font-size: 0.72rem; color: var(--color-text-muted); }
+    .activity-empty { text-align: center; color: var(--color-text-muted); padding: 2rem; font-size: 0.875rem; }
+
+    /* TABLES */
+    .table-wrap { overflow-x: auto; }
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+    .admin-table th { padding: 0.7rem 1rem; text-align: left; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-text-muted); border-bottom: var(--border-subtle); white-space: nowrap; }
+    .admin-table td { padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--color-text-secondary); vertical-align: middle; }
+    .admin-table tbody tr:hover { background: rgba(46,204,214,0.03); }
+    .admin-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+    .admin-table td strong { color: var(--color-text-primary); }
+    .table-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center; color: var(--color-text-muted); }
+    .table-empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+    .table-empty-title { font-size: 1rem; font-weight: 600; color: var(--color-text-secondary); margin-bottom: 0.5rem; }
+    .table-empty-sub { font-size: 0.8125rem; }
+
+    /* BADGES */
+    .status-badge { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+    .status-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+    .badge-paid     { background: rgba(0,230,118,0.12); color: var(--color-accent-green); }
+    .badge-pending  { background: rgba(255,179,0,0.12); color: var(--color-accent-yellow); }
+    .badge-shipped  { background: rgba(0,229,255,0.12); color: var(--color-accent-electric); }
+    .badge-cancelled{ background: rgba(255,82,82,0.12); color: var(--color-accent-red); }
+    .badge-treated  { background: rgba(0,230,118,0.12); color: var(--color-accent-green); }
+    .badge-new      { background: rgba(224,64,251,0.12); color: var(--color-accent-magenta); }
+
+    /* BUTTONS */
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; border-radius: var(--radius-md); font-family: var(--font-body); font-size: 0.8125rem; font-weight: 500; cursor: pointer; transition: all 0.15s; border: none; text-decoration: none; }
+    .btn-primary { background: var(--gradient-primary); color: #fff; box-shadow: 0 4px 16px rgba(46,204,214,0.25); }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-secondary { background: rgba(46,204,214,0.08); border: var(--border-accent); color: var(--color-accent-cyan); }
+    .btn-secondary:hover { background: rgba(46,204,214,0.14); }
+    .btn-ghost { background: transparent; border: var(--border-subtle); color: var(--color-text-secondary); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.04); color: var(--color-text-primary); }
+    .btn-danger { background: rgba(255,82,82,0.1); border: 1px solid rgba(255,82,82,0.25); color: var(--color-accent-red); }
+    .btn-danger:hover { background: rgba(255,82,82,0.18); }
+    .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.75rem; }
+    .btn-xs { padding: 0.2rem 0.55rem; font-size: 0.7rem; border-radius: var(--radius-sm); }
+
+    /* TUNNEL CARDS */
+    .tunnel-cards { display: flex; flex-direction: column; gap: 1rem; }
+    .tunnel-card { background: var(--color-bg-card); border: var(--border-subtle); border-radius: var(--radius-lg); padding: 1.25rem; box-shadow: var(--shadow-card); }
+    .tunnel-card.warn-card { border-color: rgba(255,179,0,0.3); }
+    .tunnel-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.875rem; }
+    .tunnel-step-info { display: flex; align-items: center; gap: 0.625rem; }
+    .tunnel-step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .tunnel-step-label { font-weight: 600; font-size: 0.9375rem; }
+    .tunnel-meta { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+    .tunnel-meta-item { text-align: center; }
+    .tunnel-meta-value { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: var(--color-accent-cyan); }
+    .tunnel-meta-label { font-size: 0.72rem; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .drop-warn { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,179,0,0.08); border: 1px solid rgba(255,179,0,0.25); border-radius: var(--radius-sm); padding: 0.5rem 0.75rem; font-size: 0.8rem; color: var(--color-accent-yellow); margin-top: 0.875rem; }
+
+    /* TIMELINE */
+    .timeline { display: flex; flex-direction: column; }
+    .timeline-item { display: flex; gap: 0.875rem; padding: 0.875rem 0; border-bottom: var(--border-subtle); }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-icon { width: 32px; height: 32px; border-radius: 50%; background: rgba(46,204,214,0.1); border: 1px solid rgba(46,204,214,0.2); display: flex; align-items: center; justify-content: center; font-size: 0.875rem; flex-shrink: 0; margin-top: 0.125rem; }
+    .timeline-body { flex: 1; }
+    .timeline-title { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.2rem; }
+    .timeline-desc { font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 0.25rem; }
+    .timeline-meta { font-size: 0.72rem; color: var(--color-text-muted); display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    /* FILTER ROW */
+    .filter-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .filter-row select, .filter-row input[type="date"], .filter-row input[type="text"] {
+      background: var(--color-bg-card); border: var(--border-subtle); border-radius: var(--radius-md);
+      color: var(--color-text-secondary); padding: 0.4rem 0.75rem; font-family: var(--font-body); font-size: 0.8125rem; outline: none; cursor: pointer;
+    }
+    .filter-row select:focus, .filter-row input:focus { border-color: rgba(46,204,214,0.35); }
+
+    /* DONUT */
+    .donut-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
+    .donut-chart { position: relative; width: 120px; height: 120px; }
+    .donut-svg { width: 120px; height: 120px; }
+    .donut-hole-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .donut-hole-pct { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; color: var(--color-accent-cyan); }
+    .donut-hole-label { font-size: 0.6rem; color: var(--color-text-muted); text-transform: uppercase; }
+    .donut-legend { width: 100%; display: flex; flex-direction: column; gap: 0.5rem; }
+    .donut-legend-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.8125rem; }
+    .donut-legend-label { display: flex; align-items: center; gap: 0.5rem; }
+    .donut-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .donut-legend-pct { font-weight: 700; }
+
+    /* SPARKLINE */
+    .sparkline { display: flex; align-items: flex-end; gap: 4px; height: 60px; padding-bottom: 4px; }
+    .sparkline-bar { flex: 1; background: var(--gradient-primary); border-radius: 3px 3px 0 0; opacity: 0.7; transition: opacity 0.15s; min-height: 4px; }
+    .sparkline-bar:hover { opacity: 1; }
+    .sparkline-labels { display: flex; gap: 4px; margin-top: 0.25rem; }
+    .sparkline-label { flex: 1; text-align: center; font-size: 0.6rem; color: var(--color-text-muted); }
+
+    /* SETTINGS */
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--color-text-secondary); margin-bottom: 0.375rem; }
+    .form-input { width: 100%; padding: 0.65rem 0.875rem; background: rgba(11,24,37,0.8); border: var(--border-accent); border-radius: var(--radius-md); color: var(--color-text-primary); font-family: var(--font-body); font-size: 0.875rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-input:focus { border-color: var(--color-accent-cyan); box-shadow: 0 0 0 3px rgba(46,204,214,0.12); }
+    .form-input:disabled { opacity: 0.5; cursor: not-allowed; }
+    .danger-zone { background: rgba(255,82,82,0.04); border: 1px solid rgba(255,82,82,0.18); border-radius: var(--radius-lg); padding: 1.5rem; }
+    .danger-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid rgba(255,82,82,0.1); }
+    .danger-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .danger-info-title { font-weight: 600; font-size: 0.875rem; margin-bottom: 0.2rem; }
+    .danger-info-sub { font-size: 0.78rem; color: var(--color-text-muted); }
+
+    /* TOAST */
+    .admin-toast { position: fixed; bottom: 1.5rem; right: 1.5rem; padding: 0.75rem 1.25rem; background: var(--color-bg-card); border: var(--border-accent); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); font-size: 0.875rem; z-index: 9999; transform: translateY(120%); transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); max-width: 320px; }
+    .admin-toast.show { transform: translateY(0); }
+    .admin-toast.success { border-left: 3px solid var(--color-accent-green); }
+    .admin-toast.error   { border-left: 3px solid var(--color-accent-red); }
+    .admin-toast.info    { border-left: 3px solid var(--color-accent-cyan); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) { .kpi-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 768px) {
+      .admin-sidebar { transform: translateX(-100%); }
+      .admin-sidebar.open { transform: translateX(0); box-shadow: 4px 0 40px rgba(0,0,0,0.6); }
+      .admin-main { margin-left: 0; padding: 1rem; padding-top: calc(var(--topbar-h) + 1rem); }
+      .admin-topbar { display: flex; }
+      .two-col, .three-col, .settings-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2,1fr); }
+      .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 199; backdrop-filter: blur(2px); }
+      .sidebar-overlay.show { display: block; }
+    }
+    @media (max-width: 480px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+  <script type="module" crossorigin src="./assets/main-aBWUhs5b.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-B_Lcq4jG.css">
+</head>
+<body>
+  <a href="../../index.html" id="back-to-hub" style="position:fixed; top:12px; left:12px; z-index:99999; background:rgba(15,23,42,0.88); color:#38bdf8; padding:8px 14px; border-radius:9999px; text-decoration:none; font-family:system-ui,-apple-system,sans-serif; font-size:13px; font-weight:600; border:1px solid rgba(56,189,248,0.3); backdrop-filter:blur(8px); display:flex; align-items:center; gap:6px; box-shadow:0 4px 15px rgba(0,0,0,0.4);">&larr; Portfolio</a>
+
+<!-- LOGIN SCREEN -->
+<div id="admin-login">
+  <div class="admin-login-card">
+    <span class="login-brand-icon">🔐</span>
+    <h2 class="login-title gradient-text">VoxelPrint Admin</h2>
+    <p class="login-subtitle">Accès réservé. Veuillez vous authentifier.</p>
+    <form id="admin-login-form" class="login-form">
+      <label for="admin-password">Mot de passe</label>
+      <input type="password" id="admin-password" placeholder="••••••••" required autocomplete="current-password">
+      <p class="login-error" id="login-error">Mot de passe incorrect. Veuillez réessayer.</p>
+      <button type="submit" class="btn-login">🔓 Connexion</button>
+    </form>
+    <p class="login-footer">Panel d'administration sécurisé · VoxelPrint © 2025</p>
+  </div>
+</div>
+
+<!-- Overlay -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<!-- ADMIN SHELL -->
+<div id="admin-shell">
+
+  <!-- TOPBAR (mobile) -->
+  <div class="admin-topbar">
+    <span class="topbar-logo gradient-text">🔮 VoxelPrint Admin</span>
+    <div class="flex items-center gap-2">
+      <a href="./" class="btn btn-ghost btn-sm">↗ Site</a>
+      <button class="topbar-menu-btn" id="sidebar-toggle">☰</button>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-header">
+      <a href="./" class="sidebar-logo">
+        <span class="sidebar-logo-icon">🔮</span>
+        <span class="sidebar-logo-text gradient-text">VoxelPrint<span class="sidebar-logo-badge">ADMIN</span></span>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Navigation</div>
+      <div class="admin-nav-item active" data-tab="overview"><span class="nav-icon">📊</span><span>Vue d'ensemble</span></div>
+      <div class="admin-nav-item" data-tab="tunnel"><span class="nav-icon">🔄</span><span>Tunnel de vente</span></div>
+      <div class="admin-nav-item" data-tab="orders"><span class="nav-icon">📦</span><span>Commandes</span><span class="nav-badge" id="badge-orders">0</span></div>
+      <div class="admin-nav-item" data-tab="demos"><span class="nav-icon">🔍</span><span>Aperçus / Devis</span><span class="nav-badge" id="badge-demos">0</span></div>
+      <div class="admin-nav-item" data-tab="emails"><span class="nav-icon">📧</span><span>Leads &amp; Emails</span><span class="nav-badge" id="badge-emails">0</span></div>
+      <div class="admin-nav-item" data-tab="traffic"><span class="nav-icon">📈</span><span>Trafic</span></div>
+      <div class="admin-nav-item" data-tab="settings"><span class="nav-icon">⚙️</span><span>Paramètres</span></div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">👤</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Administrateur</div>
+          <div class="sidebar-user-role">Accès complet</div>
+        </div>
+      </div>
+      <button class="btn-logout" id="admin-logout">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="admin-main">
+
+    <!-- VUE D'ENSEMBLE -->
+    <div class="admin-panel active" id="panel-overview">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1 class="page-title">Vue d'ensemble <span class="gradient-text">📊</span></h1>
+            <p class="page-subtitle">Tableau de bord principal — données en temps réel depuis le localStorage</p>
+          </div>
+          <div class="flex gap-2">
+            <a href="./" class="btn btn-ghost btn-sm">↗ Voir le site</a>
+            <button class="btn btn-secondary btn-sm" id="overview-refresh">🔄 Actualiser</button>
+          </div>
+        </div>
+      </div>
+      <!-- KPI Row 1 -->
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-gradient:linear-gradient(135deg,#f5a623,#f7c948)">
+          <div class="kpi-header"><span class="kpi-icon">💰</span><span class="kpi-trend up">↑ live</span></div>
+          <div class="kpi-value" id="kpi-revenue">0,00€</div>
+          <div class="kpi-label">Chiffre d'affaires</div>
+        </div>
+        <div class="kpi-card" style="--kpi-gradient:var(--gradient-primary)">
+          <div class="kpi-header"><span class="kpi-icon">📦</span><span class="kpi-trend neutral">—</span></div>
+          <div class="kpi-value" id="kpi-orders">0</div>
+          <div class="kpi-label">Commandes</div>
+        </div>
+        <div class="kpi-card" style="--kpi-gradient:var(--gradient-magenta)">
+          <div class="kpi-header"><span class="kpi-icon">🔍</span><span class="kpi-trend neutral">—</span></div>
+          <div class="kpi-value" id="kpi-demos">0</div>
+          <div class="kpi-label">Demandes d'aperçu</div>
+        </div>
+        <div class="kpi-card" style="--kpi-gradient:var(--gradient-green)">
+          <div class="kpi-header"><span class="kpi-icon">📧</span><span class="kpi-trend neutral">—</span></div>
+          <div class="kpi-value" id="kpi-leads">0</div>
+          <div class="kpi-label">Leads email</div>
+        </div>
+      </div>
+      <!-- KPI Row 2 -->
+      <div class="kpi-grid">
+        <div class="kpi-card" style="--kpi-gradient:var(--gradient-blue)">
+          <div class="kpi-header"><span class="kpi-icon">🔄</span></div>
+          <div class="kpi-value" id="kpi-conv">0%</div>
+          <div class="kpi-label">Taux de conversion</div>
+          <div class="kpi-sub">Commandes / Visiteurs</div>
+        </div>
+        <div class="kpi-card" style="--kpi-gradient:var(--gradient-gold)">
+          <div class="kpi-header"><span class="kpi-icon">⭐</span></div>
+          <div class="kpi-value">4,9/5</div>
+          <div class="kpi-label">Note moyenne</div>
+          <div class="kpi-sub">Satisfaction client</div>
+        </div>
+        <div class="kpi-card" style="--kpi-gradient:var(--gradient-primary)">
+          <div class="kpi-header"><span class="kpi-icon">🚚</span></div>
+          <div class="kpi-value">48h</div>
+          <div class="kpi-label">Livraison moy.</div>
+          <div class="kpi-sub">Après validation</div>
+        </div>
+        <div class="kpi-card" style="--kpi-gradient:var(--gradient-green)">
+          <div class="kpi-header"><span class="kpi-icon">🎁</span></div>
+          <div class="kpi-value" id="kpi-avg-order">0,00€</div>
+          <div class="kpi-label">Panier moyen</div>
+          <div class="kpi-sub">CA / Commandes</div>
+        </div>
+      </div>
+      <!-- Funnel visuel -->
+      <div class="section-card">
+        <div class="section-title">🔄 Funnel de vente <span class="section-title-divider"></span></div>
+        <div class="funnel-wrap"><div class="funnel-steps" id="funnel-visual"></div></div>
+      </div>
+      <!-- Product + Activity -->
+      <div class="two-col">
+        <div class="section-card">
+          <div class="section-title">📦 Répartition par produit <span class="section-title-divider"></span></div>
+          <div class="bar-chart" id="product-breakdown"></div>
+        </div>
+        <div class="section-card">
+          <div class="section-title">⚡ Dernières activités <span class="section-title-divider"></span></div>
+          <div class="activity-feed" id="recent-activity"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TUNNEL DE VENTE -->
+    <div class="admin-panel" id="panel-tunnel">
+      <div class="page-header">
+        <h1 class="page-title">Tunnel de vente <span class="gradient-text">🔄</span></h1>
+        <p class="page-subtitle">Analyse détaillée de chaque étape du parcours client</p>
+      </div>
+      <div class="tunnel-cards" id="tunnel-step-cards"></div>
+      <div class="section-card mt-4">
+        <div class="section-title">📋 Timeline des événements <span class="section-title-divider"></span></div>
+        <div class="filter-row">
+          <select id="tunnel-type-filter">
+            <option value="">Tous les types</option>
+            <option value="registration">📧 Inscription</option>
+            <option value="demo_request">🔍 Demande aperçu</option>
+            <option value="order_placed">🛒 Commande</option>
+            <option value="payment_received">💰 Paiement</option>
+          </select>
+          <input type="date" id="tunnel-date-filter">
+          <button class="btn btn-ghost btn-sm" id="tunnel-filter-reset">✕ Effacer</button>
+        </div>
+        <div class="timeline" id="tunnel-timeline"></div>
+      </div>
+    </div>
+
+    <!-- COMMANDES -->
+    <div class="admin-panel" id="panel-orders">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1 class="page-title">Commandes <span class="gradient-text">📦</span></h1>
+            <p class="page-subtitle">Gérez toutes les commandes passées sur le site</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="filter-row">
+          <select id="orders-status-filter">
+            <option value="">Tous les statuts</option>
+            <option value="pending">En attente</option>
+            <option value="paid">Payé</option>
+            <option value="shipped">Expédié</option>
+            <option value="cancelled">Annulé</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>ID</th><th>Date</th><th>Client</th><th>Produits</th><th>Total</th><th>Statut</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+          <div id="orders-empty" class="table-empty" style="display:none">
+            <div class="table-empty-icon">📦</div>
+            <div class="table-empty-title">Aucune commande</div>
+            <div class="table-empty-sub">Les commandes passées sur le site apparaîtront ici</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APERÇUS / DEVIS -->
+    <div class="admin-panel" id="panel-demos">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1 class="page-title">Aperçus / Devis <span class="gradient-text">🔍</span></h1>
+            <p class="page-subtitle">Demandes d'aperçu et devis personnalisés</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="filter-row">
+          <select id="demos-product-filter">
+            <option value="">Tous les produits</option>
+            <option value="dual-text">🔤 Dual Texte</option>
+            <option value="3d-map">🗺️ Map Lieu</option>
+            <option value="gpx-map">📍 Map GPX</option>
+          </select>
+          <select id="demos-status-filter">
+            <option value="">Tous les statuts</option>
+            <option value="pending">En attente</option>
+            <option value="treated">Traité</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Date</th><th>Produit</th><th>Email</th><th>Détails</th><th>Statut</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="demos-tbody"></tbody>
+          </table>
+          <div id="demos-empty" class="table-empty" style="display:none">
+            <div class="table-empty-icon">🔍</div>
+            <div class="table-empty-title">Aucune demande d'aperçu</div>
+            <div class="table-empty-sub">Les demandes de démo et devis apparaîtront ici</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEADS & EMAILS -->
+    <div class="admin-panel" id="panel-emails">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1 class="page-title">Leads &amp; Emails <span class="gradient-text">📧</span></h1>
+            <p class="page-subtitle">Tous les emails collectés via les formulaires</p>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-secondary btn-sm" id="export-emails-csv">📥 Exporter CSV</button>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Email</th><th>Date</th><th>Source</th><th>Code promo</th><th>Statut</th></tr>
+            </thead>
+            <tbody id="emails-tbody"></tbody>
+          </table>
+          <div id="emails-empty" class="table-empty" style="display:none">
+            <div class="table-empty-icon">📧</div>
+            <div class="table-empty-title">Aucun lead email</div>
+            <div class="table-empty-sub">Les inscriptions newsletter apparaîtront ici</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRAFIC -->
+    <div class="admin-panel" id="panel-traffic">
+      <div class="page-header">
+        <h1 class="page-title">Trafic <span class="gradient-text">📈</span></h1>
+        <p class="page-subtitle">Analyse du trafic basée sur les visites enregistrées</p>
+      </div>
+      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="kpi-card" style="--kpi-gradient:var(--gradient-primary)">
+          <div class="kpi-header"><span class="kpi-icon">👁️</span></div>
+          <div class="kpi-value" id="traffic-total">0</div>
+          <div class="kpi-label">Pages vues (total)</div>
+        </div>
+        <div class="kpi-card" style="--kpi-gradient:var(--gradient-blue)">
+          <div class="kpi-header"><span class="kpi-icon">📄</span></div>
+          <div class="kpi-value" id="traffic-pages">0</div>
+          <div class="kpi-label">Pages uniques</div>
+        </div>
+        <div class="kpi-card" style="--kpi-gradient:var(--gradient-gold)">
+          <div class="kpi-header"><span class="kpi-icon">📅</span></div>
+          <div class="kpi-value" id="traffic-today">0</div>
+          <div class="kpi-label">Vues aujourd'hui</div>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="section-card">
+          <div class="section-title">🏆 Pages les plus visitées <span class="section-title-divider"></span></div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Page</th><th>Vues</th><th>Appareil</th></tr></thead>
+              <tbody id="traffic-pages-table"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-title">📱 Appareils <span class="section-title-divider"></span></div>
+          <div class="donut-wrap">
+            <div class="donut-chart">
+              <svg class="donut-svg" viewBox="0 0 42 42">
+                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="rgba(46,204,214,0.08)" stroke-width="5"></circle>
+                <circle id="donut-mobile-arc" cx="21" cy="21" r="15.915" fill="transparent" stroke="#2eccd6" stroke-width="5" stroke-dasharray="0 100" stroke-dashoffset="25" stroke-linecap="round" style="transition:stroke-dasharray 1s ease"></circle>
+                <circle id="donut-desktop-arc" cx="21" cy="21" r="15.915" fill="transparent" stroke="#1a7abf" stroke-width="5" stroke-dasharray="0 100" stroke-dashoffset="25" stroke-linecap="round" style="transition:stroke-dasharray 1s ease"></circle>
+              </svg>
+              <div class="donut-hole-text">
+                <span class="donut-hole-pct" id="donut-mobile-pct">—</span>
+                <span class="donut-hole-label">Mobile</span>
+              </div>
+            </div>
+            <div class="donut-legend">
+              <div class="donut-legend-item">
+                <span class="donut-legend-label"><span class="donut-legend-dot" style="background:#2eccd6"></span>Mobile</span>
+                <span class="donut-legend-pct" id="donut-mobile-label">—</span>
+              </div>
+              <div class="donut-legend-item">
+                <span class="donut-legend-label"><span class="donut-legend-dot" style="background:#1a7abf"></span>Desktop</span>
+                <span class="donut-legend-pct" id="donut-desktop-label">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="section-card">
+          <div class="section-title">🔗 Référents <span class="section-title-divider"></span></div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Source</th><th>Visites</th></tr></thead>
+              <tbody id="referrers-table"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="section-title">📅 Vues 7 derniers jours <span class="section-title-divider"></span></div>
+          <div class="sparkline" id="weekly-sparkline"></div>
+          <div class="sparkline-labels" id="weekly-labels"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARAMÈTRES -->
+    <div class="admin-panel" id="panel-settings">
+      <div class="page-header">
+        <h1 class="page-title">Paramètres <span class="gradient-text">⚙️</span></h1>
+        <p class="page-subtitle">Configuration du panel et outils d'administration</p>
+      </div>
+      <div class="settings-grid">
+        <div class="section-card">
+          <div class="section-title">🔐 Mot de passe admin <span class="section-title-divider"></span></div>
+          <div class="form-group">
+            <label class="form-label">Mot de passe actuel</label>
+            <input type="password" class="form-input" id="current-password" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nouveau mot de passe</label>
+            <input type="password" class="form-input" id="new-password" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirmer le mot de passe</label>
+            <input type="password" class="form-input" id="confirm-password" placeholder="••••••••">
+          </div>
+          <button class="btn btn-primary" id="change-password-btn">💾 Enregistrer</button>
+        </div>
+        <div class="section-card">
+          <div class="section-title">🌐 Informations du site <span class="section-title-divider"></span></div>
+          <div class="form-group">
+            <label class="form-label">Nom du site</label>
+            <input type="text" class="form-input" id="info-sitename" disabled>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email de contact</label>
+            <input type="text" class="form-input" id="info-email" disabled>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Réduction newsletter actuelle</label>
+            <input type="text" class="form-input" id="info-discount" disabled>
+          </div>
+          <p class="text-muted text-sm mt-2">Pour modifier ces valeurs, éditez <code style="color:var(--color-accent-cyan)">src/js/content.js</code></p>
+        </div>
+      </div>
+      <div class="section-card mb-4">
+        <div class="section-title">📤 Export de données <span class="section-title-divider"></span></div>
+        <div class="flex gap-3 flex-wrap">
+          <button class="btn btn-secondary" id="export-json-btn">📥 Exporter tout (JSON)</button>
+          <button class="btn btn-ghost" id="export-orders-csv-btn">📦 Export commandes (CSV)</button>
+          <button class="btn btn-ghost" id="export-leads-csv-btn">📧 Export leads (CSV)</button>
+        </div>
+      </div>
+      <div class="danger-zone">
+        <div class="section-title" style="color:var(--color-accent-red)">⚠️ Zone de danger</div>
+        <div class="danger-row">
+          <div>
+            <div class="danger-info-title">Supprimer toutes les commandes</div>
+            <div class="danger-info-sub">Efface les données de commandes du localStorage</div>
+          </div>
+          <button class="btn btn-danger btn-sm" data-clear="orders">🗑️ Supprimer</button>
+        </div>
+        <div class="danger-row">
+          <div>
+            <div class="danger-info-title">Supprimer les données de trafic</div>
+            <div class="danger-info-sub">Efface l'historique des pages vues</div>
+          </div>
+          <button class="btn btn-danger btn-sm" data-clear="pageviews">🗑️ Supprimer</button>
+        </div>
+        <div class="danger-row">
+          <div>
+            <div class="danger-info-title">Réinitialisation complète</div>
+            <div class="danger-info-sub">Supprime TOUTES les données VoxelPrint du localStorage</div>
+          </div>
+          <button class="btn btn-danger btn-sm" id="clear-all-btn">💥 Tout effacer</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div class="admin-toast" id="admin-toast"></div>
+
+</body>
+</html>
+

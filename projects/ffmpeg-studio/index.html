@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FFmpeg Studio Local</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101214;
+      --panel: #171a1e;
+      --panel-2: #1d2228;
+      --line: #2c343d;
+      --text: #eef2f5;
+      --muted: #89939e;
+      --accent: #ffb454;
+      --accent-2: #e67e22;
+      --green: #7dd3a7;
+      --danger: #ff7a7a;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .3);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(circle at 70% -10%, #2b241b 0, transparent 42%), var(--bg); color: var(--text); font: 14px/1.45 "Segoe UI", system-ui, sans-serif; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .app { max-width: 1500px; margin: auto; padding: 24px 28px 40px; }
+    header { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 24px; }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: clamp(24px, 4vw, 42px); letter-spacing: -.03em; }
+    h1 span { color: var(--accent); }
+    .eyebrow, .label { color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-size: 11px; font-weight: 700; }
+    .status { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+    .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); }
+    .layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 18px; align-items: start; }
+    .panel { background: rgba(23, 26, 30, .94); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+    .library { margin-bottom: 18px; padding: 14px; }
+    .library-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .library-header h2 { font-size: 15px; }
+    .library-drop { border: 1px dashed transparent; border-radius: 7px; padding: 4px; transition: .2s ease; }
+    .library-drop.over { border-color: var(--accent); background: rgba(255, 180, 84, .08); }
+    .media-list { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+    .media-item { flex: 0 0 190px; display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 6px; padding: 8px; color: var(--muted); background: #111417; text-align: left; }
+    .media-item:hover, .media-item.active { color: var(--text); border-color: var(--accent); }
+    .media-item.active { background: rgba(255, 180, 84, .1); }
+    .media-item strong, .media-item small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .media-item small { color: var(--muted); font-size: 11px; }
+    .media-kind { color: var(--accent); text-align: center; }
+    .media-remove { border: 0; background: transparent; color: var(--muted); font-size: 17px; }
+    .media-remove:hover { color: var(--danger); }
+    .empty-library { color: var(--muted); font-size: 12px; padding: 6px 0; }
+    .viewer { min-height: 560px; display: flex; flex-direction: column; overflow: hidden; }
+    .dropzone { flex: 1; min-height: 320px; margin: 14px; border: 1px dashed #56616d; border-radius: 8px; display: grid; place-items: center; text-align: center; padding: 28px; transition: .2s ease; background: linear-gradient(135deg, rgba(255,180,84,.05), transparent); }
+    .dropzone.over, .dropzone:hover { border-color: var(--accent); background: rgba(255,180,84,.08); }
+    .dropzone strong { display: block; font-size: 19px; margin: 10px 0 4px; }
+    .dropzone small { color: var(--muted); }
+    .drop-icon { font-size: 42px; color: var(--accent); }
+    .preview { width: 100%; max-height: 390px; background: #090a0b; display: none; object-fit: contain; }
+    .audio-preview { width: calc(100% - 28px); margin: 14px; display: none; }
+    .controls { padding: 0 18px 18px; display: grid; gap: 12px; }
+    .transport { display: flex; align-items: center; gap: 10px; }
+    .transport button, .primary, .ghost, .icon-btn { border: 1px solid var(--line); color: var(--text); background: var(--panel-2); border-radius: 6px; padding: 9px 13px; }
+    .transport button:hover, .ghost:hover, .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .primary { background: var(--accent); border-color: var(--accent); color: #17120b; font-weight: 800; }
+    .primary:hover { background: #ffc779; }
+    .timeline { width: 100%; accent-color: var(--accent); }
+    .time-row, .between { display: flex; justify-content: space-between; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .range-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .field { display: grid; gap: 5px; }
+    input[type="text"], input[type="number"], select { width: 100%; color: var(--text); background: #111417; border: 1px solid var(--line); border-radius: 5px; padding: 9px 10px; }
+    input:focus, select:focus { outline: 2px solid rgba(255,180,84,.35); border-color: var(--accent); }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    .side-menu { position: sticky; top: 18px; display: grid; gap: 6px; padding: 10px; background: rgba(23, 26, 30, .94); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); }
+    .menu-title { padding: 8px 10px 12px; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .menu-item { display: grid; grid-template-columns: 24px 1fr; align-items: center; gap: 8px; width: 100%; border: 1px solid transparent; border-radius: 6px; padding: 11px 10px; color: var(--muted); background: transparent; text-align: left; }
+    .menu-item:hover { color: var(--text); background: var(--panel-2); }
+    .menu-item.active { color: #17120b; background: var(--accent); font-weight: 800; }
+    .menu-icon { font-size: 16px; text-align: center; }
+    .pages { min-width: 0; }
+    .page { display: none; gap: 18px; min-width: 0; }
+    .page.active { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, .62fr); align-items: start; }
+    .page.single { grid-template-columns: minmax(0, 1fr); }
+    .page-heading { display: flex; justify-content: space-between; align-items: end; gap: 12px; grid-column: 1 / -1; }
+    .page-heading h2 { font-size: 22px; }
+    .page-heading p { color: var(--muted); font-size: 12px; }
+    .tool-drop { border: 1px dashed #56616d; border-radius: 8px; padding: 14px; color: var(--muted); background: rgba(255, 180, 84, .03); text-align: center; }
+    .tool-drop.over, .tool-drop:hover { border-color: var(--accent); color: var(--text); background: rgba(255, 180, 84, .08); }
+    .card { padding: 16px; }
+    .card h2 { font-size: 16px; margin-bottom: 14px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .stack { display: grid; gap: 12px; }
+    .inline { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 10px; }
+    .button-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .file-list { display: grid; gap: 7px; margin-top: 12px; }
+    .file-item { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; background: #111417; border: 1px solid var(--line); border-radius: 5px; padding: 8px 10px; }
+    .file-item small { display: block; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .remove { border: 0; background: transparent; color: var(--muted); font-size: 18px; }
+    .remove:hover { color: var(--danger); }
+    .command { min-height: 112px; resize: vertical; width: 100%; padding: 12px; color: #f6d7a4; background: #0b0d0f; border: 1px solid #3f3528; border-radius: 6px; font: 12px/1.5 Consolas, monospace; }
+    .hint { color: var(--muted); font-size: 12px; }
+    .gain-value { color: var(--accent); font-variant-numeric: tabular-nums; }
+    .toast { position: fixed; right: 22px; bottom: 22px; background: #f3e6d0; color: #16120d; padding: 11px 15px; border-radius: 6px; transform: translateY(18px); opacity: 0; pointer-events: none; transition: .2s; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .bridge-action { margin-top: 12px; }
+    @media (max-width: 900px) { .app { padding: 18px 14px 30px; } header { align-items: flex-start; flex-direction: column; } .layout { grid-template-columns: 1fr; } .side-menu { position: static; grid-template-columns: repeat(4, 1fr); } .menu-title { display: none; } .menu-item { grid-template-columns: 1fr; justify-items: center; padding: 9px 5px; font-size: 12px; text-align: center; } .page.active { grid-template-columns: 1fr; } .viewer { min-height: auto; } .dropzone { min-height: 260px; } }
+  </style>
+</head>
+<body>
+  <a href="../../index.html" id="back-to-hub" style="position:fixed; top:12px; left:12px; z-index:99999; background:rgba(15,23,42,0.88); color:#38bdf8; padding:8px 14px; border-radius:9999px; text-decoration:none; font-family:system-ui,-apple-system,sans-serif; font-size:13px; font-weight:600; border:1px solid rgba(56,189,248,0.3); backdrop-filter:blur(8px); display:flex; align-items:center; gap:6px; box-shadow:0 4px 15px rgba(0,0,0,0.4);">&larr; Portfolio</a>
+  <main class="app">
+    <header>
+      <div><div class="eyebrow">Local media workstation</div><h1>FFmpeg <span>Studio</span></h1></div>
+      <div class="status" id="bridgeStatus">Mode commande locale</div>
+    </header>
+
+    <section class="panel library library-drop" id="libraryDrop" aria-label="Bibliothèque média">
+      <div class="library-header"><h2>Fichiers chargés</h2><button class="primary" id="openFiles" type="button">Ajouter un ou plusieurs fichiers</button><input id="fileInput" type="file" multiple hidden></div>
+      <div id="mediaList" class="media-list"><div class="empty-library">Déposez un ou plusieurs fichiers ici, puis cliquez sur un média pour le visualiser.</div></div>
+    </section>
+
+    <section class="layout">
+      <nav class="side-menu" aria-label="Outils multimédia">
+        <div class="menu-title">Outils</div>
+        <button class="menu-item active" data-page="edit" type="button"><span class="menu-icon">✂</span><span>Édition</span></button>
+        <button class="menu-item" data-page="convert" type="button"><span class="menu-icon">⇄</span><span>Conversion</span></button>
+        <button class="menu-item" data-page="join" type="button"><span class="menu-icon">＋</span><span>Assembler</span></button>
+        <button class="menu-item" data-page="command" type="button"><span class="menu-icon">&gt;_</span><span>Commandes</span></button>
+      </nav>
+      <div class="pages">
+        <section class="page active" data-page-content="edit">
+          <div class="page-heading"><div><div class="eyebrow">Outil 01</div><h2>Édition et découpage</h2></div><p>Prévisualisez, marquez et extrayez un segment.</p></div>
+          <section class="panel viewer">
+        <div class="dropzone tool-drop" id="dropzone" data-tool-drop="edit" tabindex="0">
+          <div><div class="drop-icon">＋</div><strong>Déposez un média pour le découpage</strong><small>Le fichier sera ajouté à la bibliothèque et visualisé ici.</small></div>
+        </div>
+        <video id="video" class="preview" controls playsinline></video>
+        <audio id="audio" class="audio-preview" controls></audio>
+        <div class="controls">
+          <div class="transport"><button id="playBtn" type="button">▶ Lecture</button><button id="frameBack" class="icon-btn" title="Reculer de 100 ms" type="button">−100 ms</button><button id="frameForward" class="icon-btn" title="Avancer de 100 ms" type="button">+100 ms</button><span style="flex:1"></span><button id="chooseOutput" class="ghost" type="button">Dossier de sortie</button></div>
+          <input id="timeline" class="timeline" type="range" min="0" max="0" step="0.001" value="0" disabled>
+          <div class="time-row"><span id="currentTime">00:00:000</span><span id="duration">00:00:000</span></div>
+          <div class="range-grid">
+            <label class="field"><span class="label">Début</span><input id="startInput" type="text" value="00:00:000" inputmode="text"></label>
+            <label class="field"><span class="label">Fin</span><input id="endInput" type="text" value="00:00:000" inputmode="text"></label>
+          </div>
+          <div class="button-row"><button id="setStart" class="ghost" type="button">Définir début</button><button id="setEnd" class="ghost" type="button">Définir fin</button><button id="previewSegment" class="primary" type="button">Prévisualiser le segment</button></div>
+        </div>
+          </section>
+          <section class="panel card"><h2>Paramètres de découpage</h2><div class="stack"><label class="field"><span class="label">Nom de sortie</span><input id="editOutput" type="text" value="extrait.mkv"></label><label class="field"><span class="label">Amplification audio <span class="gain-value" id="gainValue">1.00x</span></span><input id="gain" type="range" min="0" max="3" value="1" step="0.01"></label><button id="generateCut" class="primary" type="button">Générer la commande</button></div></section>
+        </section>
+        <section class="page single" data-page-content="convert">
+          <div class="page-heading"><div><div class="eyebrow">Outil 02</div><h2>Conversion</h2></div><p>Choisissez le conteneur et les codecs de sortie.</p></div>
+          <section class="panel card"><h2>Format et codecs</h2><div class="stack"><div class="tool-drop" data-tool-drop="convert">Déposez le média à convertir ici, ou choisissez-le dans la bibliothèque.</div><label class="field"><span class="label">Format cible</span><select id="format"><option value="mp4">MP4</option><option value="mkv">MKV</option><option value="webm">WebM</option><option value="mp3">MP3</option><option value="wav">WAV</option></select></label><label class="field"><span class="label">Codec vidéo</span><select id="videoCodec"><option value="libx264">H.264 / libx264</option><option value="libx265">H.265 / libx265</option><option value="libvpx-vp9">VP9 / libvpx-vp9</option><option value="copy">Copie sans réencodage</option></select></label><label class="field"><span class="label">Codec audio</span><select id="audioCodec"><option value="aac">AAC</option><option value="libopus">Opus</option><option value="libmp3lame">MP3</option><option value="pcm_s16le">WAV PCM</option><option value="copy">Copie sans réencodage</option></select></label><label class="field"><span class="label">Nom de sortie</span><input id="convertOutput" type="text" value="conversion.mp4"></label><button id="generateConvert" class="primary" type="button">Générer la commande</button></div></section>
+        </section>
+        <section class="page single" data-page-content="join">
+          <div class="page-heading"><div><div class="eyebrow">Outil 03</div><h2>Assembler</h2></div><p>Placez plusieurs médias à la suite.</p></div>
+          <section class="panel card"><h2>Liste des médias</h2><p class="hint">Déposez plusieurs fichiers ou sélectionnez-les dans la bibliothèque. Ils doivent avoir des flux compatibles.</p><div class="tool-drop" data-tool-drop="join" style="margin-top:12px">Déposez les fichiers à assembler ici</div><div class="button-row" style="margin-top:12px"><button id="clearFiles" class="ghost" type="button">Vider la sélection</button></div><div id="fileList" class="file-list"></div><label class="field" style="margin-top:12px"><span class="label">Nom de sortie</span><input id="joinOutput" type="text" value="assemble.mkv"></label><button id="generateJoin" class="primary" type="button" style="margin-top:12px">Générer la commande</button></section>
+        </section>
+        <section class="page single" data-page-content="command">
+          <div class="page-heading"><div><div class="eyebrow">Outil 04</div><h2>Commandes FFmpeg</h2></div><p>Copiez, exportez ou envoyez la dernière commande au pont local.</p></div>
+          <section class="panel card"><div class="between"><h2>Commande générée</h2><span class="hint" id="commandState">En attente</span></div><textarea id="command" class="command" spellcheck="false" readonly placeholder="La commande générée apparaîtra ici…"></textarea><div class="button-row" style="margin-top:10px"><button id="copyCommand" class="primary" type="button">Copier</button><button id="downloadBat" class="ghost" type="button">Télécharger .bat</button><button id="runCommand" class="ghost" type="button">Lancer maintenant</button></div><p class="hint" style="margin-top:10px">Lancer maintenant nécessite le pont local FFmpeg. Il sera fourni avec le projet.</p></section>
+        </section>
+      </div>
+    </section>
+  </main>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const state = { files: [], file: null, outputDirectory: null, joinFiles: [], command: '' };
+    const media = $('video');
+    const audio = $('audio');
+    const timeline = $('timeline');
+    const pageButtons = document.querySelectorAll('.menu-item');
+    const pages = document.querySelectorAll('[data-page-content]');
+
+    pageButtons.forEach(button => button.onclick = () => {
+      const page = button.dataset.page;
+      pageButtons.forEach(item => item.classList.toggle('active', item === button));
+      pages.forEach(item => item.classList.toggle('active', item.dataset.pageContent === page));
+      if (page === 'join') { state.joinFiles = state.files.slice(); renderJoinFiles(); }
+      history.replaceState(null, '', `#${page}`);
+    });
+
+    const initialPage = location.hash.slice(1);
+    if (initialPage && document.querySelector(`.menu-item[data-page="${initialPage}"]`)) {
+      document.querySelector(`.menu-item[data-page="${initialPage}"]`).click();
+    }
+
+    function toast(message) { const el = $('toast'); el.textContent = message; el.classList.add('show'); clearTimeout(toast.timer); toast.timer = setTimeout(() => el.classList.remove('show'), 2800); }
+    function formatTime(seconds) { if (!Number.isFinite(seconds)) return '00:00:000'; const ms = Math.round(seconds * 1000); const min = Math.floor(ms / 60000); const sec = Math.floor((ms % 60000) / 1000); return `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}:${String(ms % 1000).padStart(3, '0')}`; }
+    function parseTime(value) { const parts = String(value).trim().split(':').map(Number); if (parts.some(Number.isNaN)) return 0; if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2] / 1000; if (parts.length === 2) return parts[0] * 60 + parts[1]; return parts[0] || 0; }
+    function quote(value) { return `"${String(value).replaceAll('"', '\\"')}"`; }
+    function baseName() { return state.file ? state.file.name.replace(/\.[^.]+$/, '') : 'media'; }
+    function activeMedia() { return state.file && state.file.type.startsWith('audio/') ? audio : media; }
+    function outputPath(name) { return state.outputDirectory ? `${state.outputDirectory.name}\\${name}` : name; }
+    function setCommand(command) { state.command = command; $('command').value = command; $('commandState').textContent = 'Commande prête'; }
+    function renderMediaLibrary() {
+      const list = $('mediaList');
+      if (!state.files.length) { list.innerHTML = '<div class="empty-library">Aucun fichier chargé. Ajoutez vos médias ici, puis sélectionnez celui à visualiser.</div>'; return; }
+      list.innerHTML = state.files.map((file, index) => `<button class="media-item${file === state.file ? ' active' : ''}" data-index="${index}" type="button"><span class="media-kind">${file.type.startsWith('audio/') ? '♫' : '▶'}</span><span><strong>${file.name}</strong><small>${(file.size / 1048576).toFixed(2)} Mo</small></span><span class="media-remove" data-remove="${index}" title="Retirer">×</span></button>`).join('');
+      list.querySelectorAll('.media-item').forEach(item => item.onclick = event => { if (event.target.dataset.remove !== undefined) { const removed = state.files.splice(Number(event.target.dataset.remove), 1)[0]; if (state.file === removed) { state.file = state.files[0] || null; if (state.file) selectFile(state.file); } renderMediaLibrary(); return; } selectFile(state.files[Number(item.dataset.index)]); });
+    }
+    function selectFile(file) {
+      if (!file) return; state.file = file; const url = URL.createObjectURL(file); const isAudio = file.type.startsWith('audio/') || /\.(mp3|wav|flac|m4a|aac|ogg)$/i.test(file.name);
+      media.pause(); audio.pause(); media.style.display = isAudio ? 'none' : 'block'; audio.style.display = isAudio ? 'block' : 'none'; $('dropzone').style.display = 'none'; (isAudio ? audio : media).src = url;
+      $('editOutput').value = `${baseName()}_cut.${file.name.split('.').pop() || 'mkv'}`; $('convertOutput').value = `${baseName()}.mp4`; renderMediaLibrary();
+      (isAudio ? audio : media).onloadedmetadata = () => { const m = activeMedia(); timeline.disabled = false; timeline.max = m.duration || 0; timeline.value = 0; $('endInput').value = formatTime(m.duration); $('duration').textContent = formatTime(m.duration); $('currentTime').textContent = formatTime(0); };
+    }
+    function addFiles(files) { const incoming = [...files]; incoming.forEach(file => { if (!state.files.some(existing => existing.name === file.name && existing.size === file.size)) state.files.push(file); }); if (incoming[0]) selectFile(incoming[0]); toast(`${incoming.length} fichier${incoming.length > 1 ? 's' : ''} ajouté${incoming.length > 1 ? 's' : ''}`); }
+    function handleToolDrop(event, tool) { event.preventDefault(); event.currentTarget.classList.remove('over'); const files = [...event.dataTransfer.files]; if (!files.length) return; addFiles(files); if (tool === 'join') { state.joinFiles = [...state.files]; renderJoinFiles(); } }
+    async function encodeFile(file) { const bytes = new Uint8Array(await file.arrayBuffer()); let binary = ''; for (let offset = 0; offset < bytes.length; offset += 8192) binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192)); return { name: file.name, data: btoa(binary) }; }
+      async function checkBridge() { try { const response = await fetch('http://127.0.0.1:8765/health'); if (!response.ok) throw new Error(); $('bridgeStatus').textContent = 'Pont FFmpeg connecté'; $('bridgeStatus').style.color = 'var(--green)'; } catch { $('bridgeStatus').textContent = 'Pont FFmpeg arrêté'; } }
+      checkBridge();
+    function updateTime() { const m = activeMedia(); timeline.value = m.currentTime || 0; $('currentTime').textContent = formatTime(m.currentTime); }
+    function seekFromInput(input) { const m = activeMedia(); if (!state.file) return; m.currentTime = Math.max(0, Math.min(m.duration || 0, parseTime(input.value))); input.value = formatTime(m.currentTime); }
+    function commandInput() { return state.file ? quote(state.file.name) : '"input.ext"'; }
+
+    $('openFiles').onclick = () => $('fileInput').click(); $('fileInput').onchange = (e) => { addFiles(e.target.files); e.target.value = ''; };
+    $('libraryDrop').ondragover = event => { event.preventDefault(); $('libraryDrop').classList.add('over'); }; $('libraryDrop').ondragleave = () => $('libraryDrop').classList.remove('over'); $('libraryDrop').ondrop = event => { event.preventDefault(); $('libraryDrop').classList.remove('over'); addFiles(event.dataTransfer.files); };
+    document.querySelectorAll('[data-tool-drop]').forEach(drop => { drop.ondragover = event => { event.preventDefault(); drop.classList.add('over'); }; drop.ondragleave = () => drop.classList.remove('over'); drop.ondrop = event => handleToolDrop(event, drop.dataset.toolDrop); });
+    $('playBtn').onclick = () => { const m = activeMedia(); if (!state.file) return toast('Chargez un média avant la lecture'); m.paused ? m.play() : m.pause(); };
+    [media, audio].forEach(m => { m.ontimeupdate = updateTime; m.onplay = () => $('playBtn').textContent = '❚❚ Pause'; m.onpause = () => $('playBtn').textContent = '▶ Lecture'; });
+    timeline.oninput = () => { activeMedia().currentTime = Number(timeline.value); updateTime(); }; $('frameBack').onclick = () => { activeMedia().currentTime = Math.max(0, activeMedia().currentTime - .1); updateTime(); }; $('frameForward').onclick = () => { activeMedia().currentTime = Math.min(activeMedia().duration || 0, activeMedia().currentTime + .1); updateTime(); };
+    $('setStart').onclick = () => { $('startInput').value = formatTime(activeMedia().currentTime); }; $('setEnd').onclick = () => { $('endInput').value = formatTime(activeMedia().currentTime); }; $('startInput').onchange = (e) => seekFromInput(e.target); $('endInput').onchange = (e) => seekFromInput(e.target);
+    $('previewSegment').onclick = () => { const m = activeMedia(); const start = parseTime($('startInput').value); const end = parseTime($('endInput').value); if (end <= start) return toast('La fin doit être après le début'); m.currentTime = start; m.play(); m.ontimeupdate = () => { updateTime(); if (m.currentTime >= end) { m.pause(); m.ontimeupdate = updateTime; } }; };
+    $('gain').oninput = (e) => $('gainValue').textContent = `${Number(e.target.value).toFixed(2)}x`;
+    $('chooseOutput').onclick = async () => { if (!window.showDirectoryPicker) return toast('Sélection de dossier non supportée par ce navigateur'); try { state.outputDirectory = await window.showDirectoryPicker({ mode: 'readwrite' }); $('chooseOutput').textContent = `Sortie : ${state.outputDirectory.name}`; } catch {} };
+
+    $('generateCut').onclick = () => { if (!state.file) return toast('Chargez un média avant de générer'); const start = parseTime($('startInput').value); const end = parseTime($('endInput').value); if (end <= start) return toast('Plage temporelle invalide'); const gain = Number($('gain').value); const codecArgs = gain === 1 ? '-c copy' : `-c:v copy -c:a aac -af volume=${gain}`; setCommand(`ffmpeg -hide_banner -ss ${start.toFixed(3)} -i ${commandInput()} -t ${(end - start).toFixed(3)} -map 0 ${codecArgs} ${quote(outputPath($('editOutput').value))}`); };
+    $('format').onchange = () => { const format = $('format').value; const output = $('convertOutput').value.replace(/\.[^.]+$/, ''); $('convertOutput').value = `${output || 'conversion'}.${format}`; };
+    $('generateConvert').onclick = () => { const format = $('format').value; const video = $('videoCodec').value; const audioCodec = format === 'mp3' ? 'libmp3lame' : format === 'wav' ? 'pcm_s16le' : $('audioCodec').value; const videoArgs = ['mp3', 'wav'].includes(format) ? '' : ` -c:v ${video}`; const audioArgs = ` -c:a ${audioCodec}`; setCommand(`ffmpeg -hide_banner -i ${commandInput()}${videoArgs}${audioArgs} ${quote(outputPath($('convertOutput').value || `conversion.${format}`))}`); };
+    $('generateJoin').onclick = () => { const files = state.joinFiles.length ? state.joinFiles : state.files; if (files.length < 2) return toast('Ajoutez au moins deux fichiers'); const lines = files.map(file => `file '${file.name.replaceAll("'", "'\\''")}'`).join('\n'); setCommand(`(echo ${lines.split('\n').join(' & echo ')}) > concat.txt && ffmpeg -hide_banner -f concat -safe 0 -i concat.txt -c copy ${quote(outputPath($('joinOutput').value))}`); };
+
+    function renderJoinFiles() { $('fileList').innerHTML = state.joinFiles.map((file, index) => `<div class="file-item"><span>${index + 1}. ${file.name}<small>${(file.size / 1048576).toFixed(2)} Mo</small></span><button class="remove" data-index="${index}" title="Retirer" type="button">×</button></div>`).join(''); document.querySelectorAll('.remove').forEach(btn => btn.onclick = () => { state.joinFiles.splice(Number(btn.dataset.index), 1); renderJoinFiles(); }); }
+    $('clearFiles').onclick = () => { state.joinFiles = []; renderJoinFiles(); };
+    $('copyCommand').onclick = async () => { if (!state.command) return toast('Générez d’abord une commande'); await navigator.clipboard.writeText(state.command); toast('Commande copiée'); };
+    $('downloadBat').onclick = () => { if (!state.command) return toast('Générez d’abord une commande'); const blob = new Blob([`@echo off\r\n${state.command}\r\npause\r\n`], { type: 'text/plain' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'ffmpeg-command.bat'; link.click(); URL.revokeObjectURL(link.href); };
+    $('runCommand').onclick = async () => { if (!state.command) return toast('Générez d’abord une commande'); if (!state.files.length) return toast('Chargez un fichier avant de lancer FFmpeg'); try { toast('Envoi du média au bridge…'); const files = await Promise.all(state.files.map(encodeFile)); const outputs = [$('editOutput').value, $('convertOutput').value, $('joinOutput').value]; const response = await fetch('http://127.0.0.1:8765/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ command: state.command, files, outputs }) }); if (!response.ok) throw new Error(); toast('Traitement FFmpeg lancé'); } catch { toast('Lancez start-ffmpeg-bridge.bat puis réessayez'); } };
+  </script>
+</body>
+</html>
+

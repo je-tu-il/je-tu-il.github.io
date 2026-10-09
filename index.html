@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Je-tu-il | Portfolio Développeur & Hub de Projets</title>
+  <meta name="description" content="Portfolio officiel de Jules R. (Je-tu-il) : applications web, cybersécurité, portages calculatrice TI-84, mobile iOS, outils bas niveau et intelligence artificielle.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Grid Background -->
+  <div class="bg-grid"></div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-link">
+        <div class="brand-avatar">J</div>
+        <div class="brand-text">
+          <h2>Je-tu-il</h2>
+          <p>github.io/portfolio</p>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <button class="btn-command-palette-trigger" onclick="openPalette()">
+          <span>🔍 Rechercher un projet</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+
+        <a href="https://github.com/je-tu-il" target="_blank" rel="noopener noreferrer" class="nav-link">
+          <span>GitHub</span>
+          <span style="font-size:12px;">↗</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-badge">
+        <span>✨ Hub Officiel • 35+ Projets d'Ingénierie & Création</span>
+      </div>
+
+      <h1 class="hero-title">
+        Ingénierie Logicielle,<br>Systèmes & Créativité
+      </h1>
+
+      <p class="hero-subtitle">
+        Explorez mon écosystème de projets : des <strong>démos jouables en direct</strong> dans le navigateur, du <strong>code bas niveau C/C++/Rust</strong>, des applications <strong>iOS Swift</strong> natives, de la <strong>stéganographie ISO</strong> et des mondes virtuels propulsés par <strong>l'IA générative</strong>.
+      </p>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-number">39</div>
+          <div class="stat-label">Projets Répertoriés</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">12</div>
+          <div class="stat-label">Démos en Ligne</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">7</div>
+          <div class="stat-label">Domaines d'Expertise</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Local-First & Libre</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="hero-buttons">
+        <button class="btn-hero-primary" onclick="setCategory('runnable', document.querySelector('.cat-pill[data-cat=runnable]')); document.getElementById('catalogue').scrollIntoView({behavior:'smooth'});">
+          <span>🎮 Tester les Démos en Direct</span>
+        </button>
+        <button class="btn-hero-secondary" onclick="openPalette()">
+          <span>⚡ Command Palette (Ctrl+K)</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Controls Section (Search & Filter Pills) -->
+  <section class="controls-section" id="catalogue">
+    <div class="container">
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="mainSearchInput" placeholder="Rechercher par mot-clé, technologie (React, Swift, Rust, Python, C++)...">
+      </div>
+
+      <div class="category-pills">
+        <button class="cat-pill active" data-cat="all" onclick="setCategory('all', this)">🌟 Tous (39)</button>
+        <button class="cat-pill" data-cat="runnable" onclick="setCategory('runnable', this)">✨ Démos Directes (12)</button>
+        <button class="cat-pill" data-cat="games" onclick="setCategory('games', this)">🎮 Jeux & Émulateurs</button>
+        <button class="cat-pill" data-cat="security" onclick="setCategory('security', this)">🔒 Sécurité & Crypto</button>
+        <button class="cat-pill" data-cat="ai-web" onclick="setCategory('ai-web', this)">🧠 Web & IA</button>
+        <button class="cat-pill" data-cat="mobile" onclick="setCategory('mobile', this)">📱 Mobile iOS</button>
+        <button class="cat-pill" data-cat="system" onclick="setCategory('system', this)">⚙️ Système & Outils</button>
+        <button class="cat-pill" data-cat="3d-hardware" onclick="setCategory('3d-hardware', this)">🎨 3D, Design & Matériel</button>
+        <button class="cat-pill" data-cat="concepts" onclick="setCategory('concepts', this)">💡 Concepts & Études</button>
+      </div>
+
+      <div class="count-indicator" id="countDisplay">
+        Chargement des projets...
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Grid Section -->
+  <main class="container">
+    <div class="projects-grid" id="projectsGrid"></div>
+  </main>
+
+  <!-- Command Palette Modal (Raycast/Spotlight Style) -->
+  <div id="commandPalette" onclick="closePalette(event)">
+    <div class="palette-box">
+      <div class="palette-search-row">
+        <span>🔍</span>
+        <input type="text" id="paletteInput" placeholder="Rechercher un projet, un jeu, un outil..." autocomplete="off">
+      </div>
+      <div class="palette-results" id="paletteResults"></div>
+      <div class="palette-footer">
+        <div><kbd>↑</kbd> <kbd>↓</kbd> Naviguer • <kbd>↵</kbd> Ouvrir • <kbd>Esc</kbd> Fermer</div>
+        <div>Inspiré de Launcher App</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom:8px;">Portfolio et vitrine conçus pour <a href="https://je-tu-il.github.io">je-tu-il.github.io</a></p>
+      <p style="font-size:12px; color:var(--text-dim);">Code source & contributions sous licence libre • Hébergé sur GitHub Pages</p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
