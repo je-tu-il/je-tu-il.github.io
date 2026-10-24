@@ -8,8 +8,15 @@
     "status": "Live Demo",
     "isRunnable": true,
     "runnableUrl": "projects/demineur/index.html",
-    "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["React", "TypeScript", "Vite", "Tailwind CSS", "Firebase", "WebSockets"],
+    "githubUrl": "https://github.com/je-tu-il/web-minesweeper-global",
+    "techStack": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "Firebase",
+      "WebSockets"
+    ],
     "icon": "💣",
     "description": "Une version compétitive et multijoueur en temps réel du légendaire jeu du Démineur. Pensé pour les passionnés d'esport casual et de speedrun, il propose un chronomètre haute précision, un système anti-hasard (premier coup toujours sécurisé), des classements mondiaux synchronisés via Firestore, et une interface réactive ultra-moderne.",
     "features": [
@@ -32,7 +39,13 @@
     "isRunnable": true,
     "runnableUrl": "projects/qr-shroud/index.html",
     "githubUrl": "https://github.com/je-tu-il/QR-Shroud",
-    "techStack": ["JavaScript ES6+", "HTML5 Canvas", "JSZip", "QRCode.js", "One-Time Pad"],
+    "techStack": [
+      "JavaScript ES6+",
+      "HTML5 Canvas",
+      "JSZip",
+      "QRCode.js",
+      "One-Time Pad"
+    ],
     "icon": "🛡️",
     "description": "QR-Shroud est une innovation cryptographique permettant de dissimuler des messages et images secrets à travers 2 à 4 QR codes complémentaires. Chaque fragment est un véritable QR code ISO lisible par n'importe quel smartphone, mais le secret ne peut être révélé que lorsque les clés sont physiquement ou optiquement superposées.",
     "features": [
@@ -43,7 +56,8 @@
       "Export ZIP instantané de toutes les clés d'un clic"
     ],
     "highlights": "Zéro dépendance serveur, chiffrement 100% exécuté dans le navigateur, respect strict des matrices de correction d'erreur ISO/IEC 18004.",
-    "folder": "Imagecachée"
+    "folder": "Imagecachée",
+    "liveDemoUrl": "https://je-tu-il.github.io/QR-Shroud/"
   },
   {
     "id": "celeste-2-ti",
@@ -55,7 +69,13 @@
     "isRunnable": true,
     "runnableUrl": "projects/celeste-ti/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["C / C++", "eZ80 Assembly", "CE C Toolchain", "Python", "CEmu Emulator"],
+    "techStack": [
+      "C / C++",
+      "eZ80 Assembly",
+      "CE C Toolchain",
+      "Python",
+      "CEmu Emulator"
+    ],
     "icon": "🍓",
     "description": "Portage natif haute fidélité du chef-d'œuvre de plateforme Celeste (PICO-8) pour la calculatrice graphique Texas Instruments TI-84 Plus CE. Le projet intègre un éditeur de niveaux en Python (editor.py), un compilateur de maps binaire optimisé pour les 154 Ko de RAM de la machine, et une version jouable directement dans le navigateur.",
     "features": [
@@ -78,7 +98,13 @@
     "isRunnable": true,
     "runnableUrl": "projects/gens-mort/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Next.js 16", "React 19", "Pixi.js 8", "Google Gemini AI", "A* Pathfinding"],
+    "techStack": [
+      "Next.js 16",
+      "React 19",
+      "Pixi.js 8",
+      "Google Gemini AI",
+      "A* Pathfinding"
+    ],
     "icon": "🧠",
     "description": "Inspiré de l'expérience 'Generative Agents' de Stanford, Gens Mort est une simulation vivante où des villageois dirigés par des modèles de langage avancés (Gemini) évoluent de façon totalement autonome sur une carte 2D. Ils forgent des souvenirs, nouent des amitiés, discutent entre eux et adaptent leur humeur en fonction de leur routine quotidienne.",
     "features": [
@@ -101,7 +127,13 @@
     "isRunnable": true,
     "runnableUrl": "projects/trading-training/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Next.js", "TypeScript", "Tailwind CSS", "Python (yfinance)", "Canvas Charts"],
+    "techStack": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Python (yfinance)",
+      "Canvas Charts"
+    ],
     "icon": "📈",
     "description": "Voyagez à travers les décennies et investissez dans les actions réelles comme si vous y étiez. Le simulateur charge des millions de points de données de marché historiques réels (Apple, Amazon, Bitcoin, Indices) tout en plongeant l'utilisateur dans le contexte géopolitique et médiatique des années 2000, de la bulle Internet ou du krach de 2008.",
     "features": [
@@ -124,7 +156,13 @@
     "isRunnable": true,
     "runnableUrl": "projects/launcher-sim/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Python", "AutoHotkey", "PySide / Qt", "TinyTag", "Win32 API"],
+    "techStack": [
+      "Python",
+      "AutoHotkey",
+      "PySide / Qt",
+      "TinyTag",
+      "Win32 API"
+    ],
     "icon": "🚀",
     "description": "Conçu pour remplacer la recherche lente de Windows, ce lanceur s'ouvre en moins de 0.2 seconde via raccourci global. Il indexe applications portables, jeux, notes Markdown et bibliothèque musicale. Son innovation majeure : un système de recherche audio avec verrouillage par Tabulation (`Tab`) pour explorer un artiste en détail d'un coup de touche.",
     "features": [
@@ -147,7 +185,13 @@
     "isRunnable": true,
     "runnableUrl": "projects/lanterne-stan/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Three.js", "Modélisation 3D (3MF / STL)", "Impression 3D", "CSS Glassmorphism", "JavaScript"],
+    "techStack": [
+      "Three.js",
+      "Modélisation 3D (3MF / STL)",
+      "Impression 3D",
+      "CSS Glassmorphism",
+      "JavaScript"
+    ],
     "icon": "🏮",
     "description": "Projet de design physique et de valorisation du patrimoine nancéien. Inspirée des célèbres grilles dorées de Jean Lamour sur la Place Stanislas, cette lanterne moderne combine fabrication additive de haute précision et diffuseur de lumière chaleureux. Le site présente le produit avec visualiseur 3D interactif et galerie photo.",
     "features": [
@@ -169,8 +213,14 @@
     "status": "Live Demo",
     "isRunnable": true,
     "runnableUrl": "projects/voxel3d/index.html",
-    "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["HTML5", "Vite", "Spline 3D", "Tailwind CSS", "JavaScript"],
+    "githubUrl": "https://github.com/je-tu-il/Voxel3d",
+    "techStack": [
+      "HTML5",
+      "Vite",
+      "Spline 3D",
+      "Tailwind CSS",
+      "JavaScript"
+    ],
     "icon": "🧊",
     "description": "Boutique en ligne et configurateur de sculptures 3D personnalisées. Spécialisé dans les illusions d'optique 'Dual-Text' (un mot visible sous un angle, un second mot sous un autre angle) et les bas-reliefs topographiques immortalisant des parcours de randonnée GPX en 3D.",
     "features": [
@@ -181,7 +231,8 @@
       "Optimisé pour une fabrication rapide et livraison en 48h"
     ],
     "highlights": "Algorithme d'intersection booléenne pour générer automatiquement le volume 3D reliant deux textes orthogonaux.",
-    "folder": "ENTREPRISE/Obj3D"
+    "folder": "ENTREPRISE/Obj3D",
+    "liveDemoUrl": "https://je-tu-il.github.io/Voxel3d/"
   },
   {
     "id": "song-of-ram",
@@ -192,8 +243,14 @@
     "status": "Live Demo",
     "isRunnable": true,
     "runnableUrl": "projects/song-of-ram/index.html",
-    "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Python", "Win32 API (PROCESS_VM_READ)", "PyAudio", "Web Audio API", "HTML5 Canvas"],
+    "githubUrl": "https://github.com/je-tu-il/Song-of-my-Ram",
+    "techStack": [
+      "Python",
+      "Win32 API (PROCESS_VM_READ)",
+      "PyAudio",
+      "Web Audio API",
+      "HTML5 Canvas"
+    ],
     "icon": "🎶",
     "description": "Une passerelle cybernétique entre le bas niveau matériel et l'expression artistique. Le programme lit les octets en temps réel dans les pages de mémoire vive du système d'exploitation et convertit les signatures binaires en fréquences audibles (synthèse additive/FM) tout en projetant les blocs de mémoire sous forme de fresques bitmap chromatiques.",
     "features": [
@@ -216,7 +273,12 @@
     "isRunnable": true,
     "runnableUrl": "projects/password-generator/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["JavaScript", "Web Crypto API (crypto.getRandomValues)", "EFF Large Wordlist", "HTML5"],
+    "techStack": [
+      "JavaScript",
+      "Web Crypto API (crypto.getRandomValues)",
+      "EFF Large Wordlist",
+      "HTML5"
+    ],
     "icon": "🎲",
     "description": "Outil de génération de mots de passe incassables reposant sur la méthode Diceware recommandée par l'EFF (Electronic Frontier Foundation). Utilisant la liste complète des 7776 mots mélangée cryptographiquement, il calcule l'entropie en bits en temps réel et résiste aux attaques par dictionnaire et aux calculateurs quantiques.",
     "features": [
@@ -239,7 +301,13 @@
     "isRunnable": true,
     "runnableUrl": "projects/cv-module/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["React 18", "TypeScript", "Vite", "Tailwind CSS", "PDF Export"],
+    "techStack": [
+      "React 18",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "PDF Export"
+    ],
     "icon": "📄",
     "description": "Un constructeur de CV ultra-flexible permettant de composer, réorganiser et personnaliser chaque bloc (expériences, compétences, formations, projets) avec prévisualisation temps réel et mise en page responsive prête pour l'impression A4.",
     "features": [
@@ -262,7 +330,12 @@
     "isRunnable": true,
     "runnableUrl": "projects/teleprompter/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["HTML5", "CSS3 Animations", "JavaScript ES6", "Keyboard API"],
+    "techStack": [
+      "HTML5",
+      "CSS3 Animations",
+      "JavaScript ES6",
+      "Keyboard API"
+    ],
     "icon": "📺",
     "description": "Téléprompteur professionnel conçu pour les créateurs de contenu vidéo, présentateurs et orateurs. Permet de lire un script à vitesse variable avec fonction miroir optique (pour utilisation avec vitre séparatrice 70/30 de caméra), inversion de texte et contrôle à distance.",
     "features": [
@@ -285,7 +358,12 @@
     "isRunnable": true,
     "runnableUrl": "projects/ffmpeg-studio/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["HTML5 / CSS3", "Python Flask / Subprocess", "FFmpeg", "JavaScript"],
+    "techStack": [
+      "HTML5 / CSS3",
+      "Python Flask / Subprocess",
+      "FFmpeg",
+      "JavaScript"
+    ],
     "icon": "🎬",
     "description": "Interface graphique moderne pour automatiser et orchestrer les commandes FFmpeg complexes sans avoir à mémoriser des dizaines d'arguments CLI. Permet de couper, convertir, réencoder, filtrer et extraire l'audio avec prévisualisation en direct de la commande générée.",
     "features": [
@@ -308,7 +386,13 @@
     "isRunnable": true,
     "runnableUrl": "projects/design-gallery/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Adobe Illustrator", "Vector SVG", "UI/UX Design", "CSS Grid", "Lightbox JS"],
+    "techStack": [
+      "Adobe Illustrator",
+      "Vector SVG",
+      "UI/UX Design",
+      "CSS Grid",
+      "Lightbox JS"
+    ],
     "icon": "🎨",
     "description": "Sélection de projets d'arts graphiques, d'illustrations vectorielles et de chartes d'identité visuelle. Comprend le projet 'Champibad' (mascotte et typographie de badminton), le jeu de cartes illustré 'La Danse des Œufs' et des déclinaisons pour supports imprimés et web.",
     "features": [
@@ -331,7 +415,12 @@
     "isRunnable": true,
     "runnableUrl": "projects/fav-hub/index.html",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["HTML5", "JavaScript", "JSON", "Python Parser"],
+    "techStack": [
+      "HTML5",
+      "JavaScript",
+      "JSON",
+      "Python Parser"
+    ],
     "icon": "⭐",
     "description": "Dashboard de gestion et de recherche instantanée parmi des centaines de ressources web collectées et ordonnées par thématiques (Outils de dev, Actualités Tech, IA, Systèmes, Éducation). Alimenté par des scripts de classification automatique en Python.",
     "features": [
@@ -354,7 +443,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=wfp-ipscan",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["C / C++", "Windows Driver Kit (WDK)", "Windows Filtering Platform", "NDIS", "SQLite"],
+    "techStack": [
+      "C / C++",
+      "Windows Driver Kit (WDK)",
+      "Windows Filtering Platform",
+      "NDIS",
+      "SQLite"
+    ],
     "icon": "⚡",
     "description": "Projet de pointe en ingénierie système bas niveau. Il met en œuvre un pilote Windows de type Callout Driver greffé directement sur la pile Windows Filtering Platform (WFP) au niveau du noyau (Kernel-mode), communiquant via Inverted Call et IOCTL avec un service utilisateur et une base SQLite pour surveiller, journaliser et bloquer les flux réseau suspects en temps réel.",
     "features": [
@@ -376,8 +471,16 @@
     "status": "Architecture & Specs",
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=passapp",
-    "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Rust", "Tauri", "React", "TypeScript", "SwiftUI", "Argon2id", "XChaCha20-Poly1305"],
+    "githubUrl": "https://github.com/je-tu-il/PassApp",
+    "techStack": [
+      "Rust",
+      "Tauri",
+      "React",
+      "TypeScript",
+      "SwiftUI",
+      "Argon2id",
+      "XChaCha20-Poly1305"
+    ],
     "icon": "🔑",
     "description": "Coffre-fort numérique moderne conçu avec une philosophie Local-First : vos données vous appartiennent et ne quittent jamais votre appareil sans chiffrement préalable. Conçu pour fonctionner sur Windows, macOS, Linux et iOS avec un noyau cryptographique partagé écrit en Rust et compilé en WebAssembly.",
     "features": [
@@ -400,7 +503,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=hidecam",
     "githubUrl": "https://github.com/je-tu-il/HideCam",
-    "techStack": ["Swift", "SwiftUI", "AVFoundation", "iOS Keychain", "CryptoKit"],
+    "techStack": [
+      "Swift",
+      "SwiftUI",
+      "AVFoundation",
+      "iOS Keychain",
+      "CryptoKit"
+    ],
     "icon": "📹",
     "description": "Application iOS pour la capture vidéo en situation de sécurité personnelle ou d'investigation journalistique. Permet d'enregistrer discrètement en masquant l'écran d'enregistrement derrière une fausse interface (écran noir ou application leurre) tout en stockant les vidéos dans un coffre protégé par Face ID et chiffré sur l'appareil.",
     "features": [
@@ -423,7 +532,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=bestcam",
     "githubUrl": "https://github.com/je-tu-il/BestCam",
-    "techStack": ["Swift", "SwiftUI", "Speech Framework", "AVFoundation", "Combine"],
+    "techStack": [
+      "Swift",
+      "SwiftUI",
+      "Speech Framework",
+      "AVFoundation",
+      "Combine"
+    ],
     "icon": "📸",
     "description": "Application photographique native pour iPhone permettant de capturer des photos et vidéos les mains libres grâce à un moteur de reconnaissance vocale local. Plus besoin de retardateur ou de télécommande Bluetooth pour prendre des photos de groupe ou des clichés sportifs.",
     "features": [
@@ -446,7 +561,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=guardian-phone",
     "githubUrl": "https://github.com/je-tu-il/Guardian-Phone",
-    "techStack": ["Swift", "SwiftUI", "Screen Time API", "DeviceActivity", "FamilyControls"],
+    "techStack": [
+      "Swift",
+      "SwiftUI",
+      "Screen Time API",
+      "DeviceActivity",
+      "FamilyControls"
+    ],
     "icon": "📵",
     "description": "Application iOS conçue pour lutter contre l'addiction aux réseaux sociaux et aux algorithmes de dopamine. Elle utilise les dernières API Screen Time et DeviceActivity d'Apple pour bloquer sélectivement les applications dévoreuses d'attention selon des plages horaires définies, favorisant le travail profond.",
     "features": [
@@ -469,7 +590,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=stacklaunch",
     "githubUrl": "https://github.com/je-tu-il/Dump-phone",
-    "techStack": ["Swift", "SwiftUI", "WidgetKit", "URL Schemes", "CoreGraphics"],
+    "techStack": [
+      "Swift",
+      "SwiftUI",
+      "WidgetKit",
+      "URL Schemes",
+      "CoreGraphics"
+    ],
     "icon": "📱",
     "description": "Outil de productivité pour iOS offrant un widget dynamique et un lanceur alternatif ultra-rapide. Il rassemble vos raccourcis, scripts personnalisés et applications indispensables dans un widget compact à pile interactive accessible d'un seul swipe.",
     "features": [
@@ -492,7 +619,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=fingerpick",
     "githubUrl": "https://github.com/je-tu-il/Starter",
-    "techStack": ["Swift", "SwiftUI", "Multi-Touch Handling", "CoreHaptics", "AudioToolbox"],
+    "techStack": [
+      "Swift",
+      "SwiftUI",
+      "Multi-Touch Handling",
+      "CoreHaptics",
+      "AudioToolbox"
+    ],
     "icon": "👆",
     "description": "Le moyen le plus ludique et équitable de désigner qui commence, qui paye l'addition ou de constituer des équipes. Chaque participant pose son doigt sur l'écran : des cercles d'énergie néon palpitent sous chaque doigt avant qu'un joueur ne soit désigné avec vibrations haptiques et sons dynamiques.",
     "features": [
@@ -515,7 +648,14 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=nousdeux",
     "githubUrl": "https://github.com/je-tu-il/NousDeux",
-    "techStack": ["React Native", "Expo 56", "Firebase", "Zustand", "Expo Haptics", "TypeScript"],
+    "techStack": [
+      "React Native",
+      "Expo 56",
+      "Firebase",
+      "Zustand",
+      "Expo Haptics",
+      "TypeScript"
+    ],
     "icon": "❤️",
     "description": "Espace privé sécurisé partagé uniquement à deux. L'application permet aux partenaires d'échanger des humeurs quotidiennes, de planifier leurs dates dans un calendrier commun, de tenir un carnet de souvenirs avec photos et de s'envoyer des notifications d'affection haptiques en temps réel.",
     "features": [
@@ -538,7 +678,14 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=hidepdf",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Next.js 16", "React 19", "pdf-lib", "PDF.js", "Tesseract.js OCR", "TypeScript"],
+    "techStack": [
+      "Next.js 16",
+      "React 19",
+      "pdf-lib",
+      "PDF.js",
+      "Tesseract.js OCR",
+      "TypeScript"
+    ],
     "icon": "📑",
     "description": "Application web et CLI pour caviarder véritablement des documents PDF sensibles. Contrairement aux outils qui se contentent de tracer un rectangle noir au-dessus du texte (laissant le texte sous-jacent copiable), cet outil supprime physiquement les flux de glyphes, rasterise les zones caviardées et nettoie les métadonnées cachées.",
     "features": [
@@ -561,7 +708,12 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=racc-ahk",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["AutoHotkey v1/v2", "Win32 Hooks", "JSON.ahk", "Windows Shell"],
+    "techStack": [
+      "AutoHotkey v1/v2",
+      "Win32 Hooks",
+      "JSON.ahk",
+      "Windows Shell"
+    ],
     "icon": "⌨️",
     "description": "Suite logicielle complète de scripts AutoHotkey orchestrant l'ensemble de l'environnement de travail Windows. Elle intègre un historique persistant du presse-papier, des expansions instantanées de snippets de code, des contrôles multimédia pour VLC et un moteur de macros contextuel.",
     "features": [
@@ -584,7 +736,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=gestfav",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Chrome Extensions MV3", "Google Gemini API", "OpenAI API", "JavaScript", "HTML/CSS"],
+    "techStack": [
+      "Chrome Extensions MV3",
+      "Google Gemini API",
+      "OpenAI API",
+      "JavaScript",
+      "HTML/CSS"
+    ],
     "icon": "🧩",
     "description": "Extension de navigateur moderne qui résout le chaos des barres de favoris surchargées. Grâce aux modèles d'IA générative (Gemini / OpenAI), elle analyse le titre et l'URL de chaque favori, identifie sa thématique et le classe intelligemment dans une arborescence ordonnée tout en éliminant les doublons.",
     "features": [
@@ -607,7 +765,12 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=my-extension",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Chrome Extensions MV3", "BrowsingData API", "Cookies API", "JavaScript"],
+    "techStack": [
+      "Chrome Extensions MV3",
+      "BrowsingData API",
+      "Cookies API",
+      "JavaScript"
+    ],
     "icon": "🧹",
     "description": "Extension Chrome conçue pour assainir sa navigation quotidienne. Elle permet en un clic de purger l'historique récent, les cookies de tracking et les téléchargements, tout en offrant un panneau ciblé pour consulter uniquement ses notifications essentielles sur YouTube et Instagram sans se faire aspirer par le flux infini de recommandations.",
     "features": [
@@ -630,7 +793,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=mp3-studio",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Node.js", "TypeScript", "node-id3", "Express / Web UI", "CLI Commander"],
+    "techStack": [
+      "Node.js",
+      "TypeScript",
+      "node-id3",
+      "Express / Web UI",
+      "CLI Commander"
+    ],
     "icon": "🎵",
     "description": "Outil hybride web et ligne de commande pour ranger et corriger automatiquement des milliers de fichiers MP3 en quelques secondes. Il renomme les pistes selon des masques personnalisés, applique des genres cohérents et nettoie les tags parasites laissés par les différents logiciels d'extraction.",
     "features": [
@@ -653,7 +822,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=lilygo-s3",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["C / C++ (ESP-IDF / Arduino)", "ESP32-S3", "TFT_eSPI", "FreeRTOS", "Conception 3D"],
+    "techStack": [
+      "C / C++ (ESP-IDF / Arduino)",
+      "ESP32-S3",
+      "TFT_eSPI",
+      "FreeRTOS",
+      "Conception 3D"
+    ],
     "icon": "📟",
     "description": "Projet de développement matériel et logiciel autour du LilyGo T-Dongle-S3, un microcontrôleur ESP32-S3 compact doté d'un écran IPS couleur de 0.96 pouce, d'un lecteur de carte microSD et d'un port USB-A natif. Comprend un firmware personnalisé, des démonstrations graphiques et des modèles 3D de boîtier de protection.",
     "features": [
@@ -676,7 +851,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=opencore-hackintosh",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["OpenCore Bootloader", "ACPI / DSDT (ASL)", "Kexts Kernel Extensions", "macOS Recovery", "UEFI"],
+    "techStack": [
+      "OpenCore Bootloader",
+      "ACPI / DSDT (ASL)",
+      "Kexts Kernel Extensions",
+      "macOS Recovery",
+      "UEFI"
+    ],
     "icon": "🍏",
     "description": "Architecture de démarrage UEFI sur-mesure basée sur OpenCore permettant d'installer et de faire tourner les dernières versions de macOS sur du matériel PC non-Apple avec une stabilité digne d'une machine native. Intègre le patching DSDT/SSDT, la cartographie USB complète et la gestion d'énergie.",
     "features": [
@@ -699,7 +880,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=wii-homebrew",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Homebrew Channel", "IOS / cIOS (d2x)", "Nintendont", "USB Loader GX", "CleanRip"],
+    "techStack": [
+      "Homebrew Channel",
+      "IOS / cIOS (d2x)",
+      "Nintendont",
+      "USB Loader GX",
+      "CleanRip"
+    ],
     "icon": "🎮",
     "description": "Configuration complète et optimisation d'une console Nintendo Wii pour la préservation et le chargement de backups de jeux depuis disque dur USB ou carte SD. Intègre CleanRip pour le dump direct des disques optiques originaux, Nintendont pour les jeux GameCube et USB Loader GX.",
     "features": [
@@ -722,7 +909,12 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=tesla-streamer",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Python", "Flask", "HTML5 Video", "HTTP Range Requests"],
+    "techStack": [
+      "Python",
+      "Flask",
+      "HTML5 Video",
+      "HTTP Range Requests"
+    ],
     "icon": "🚗",
     "description": "Serveur de streaming multimédia léger conçu pour diffuser instantanément les vidéos stockées sur un ordinateur vers l'écran tactile d'un véhicule Tesla connecté au même réseau Wi-Fi local. Résout les limitations du navigateur Chromium embarqué dans la voiture.",
     "features": [
@@ -745,7 +937,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=yt-downloader",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Next.js", "TypeScript", "Tailwind CSS", "Serverless Functions", "YouTube API"],
+    "techStack": [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Serverless Functions",
+      "YouTube API"
+    ],
     "icon": "📥",
     "description": "Application web épurée permettant de récupérer des vidéos et pistes audio YouTube en haute définition. Conçue pour contourner les limitations de bande passante et de temps d'exécution des fonctions serverless sur Vercel avec streaming direct par flux.",
     "features": [
@@ -768,7 +966,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=manipule",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Next.js 14", "React 18", "Tailwind CSS", "Firebase", "Psychologie Cognitive"],
+    "techStack": [
+      "Next.js 14",
+      "React 18",
+      "Tailwind CSS",
+      "Firebase",
+      "Psychologie Cognitive"
+    ],
     "icon": "👁️",
     "description": "Projet interactif de sensibilisation aux biais cognitifs, à l'ingénierie sociale et aux techniques de manipulation psychologique sur le web. À travers des scénarios immersifs, l'utilisateur prend conscience des schémas d'influence utilisés par les algorithmes et les attaquants.",
     "features": [
@@ -791,7 +995,12 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=gamified-social",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Product Design", "Gamification", "Systèmes Économiques", "Spécification Produit"],
+    "techStack": [
+      "Product Design",
+      "Gamification",
+      "Systèmes Économiques",
+      "Spécification Produit"
+    ],
     "icon": "⚔️",
     "description": "Spécification d'un réseau social de nouvelle génération qui réinvente les interactions en ligne en transformant l'amitié en aventure collaborative. Intègre des quêtes d'intérêt, des boss à vaincre en équipe dans les conversations de groupe, des séries de victoires (winstreaks) et des photos d'environnement spontanées.",
     "features": [
@@ -814,7 +1023,12 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=leclerc-logistics",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Systèmes Embarqués", "Lecteurs Code-Barres EAN", "Protocoles Réseau", "Logistique"],
+    "techStack": [
+      "Systèmes Embarqués",
+      "Lecteurs Code-Barres EAN",
+      "Protocoles Réseau",
+      "Logistique"
+    ],
     "icon": "📦",
     "description": "Analyse fonctionnelle et cartographie des processus de terminaux de saisie logistique (Infomil) en grande distribution. Couvre l'inventaire par scan EAN, les relevés de prix en rayon, le pré-listage des articles et la transmission réseau vers les serveurs centraux de gestion de stocks.",
     "features": [
@@ -837,7 +1051,11 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=ai-business",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Intelligence Artificielle Générative", "Prompt Engineering", "Business Strategy"],
+    "techStack": [
+      "Intelligence Artificielle Générative",
+      "Prompt Engineering",
+      "Business Strategy"
+    ],
     "icon": "💡",
     "description": "Synthèse et veille stratégique autour des modèles économiques émergents de l'intelligence artificielle générative : création de personas IA, automatisation de contenu visuel, méthodologies de monétisation et déploiement d'agents autonomes à haute valeur ajoutée.",
     "features": [
@@ -860,7 +1078,12 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=citroen-nac",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Systèmes Embarqués Automobiles", "Firmware Flash", "FAT32 / Clé USB", "PSA NAC"],
+    "techStack": [
+      "Systèmes Embarqués Automobiles",
+      "Firmware Flash",
+      "FAT32 / Clé USB",
+      "PSA NAC"
+    ],
     "icon": "🚗",
     "description": "Guide technique exhaustif détaillant la procédure de mise à niveau du micrologiciel et de la cartographie GPS des systèmes embarqués NAC (Navigation Connectée) de PSA (Citroën C4). Couvre la vérification d'empreinte de sécurité, le formatage des supports et la gestion des cycles d'alimentation du véhicule pendant le flash.",
     "features": [
@@ -883,7 +1106,13 @@
     "isRunnable": false,
     "runnableUrl": "projects/project.html?id=steam-tools",
     "githubUrl": "https://github.com/je-tu-il",
-    "techStack": ["Python", "Steam API", "Win32", "JSON", "Manifest Parser"],
+    "techStack": [
+      "Python",
+      "Steam API",
+      "Win32",
+      "JSON",
+      "Manifest Parser"
+    ],
     "icon": "🕹️",
     "description": "Boîte à outils d'utilitaires pour gérer, analyser et sauvegarder les dépôts de jeux et manifestes Steam (`appmanifest.acf`). Permet de réparer des installations corrompues, déplacer proprement des jeux entre disques sans re-télécharger et analyser les dépendances locales.",
     "features": [
