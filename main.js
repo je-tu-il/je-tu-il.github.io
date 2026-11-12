@@ -125,9 +125,7 @@ function renderProjects() {
 
         <div class="card-actions">
           ${primaryBtn}
-          <a href="projects/project.html?id=${p.id}" class="btn-card-details">
-            <span>Détails &rarr;</span>
-          </a>
+          ${p.githubUrl ? `<a href="${p.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-details" title="Voir le dépôt GitHub"><span>GitHub ↗</span></a>` : `<a href="projects/project.html?id=${p.id}" class="btn-card-details"><span>Détails &rarr;</span></a>`}
         </div>
       </div>
     `;
