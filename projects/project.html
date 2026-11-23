@@ -252,7 +252,7 @@
 
       <div class="action-buttons">
         <a href="#" id="liveDemoBtn" class="btn-primary" style="display:none;">
-          <span>✨ Tester en direct (Live Demo)</span>
+          <span>Essayer la démo</span>
         </a>
         <a href="https://github.com/je-tu-il" target="_blank" rel="noopener noreferrer" id="githubBtn" class="btn-secondary">
           <span>🐙 Voir sur GitHub</span>
@@ -309,15 +309,12 @@
 
         // Action buttons
         const demoBtn = document.getElementById('liveDemoBtn');
-        if (p.isRunnable && p.runnableUrl) {
-          demoBtn.style.display = 'inline-flex';
-          demoBtn.href = '../' + p.runnableUrl;
-        } else {
-          demoBtn.style.display = 'none';
-        }
+        demoBtn.style.display = 'inline-flex';
+        demoBtn.href = 'demo.html?id=' + encodeURIComponent(p.id);
 
         const ghBtn = document.getElementById('githubBtn');
         if (p.githubUrl) ghBtn.href = p.githubUrl;
+        else ghBtn.hidden = true;
 
         // Content
         document.getElementById('projectDesc').innerText = p.description;

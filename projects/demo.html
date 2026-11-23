@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Démo | Portfolio</title>
+  <link rel="stylesheet" href="demo.css">
+  <script defer src="../data/projects.js"></script>
+  <script defer src="../data/demo-scenes.js"></script>
+  <script defer src="demo.js"></script>
+</head>
+<body>
+  <main>
+    <nav aria-label="Navigation de la démo">
+      <a href="../index.html#catalogue">← Catalogue</a>
+      <a id="details" hidden>Fiche du projet</a>
+    </nav>
+    <header>
+      <p id="category"></p>
+      <h1 id="title">Démo du projet</h1>
+      <p id="description"></p>
+    </header>
+    <section id="scenario" hidden aria-labelledby="scenario-title">
+      <h2 id="scenario-title">Scénario interactif</h2>
+      <p class="muted">Les données de cet aperçu sont fictives.</p>
+      <form id="controls">
+        <div id="inputs"></div>
+        <div class="actions">
+          <button id="run" type="submit"></button>
+          <button id="reset" type="reset">Recommencer</button>
+        </div>
+      </form>
+      <p id="result" role="status" aria-atomic="true"></p>
+    </section>
+    <p id="unavailable" hidden>Cette démo est introuvable. Choisissez un projet dans le catalogue.</p>
+    <a id="live" hidden>Ouvrir la version web →</a>
+    <noscript>Activez JavaScript pour lancer la démo.</noscript>
+  </main>
+</body>
+</html>

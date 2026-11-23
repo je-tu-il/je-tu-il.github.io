@@ -17,6 +17,10 @@ const paletteModal = document.getElementById('commandPalette');
 const paletteInput = document.getElementById('paletteInput');
 const paletteResults = document.getElementById('paletteResults');
 
+function demoUrl(project) {
+  return "projects/demo.html?id=" + encodeURIComponent(project.id);
+}
+
 // Initialize
 async function initPortfolio() {
   try {
@@ -27,6 +31,7 @@ async function initPortfolio() {
       if (!res.ok) throw new Error("Erreur de chargement des données");
       allProjects = await res.json();
     }
+    updateCatalogueCounts();
     renderProjects();
     setupCommandPalette();
     setupKeyboardShortcuts();
@@ -35,6 +40,17 @@ async function initPortfolio() {
     if (gridContainer) {
       gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ef4444;">Impossible de charger les projets. Veuillez rafraîchir la page.</div>';
     }
+  }
+}
+
+function updateCatalogueCounts() {
+  for (const node of document.querySelectorAll('[data-project-total]')) {
+    node.textContent = allProjects.length;
+  }
+  for (const node of document.querySelectorAll('[data-count-category]')) {
+    const category = node.dataset.countCategory;
+    node.textContent = allProjects.filter(project => category === 'all' ||
+      (category === 'runnable' ? project.isRunnable : project.category === category)).length;
   }
 }
 
@@ -86,21 +102,7 @@ function renderProjects() {
 
     const techPills = (p.techStack || []).slice(0, 4).map(t => `<span class="tech-tag">${t}</span>`).join('');
     
-    // Action button
-    let primaryBtn = '';
-    if (p.isRunnable && p.runnableUrl) {
-      primaryBtn = `
-        <a href="${p.runnableUrl}" class="btn-card-launch">
-          <span>✨ Tester en direct</span>
-        </a>
-      `;
-    } else {
-      primaryBtn = `
-        <a href="projects/project.html?id=${p.id}" class="btn-card-launch" style="background: rgba(255,255,255,0.08); color:#fff;">
-          <span>Explorer</span>
-        </a>
-      `;
-    }
+    const primaryBtn = `<a href="${demoUrl(p)}" class="btn-card-launch">Essayer la démo</a>`;
 
     return `
       <div class="project-card" data-id="${p.id}">
@@ -125,7 +127,7 @@ function renderProjects() {
 
         <div class="card-actions">
           ${primaryBtn}
-          ${p.githubUrl ? `<a href="${p.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-details" title="Voir le dépôt GitHub"><span>GitHub ↗</span></a>` : `<a href="projects/project.html?id=${p.id}" class="btn-card-details"><span>Détails &rarr;</span></a>`}
+          <a href="projects/project.html?id=${encodeURIComponent(p.id)}" class="btn-card-details">Détails →</a>
         </div>
       </div>
     `;
@@ -175,13 +177,7 @@ function setupCommandPalette() {
     } else if (e.key === 'Enter') {
       e.preventDefault();
       const selected = paletteFilteredList[paletteSelectedIndex];
-      if (selected) {
-        if (selected.isRunnable && selected.runnableUrl) {
-          window.location.href = selected.runnableUrl;
-        } else {
-          window.location.href = `projects/project.html?id=${selected.id}`;
-        }
-      }
+      if (selected) window.location.href = demoUrl(selected);
     } else if (e.key === 'Escape') {
       closePalette();
     }
@@ -218,7 +214,7 @@ function renderPaletteResults() {
   if (paletteFilteredList.length === 0) {
     paletteResults.innerHTML = `
       <div style="padding: 24px; text-align: center; color: var(--text-dim); font-size: 13px;">
-        Aucun projet trouvé pour "${paletteInput.value}"
+        Aucun projet trouvé.
       </div>
     `;
     return;
@@ -226,7 +222,7 @@ function renderPaletteResults() {
 
   paletteResults.innerHTML = paletteFilteredList.map((p, idx) => {
     const isSelected = idx === paletteSelectedIndex;
-    const targetUrl = p.isRunnable && p.runnableUrl ? p.runnableUrl : `projects/project.html?id=${p.id}`;
+    const targetUrl = demoUrl(p);
 
     return `
       <a href="${targetUrl}" class="palette-item ${isSelected ? 'active' : ''}" onmouseenter="paletteSelectedIndex=${idx}; highlightPaletteItem();">

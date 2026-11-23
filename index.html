@@ -43,7 +43,7 @@
   <section class="hero-section">
     <div class="container">
       <div class="hero-badge">
-        <span>✨ Hub Officiel • 117 Projets d'Ingénierie & Création</span>
+        <span>Portfolio de projets</span>
       </div>
 
       <h1 class="hero-title">
@@ -51,17 +51,17 @@
       </h1>
 
       <p class="hero-subtitle">
-        Explorez mon écosystème souverain de <strong>117 projets</strong> : des <strong>démos 3D & jeux interactifs</strong> dans le navigateur, du <strong>code bas niveau C/C++/Rust</strong>, des applications <strong>iOS Swift & Desktop</strong> natives, de la <strong>stéganographie ISO</strong> et des architectures propulsées par <strong>l'IA & Three.js</strong>.
+        Explorez <strong><span data-project-total>127</span> projets</strong> et essayez leurs démos dans votre navigateur.
       </p>
 
       <!-- Stats Grid -->
       <div class="stats-grid">
         <div class="stat-box">
-          <div class="stat-number">117</div>
+          <div class="stat-number" data-project-total>127</div>
           <div class="stat-label">Projets Répertoriés</div>
         </div>
         <div class="stat-box">
-          <div class="stat-number">20</div>
+          <div class="stat-number" data-project-total>127</div>
           <div class="stat-label">Démos en Ligne</div>
         </div>
         <div class="stat-box">
@@ -76,8 +76,8 @@
 
       <!-- Action Buttons -->
       <div class="hero-buttons">
-        <button class="btn-hero-primary" onclick="setCategory('runnable', document.querySelector('.cat-pill[data-cat=runnable]')); document.getElementById('catalogue').scrollIntoView({behavior:'smooth'});">
-          <span>🎮 Tester les Démos en Direct</span>
+        <button class="btn-hero-primary" onclick="setCategory('all', document.querySelector('.cat-pill[data-cat=all]')); document.getElementById('catalogue').scrollIntoView({behavior:'smooth'});">
+          <span>Explorer les démos</span>
         </button>
         <button class="btn-hero-secondary" onclick="openPalette()">
           <span>⚡ Command Palette (Ctrl+K)</span>
@@ -95,16 +95,16 @@
       </div>
 
       <div class="category-pills">
-        <button class="cat-pill active" data-cat="all" onclick="setCategory('all', this)">🌟 Tous (117)</button>
-        <button class="cat-pill" data-cat="runnable" onclick="setCategory('runnable', this)">✨ Démos Directes (20)</button>
-        <button class="cat-pill" data-cat="desktop" onclick="setCategory('desktop', this)">🖥️ Desktop (16)</button>
-        <button class="cat-pill" data-cat="mobile" onclick="setCategory('mobile', this)">📱 Mobile (13)</button>
-        <button class="cat-pill" data-cat="games" onclick="setCategory('games', this)">🎮 Web & Jeux (20)</button>
-        <button class="cat-pill" data-cat="3d-hardware" onclick="setCategory('3d-hardware', this)">🏢 Entreprise & 3D (20)</button>
-        <button class="cat-pill" data-cat="hardware" onclick="setCategory('hardware', this)">⚡ Hardware & Calcs (13)</button>
-        <button class="cat-pill" data-cat="security" onclick="setCategory('security', this)">🛡️ Sécurité & Scripts (13)</button>
-        <button class="cat-pill" data-cat="docs" onclick="setCategory('docs', this)">📚 Documentation (7)</button>
-        <button class="cat-pill" data-cat="concepts" onclick="setCategory('concepts', this)">🧪 Laboratoire & R&D (15)</button>
+        <button class="cat-pill active" data-cat="all" onclick="setCategory('all', this)">🌟 Tous (<span data-count-category="all">127</span>)</button>
+        <button class="cat-pill" data-cat="runnable" onclick="setCategory('runnable', this)">✨ Versions web (<span data-count-category="runnable">13</span>)</button>
+        <button class="cat-pill" data-cat="desktop" onclick="setCategory('desktop', this)">🖥️ Desktop (<span data-count-category="desktop">16</span>)</button>
+        <button class="cat-pill" data-cat="mobile" onclick="setCategory('mobile', this)">📱 Mobile (<span data-count-category="mobile">13</span>)</button>
+        <button class="cat-pill" data-cat="games" onclick="setCategory('games', this)">🎮 Web & Jeux (<span data-count-category="games">20</span>)</button>
+        <button class="cat-pill" data-cat="3d-hardware" onclick="setCategory('3d-hardware', this)">🏢 Entreprise & 3D (<span data-count-category="3d-hardware">20</span>)</button>
+        <button class="cat-pill" data-cat="hardware" onclick="setCategory('hardware', this)">⚡ Hardware & Calcs (<span data-count-category="hardware">13</span>)</button>
+        <button class="cat-pill" data-cat="security" onclick="setCategory('security', this)">🛡️ Sécurité & Scripts (<span data-count-category="security">13</span>)</button>
+        <button class="cat-pill" data-cat="docs" onclick="setCategory('docs', this)">📚 Documentation (<span data-count-category="docs">7</span>)</button>
+        <button class="cat-pill" data-cat="concepts" onclick="setCategory('concepts', this)">🧪 Laboratoire & R&D (<span data-count-category="concepts">15</span>)</button>
       </div>
 
       <div class="count-indicator" id="countDisplay">

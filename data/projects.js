@@ -1,4 +1,4 @@
-﻿const projectsData = [
+﻿window.PROJECTS_DATA = [
     {
         "id":  "aura-nutraceutics",
         "title":  "AURA Nutraceutics",
@@ -243,8 +243,8 @@
         "category":  "desktop",
         "categoryLabel":  "Applications Desktop",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/launcher-sim/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Launcher-app",
         "techStack":  [
                           "Electron / TypeScript",
@@ -270,8 +270,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/sitrun-simulateur-injecteur-de-traces-strava/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/SitRun",
         "techStack":  [
                           "Vue.js / React",
@@ -327,7 +327,7 @@
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
         "isRunnable":  true,
-        "runnableUrl":  "projects/time-travel-investing-simulator/index.html",
+        "runnableUrl":  "projects/trading-training/index.html",
         "githubUrl":  "https://github.com/je-tu-il/TradingTraining",
         "techStack":  [
                           "Next.js",
@@ -356,7 +356,7 @@
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
         "isRunnable":  true,
-        "runnableUrl":  "projects/d-mineur-ultime-web-minesweeper-global/index.html",
+        "runnableUrl":  "projects/demineur/index.html",
         "githubUrl":  "https://github.com/je-tu-il/web-minesweeper-global",
         "techStack":  [
                           "React",
@@ -414,7 +414,7 @@
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
         "isRunnable":  true,
-        "runnableUrl":  "projects/cvmodule-diteur-modulaire-de-cv-local/index.html",
+        "runnableUrl":  "projects/cv-module/index.html",
         "githubUrl":  "https://github.com/je-tu-il/CvModule",
         "techStack":  [
                           "React",
@@ -525,8 +525,8 @@
         "category":  "hardware",
         "categoryLabel":  "Hardware, IoT \u0026 Calcs",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/celeste-ti/index.html",
         "githubUrl":  "https://github.com/je-tu-il/CELESTE2TI",
         "techStack":  [
                           "Langage C (ez80)",
@@ -644,8 +644,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/le-metaverse-des-souvenirs-sanctuaire-comm-moratif/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/Gens-Mort",
         "techStack":  [
                           "Phaser.js / React",
@@ -756,8 +756,8 @@
         "category":  "docs",
         "categoryLabel":  "Documentation \u0026 Savoirs",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/teleprompter/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Prompting",
         "techStack":  [
                           "JavaScript ES6+",
@@ -895,8 +895,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/miniescape-syst-me-d-animation-d-escape-game-local/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/MiniEscape",
         "techStack":  [
                           "Node.js",
@@ -1034,8 +1034,8 @@
         "category":  "concepts",
         "categoryLabel":  "Laboratoire \u0026 R\u0026D",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/ffmpeg-studio/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Montage",
         "techStack":  [
                           "FFmpeg",
@@ -1196,8 +1196,8 @@
         "category":  "concepts",
         "categoryLabel":  "Laboratoire \u0026 R\u0026D",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/fav-hub/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Fav",
         "techStack":  [
                           "Node.js / Python",
@@ -1249,8 +1249,8 @@
         "category":  "hardware",
         "categoryLabel":  "Hardware, IoT \u0026 Calcs",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/lanterne-stan/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Lampadaire-Benji",
         "techStack":  [
                           "Modélisation CAO 3D",
@@ -1386,8 +1386,8 @@
         "category":  "desktop",
         "categoryLabel":  "Applications Desktop",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/song-of-ram/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Song-of-my-Ram",
         "techStack":  [
                           "Python",
@@ -1469,8 +1469,8 @@
         "category":  "docs",
         "categoryLabel":  "Documentation \u0026 Savoirs",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/design-gallery/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Design",
         "techStack":  [
                           "Figma",
@@ -1889,8 +1889,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/chess-tournaments-organisateur-d-centralis-de-tournois-d-checs/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/Chess-tournaments",
         "techStack":  [
                           "HTML5",
@@ -1916,8 +1916,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/dicechess-3d-checs-al-atoires-multijoueur-p2p-en-temps-r-el/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/DiceChess",
         "techStack":  [
                           "React 19",
@@ -1944,8 +1944,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/extremechessmat-r-solveur-autonome-de-finales-mats-extr-mes/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/ExtremeChessMat",
         "techStack":  [
                           "HTML5",
@@ -1972,8 +1972,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/geogallery-visualiseur-cartographique-galerie-photo-locale/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/GeoGallery",
         "techStack":  [
                           "React 19",
@@ -2001,8 +2001,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/handtracking-visualizer-interface-gestuelle-a-rienne-sans-contact/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/HandTracking",
         "techStack":  [
                           "HTML5 Canvas",
@@ -2028,8 +2028,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/laps-chronom-tre-relativiste-simulateur-de-dilatation-temporelle/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/Laps",
         "techStack":  [
                           "HTML5 Canvas",
@@ -2055,8 +2055,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/mindschem-studio-de-mind-mapping-diagrammes-collaboratifs/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/MindSchem",
         "techStack":  [
                           "React 19",
@@ -2084,7 +2084,7 @@
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
         "isRunnable":  true,
-        "runnableUrl":  "projects/qr-shroud-chiffrement-st-ganographie-cryptographique-dans-qr-codes/index.html",
+        "runnableUrl":  "projects/qr-shroud/index.html",
         "githubUrl":  "https://github.com/je-tu-il/QR-Shroud",
         "techStack":  [
                           "HTML5",
@@ -2111,8 +2111,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/quizzyquiz-plateforme-de-quiz-interactifs-p2p-alternative-kahoot/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/QuizzyQuiz",
         "techStack":  [
                           "Vite 8",
@@ -2139,8 +2139,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/yggdex-moteur-d-indexation-catalogue-multim-dia-fts5/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/YggDex",
         "techStack":  [
                           "Python 3.12",
@@ -2194,8 +2194,8 @@
         "category":  "3d-hardware",
         "categoryLabel":  "Entreprise, 3D \u0026 E-commerce",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/voxel3d/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Voxel3d",
         "techStack":  [
                           "Vanilla JavaScript",
@@ -2980,8 +2980,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/optideal-moteur-d-optimisation-des-cumuls-remboursements/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/Bonplan",
         "techStack":  [
                           "React 19",
@@ -3009,8 +3009,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/champibad-website-vitrine-club-de-badminton/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/Champibad-Website",
         "techStack":  [
                           "React",
@@ -3037,8 +3037,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/lostcall-carnet-d-urgence-physique-imprimable/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/LostCall",
         "techStack":  [
                           "HTML5",
@@ -3291,8 +3291,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  true,
-        "runnableUrl":  "projects/lucky-construccheune-jeu-de-plateau-tactique-11x11/index.html",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/Lucky-Construccheune",
         "techStack":  [
                           "HTML5",
@@ -3453,8 +3453,8 @@
         "category":  "desktop",
         "categoryLabel":  "Applications Bureau",
         "status":  "Production",
-        "isRunnable":  true,
-        "runnableUrl":  "http://localhost:8765",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/Antigravity_Offline_Studio",
         "techStack":  [
                           "Python",
@@ -3509,8 +3509,8 @@
         "category":  "web",
         "categoryLabel":  "Applications Web \u0026 Outils",
         "status":  "Production",
-        "isRunnable":  true,
-        "runnableUrl":  "https://je-tu-il.github.io/Simple_Sign/",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/Simple_Sign",
         "techStack":  [
                           "HTML5",
@@ -3537,8 +3537,8 @@
         "category":  "web",
         "categoryLabel":  "Applications Web \u0026 Jeux",
         "status":  "Production",
-        "isRunnable":  true,
-        "runnableUrl":  "https://je-tu-il.github.io/Game-Revive/",
+        "isRunnable":  false,
+        "runnableUrl":  "",
         "githubUrl":  "https://github.com/je-tu-il/Game-Revive",
         "techStack":  [
                           "React 19",
@@ -3638,6 +3638,37 @@
         "highlights":  "100/100",
         "folder":  "03_WEB_ET_JEUX",
         "pro_score":  100
+    },
+    {
+        "id": "wavedrop",
+        "title": "WaveDrop",
+        "category": "mobile",
+        "categoryLabel": "Applications mobiles",
+        "tagline": "Transfert de données entre appareils par signaux physiques.",
+        "status": "Prototype",
+        "techStack": [
+            "PWA",
+            "JavaScript"
+        ],
+        "icon": "🌊",
+        "description": "Expérimentation de transfert par lumière, son ou vibration.",
+        "runnableUrl": "",
+        "isRunnable": false
+    },
+    {
+        "id": "chatverdict",
+        "title": "ChatVerdict",
+        "category": "games",
+        "categoryLabel": "Web et jeux",
+        "tagline": "Exploration interactive de conversations fictives.",
+        "status": "Prototype",
+        "techStack": [
+            "Web",
+            "Analyse de texte"
+        ],
+        "icon": "💬",
+        "description": "Visualisation de conversations et synthèse de désaccords.",
+        "runnableUrl": "",
+        "isRunnable": false
     }
 ];
-
