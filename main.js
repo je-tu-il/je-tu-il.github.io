@@ -102,8 +102,21 @@ function renderProjects() {
 
     const techPills = (p.techStack || []).slice(0, 4).map(t => `<span class="tech-tag">${t}</span>`).join('');
     
-    const action = p.runnableUrl ? 'Ouvrir sur le web' : 'Voir le parcours';
-    const primaryBtn = `<a href="${demoUrl(p)}" class="btn-card-launch">${action}</a>`;
+    const isWeb = p.isRunnable && p.runnableUrl;
+    const directWebTarget = (p.runnableUrl && p.runnableUrl.startsWith('http')) ? '_blank' : '_self';
+    const directWebLink = isWeb
+      ? `<a href="${p.runnableUrl}" target="${directWebTarget}" rel="noopener noreferrer" class="btn-card-launch btn-card-web" title="Lancer la version web du projet">🌐 Version Web</a>`
+      : `<a href="projects/demo.html?id=${encodeURIComponent(p.id)}" class="btn-card-launch btn-card-sim" title="Tester le simulateur interactif">🎮 Démo</a>`;
+
+    const demoDocBtn = `<a href="projects/demo.html?id=${encodeURIComponent(p.id)}" class="btn-card-demo-md" title="Voir la démo interactive et la fiche documentation README.md">📄 Démo & Doc (.md)</a>`;
+
+    const repoLink = p.githubUrl
+      ? `<a href="${p.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-link" title="Consulter le code source sur GitHub">🐙 Dépôt ↗</a>`
+      : '';
+
+    const zipLink = p.downloadUrl
+      ? `<a href="${p.downloadUrl}" class="btn-card-link btn-card-zip" download title="Télécharger l'archive ZIP du code source">⬇️ ZIP</a>`
+      : '';
 
     return `
       <div class="project-card" data-id="${p.id}">
@@ -127,8 +140,17 @@ function renderProjects() {
         </div>
 
         <div class="card-actions">
-          ${primaryBtn}
-          <a href="projects/project.html?id=${encodeURIComponent(p.id)}" class="btn-card-details">Détails →</a>
+          <div class="card-actions-grid">
+            <div class="card-primary-row">
+              ${directWebLink}
+              ${demoDocBtn}
+            </div>
+            <div class="card-links-row">
+              ${repoLink}
+              ${zipLink}
+              <a href="projects/project.html?id=${encodeURIComponent(p.id)}" class="btn-card-details" title="Voir la fiche détaillée">Fiche →</a>
+            </div>
+          </div>
         </div>
       </div>
     `;

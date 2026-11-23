@@ -254,8 +254,14 @@
         <a href="#" id="liveDemoBtn" class="btn-primary" style="display:none;">
           <span>Essayer la démo</span>
         </a>
+        <a href="#" id="interactiveSimBtn" class="btn-secondary" style="display:none;">
+          <span>🎮 Démo Interactive & Docs</span>
+        </a>
         <a href="https://github.com/je-tu-il" target="_blank" rel="noopener noreferrer" id="githubBtn" class="btn-secondary">
           <span>🐙 Voir sur GitHub</span>
+        </a>
+        <a href="#" id="downloadZipBtn" class="btn-secondary" download style="color:#34d399; border-color: rgba(52,211,153,0.3);">
+          <span>⬇️ Télécharger ZIP</span>
         </a>
       </div>
     </div>
@@ -273,6 +279,12 @@
       <ul class="feature-list" id="featureList"></ul>
     </div>
 
+    <!-- Rendered README.md Documentation Sheet -->
+    <div class="section-card" id="readmeSection">
+      <h2>📄 Documentation Complète (README.md)</h2>
+      <div id="readmeRendered" style="margin-top: 14px; font-size: 14px; line-height: 1.7; color: #cbd5e1;"></div>
+    </div>
+
     <div class="nav-footer">
       <a href="../index.html" class="nav-btn">&larr; Retour à la grille complète</a>
       <a href="https://github.com/je-tu-il" target="_blank" rel="noopener noreferrer" class="nav-btn">Profil GitHub @je-tu-il &rarr;</a>
@@ -280,6 +292,8 @@
   </div>
 
   <script src="../data/projects.js"></script>
+  <script src="../data/readmes.js"></script>
+  <script src="../data/markdown-renderer.js"></script>
   <script>
     async function loadProjectDetails() {
       const params = new URLSearchParams(window.location.search);
@@ -314,18 +328,30 @@
         demoBtn.href = p.runnableUrl
           ? new URL(p.runnableUrl, new URL('../', window.location.href)).href
           : walkthrough;
-        demoBtn.textContent = p.runnableUrl ? 'Ouvrir sur le web' : 'Voir le parcours';
+        demoBtn.textContent = p.runnableUrl ? '🌐 Ouvrir sur le web' : '🎮 Voir la démo';
+
+        const simBtn = document.getElementById('interactiveSimBtn');
         if (p.runnableUrl) {
-          const preview = document.createElement('a');
-          preview.href = walkthrough;
-          preview.className = 'btn-secondary';
-          preview.textContent = 'Voir le parcours';
-          demoBtn.after(preview);
+          simBtn.style.display = 'inline-flex';
+          simBtn.href = walkthrough;
         }
 
         const ghBtn = document.getElementById('githubBtn');
-        if (p.githubUrl) ghBtn.href = p.githubUrl;
-        else ghBtn.hidden = true;
+        if (p.githubUrl) {
+          ghBtn.href = p.githubUrl;
+          ghBtn.hidden = false;
+        } else {
+          ghBtn.hidden = true;
+        }
+
+        const zipBtn = document.getElementById('downloadZipBtn');
+        if (p.downloadUrl) {
+          zipBtn.href = p.downloadUrl;
+        } else if (p.githubUrl) {
+          zipBtn.href = p.githubUrl + '/archive/refs/heads/main.zip';
+        } else {
+          zipBtn.style.display = 'none';
+        }
 
         // Content
         document.getElementById('projectDesc').innerText = p.description;
@@ -339,6 +365,15 @@
             <span>${f}</span>
           </li>
         `).join('');
+
+        // Render README
+        const readmeContainer = document.getElementById('readmeRendered');
+        const rawMd = window.PROJECTS_READMES && window.PROJECTS_READMES[p.id];
+        if (rawMd && typeof window.renderMarkdown === 'function') {
+          readmeContainer.innerHTML = window.renderMarkdown(rawMd);
+        } else {
+          document.getElementById('readmeSection').style.display = 'none';
+        }
 
       } catch (err) {
         console.error("Erreur de chargement du projet :", err);

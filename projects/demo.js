@@ -5,29 +5,129 @@
   const project = window.PROJECTS_DATA?.find(item => item.id === id);
   const scene = project && window.PORTFOLIO_DEMOS?.[project.id];
   if (!scene) {
-    get('unavailable').hidden = false;
+    const unav = get('unavailable');
+    if (unav) unav.hidden = false;
     return;
   }
 
-  document.title = project.title + ' | Démo';
+  document.title = project.title + ' | Démo & Documentation';
   get('title').textContent = project.title;
   get('category').textContent = project.categoryLabel || project.category;
   get('description').textContent = project.tagline;
+
+  const topIcon = get('topIcon');
+  if (topIcon) topIcon.textContent = project.icon || '🚀';
+  const topTitle = get('topTitle');
+  if (topTitle) topTitle.textContent = project.title;
+  const catBadge = get('categoryBadge');
+  if (catBadge) catBadge.textContent = project.categoryLabel || project.category;
+
   const details = get('details');
-  details.href = 'project.html?id=' + encodeURIComponent(project.id);
-  details.hidden = false;
+  if (details) {
+    details.href = 'project.html?id=' + encodeURIComponent(project.id);
+    details.hidden = false;
+  }
+
+  // Repository & Download URLs
+  const ghBtn = get('githubRepoBtn');
+  if (ghBtn) {
+    if (project.githubUrl) {
+      ghBtn.href = project.githubUrl;
+      ghBtn.hidden = false;
+    } else {
+      ghBtn.hidden = true;
+    }
+  }
+
+  const zipBtn = get('downloadZipBtn');
+  if (zipBtn) {
+    if (project.downloadUrl) {
+      zipBtn.href = project.downloadUrl;
+      zipBtn.hidden = false;
+    } else if (project.githubUrl) {
+      zipBtn.href = project.githubUrl + '/archive/refs/heads/main.zip';
+      zipBtn.hidden = false;
+    } else {
+      zipBtn.hidden = true;
+    }
+  }
+
+  // Live web version
+  const live = get('live');
   if (project.isRunnable && project.runnableUrl) {
-    get('live').href = /^https:\/\//.test(project.runnableUrl) ? project.runnableUrl : '../' + project.runnableUrl;
-    get('live').hidden = false;
+    const directWebUrl = /^https:\/\//.test(project.runnableUrl) ? project.runnableUrl : '../' + project.runnableUrl;
+    if (live) {
+      live.href = directWebUrl;
+      live.hidden = false;
+    }
+
+    // Embed in iframe preview
+    const iframeWrap = get('liveIframeWrapper');
+    const iframe = get('projectIframe');
+    const extBtn = get('iframeExternalBtn');
+    if (iframeWrap && iframe) {
+      iframe.src = directWebUrl;
+      iframeWrap.hidden = false;
+      if (extBtn) extBtn.href = directWebUrl;
+    }
+  }
+
+  // Realistic Simulator Platform styling
+  const platformFrame = get('platformFrame');
+  const simTitle = get('simTitleBar');
+  if (platformFrame && simTitle) {
+    simTitle.textContent = project.title + ' — Simulateur';
+    let frameClass = 'device-frame desktop-frame';
+    if (project.category === 'mobile') {
+      frameClass = 'device-frame mobile-frame';
+    } else if (project.category === 'hardware') {
+      frameClass = 'device-frame hardware-frame';
+    } else if (project.category === 'security') {
+      frameClass = 'device-frame terminal-frame';
+    }
+    platformFrame.className = frameClass;
+  }
+
+  // Render README Markdown
+  const readmeBox = get('readmeContent');
+  if (readmeBox) {
+    const rawMarkdown = window.PROJECTS_READMES?.[project.id];
+    if (rawMarkdown && typeof window.renderMarkdown === 'function') {
+      readmeBox.innerHTML = window.renderMarkdown(rawMarkdown);
+    } else if (rawMarkdown) {
+      readmeBox.textContent = rawMarkdown;
+    } else {
+      // Fallback presentation
+      const techList = (project.techStack || []).map(t => '`' + t + '`').join(', ');
+      const featList = (project.features || []).map(f => '- ' + f).join('\n');
+      const fallbackMd = '# ' + (project.icon || '🚀') + ' ' + project.title + '\n\n' +
+        '> ' + project.tagline + '\n\n' +
+        project.description + '\n\n' +
+        '## ⚡ Spécifications\n\n' + featList + '\n\n' +
+        '## 🛠️ Technologies\n\n' + techList + '\n\n' +
+        '## 🐙 Dépôt & Téléchargement\n\n' +
+        '- GitHub : [' + project.githubUrl + '](' + project.githubUrl + ')\n' +
+        '- Télécharger ZIP : [' + project.downloadUrl + '](' + project.downloadUrl + ')\n';
+      if (typeof window.renderMarkdown === 'function') {
+        readmeBox.innerHTML = window.renderMarkdown(fallbackMd);
+      } else {
+        readmeBox.innerText = fallbackMd;
+      }
+    }
   }
 
   const workflow = window.PORTFOLIO_WORKFLOWS?.[id];
   if (workflow) {
-    workflow(get('workflow'));
-    get('workflow').hidden = false;
-    return;
+    const wfNode = get('workflow');
+    if (wfNode) {
+      workflow(wfNode);
+      wfNode.hidden = false;
+      return;
+    }
   }
-  get('scenario-title').textContent = 'Exemple guidé';
+
+  const scenTitle = get('scenario-title');
+  if (scenTitle) scenTitle.textContent = 'Exemple guidé';
 
   const output = get('result');
   const run = get('run');
@@ -38,7 +138,8 @@
     label.textContent = labelText;
     Object.assign(input, { type, defaultValue: value, ...attrs });
     label.append(input);
-    get('inputs').append(label);
+    const inputs = get('inputs');
+    if (inputs) inputs.append(label);
     return input;
   }
 
@@ -68,16 +169,26 @@
 
   function reset() {
     step = 0;
-    run.textContent = scene.action;
-    run.disabled = false;
-    output.textContent = 'Prêt à démarrer.';
+    if (run) {
+      run.textContent = scene.action;
+      run.disabled = false;
+    }
+    if (output) output.textContent = 'Prêt à démarrer.';
   }
-  get('controls').addEventListener('submit', event => {
-    event.preventDefault();
-    output.textContent = showResult();
-    if (run.disabled) get('reset').focus();
-  });
-  get('controls').addEventListener('reset', reset);
+
+  const controls = get('controls');
+  if (controls) {
+    controls.addEventListener('submit', event => {
+      if (event && event.preventDefault) event.preventDefault();
+      if (output) output.textContent = showResult();
+      if (run && run.disabled) {
+        const rst = get('reset');
+        if (rst && rst.focus) rst.focus();
+      }
+    });
+    controls.addEventListener('reset', reset);
+  }
   reset();
-  get('scenario').hidden = false;
+  const scen = get('scenario');
+  if (scen) scen.hidden = false;
 })();
