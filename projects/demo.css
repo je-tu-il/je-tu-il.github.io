@@ -26,3 +26,12 @@ label { display: block; margin-top: .75rem; }
 :focus-visible { outline: 3px solid #f6d08e; outline-offset: 3px; }
 #result { min-height: 3.4rem; margin: 1.2rem 0 0; padding: .75rem 1rem; border-radius: .65rem; background: #090e17; overflow-wrap: anywhere; }
 #live { display: inline-block; margin-top: 1.35rem; }
+.workflow-controls { display: flex; align-items: end; flex-wrap: wrap; gap: .6rem; margin: 1rem 0; }
+.workflow-controls select { font: inherit; padding: .6rem; border-radius: .65rem; }
+.workflow-result { overflow-x: auto; }
+.workflow-result table { width: 100%; border-collapse: collapse; text-align: left; }
+.workflow-result th, .workflow-result td { padding: .55rem .6rem; border-bottom: 1px solid #344761; }
+.workflow-result th { color: #9cdefb; }
+.workflow-result meter { width: 100%; height: 1.25rem; }
+.workflow-result input[type=checkbox] { margin: 0 auto; min-width: 1rem; }
+.workflow-status { margin-bottom: 0; color: #b1bed1; }

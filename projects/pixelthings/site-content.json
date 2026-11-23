@@ -1,0 +1,187 @@
+{
+  "general": {
+    "siteTitle": "PixelThings — Studio d'Ingénierie & Holding Technologique",
+    "holdingName": "PixelThings",
+    "tagline": "Holding Technologique & Studio d'Ingénierie Deeptech",
+    "heroHeadline": "CONVERGENCE DE LA MATIÈRE, DE LA CRYPTOGRAPHIE ET DE L'INTELLIGENCE",
+    "heroDescription": "PixelThings conçoit, incube et déploie des technologies souveraines à la frontière du monde physique et des architectures logicielles : fabrication additive industrielle certifiée, cryptographie post-quantique, forteresse de vie privée et studio de création d'applications propulsées par IA.",
+    "delayPromise": "Engagement d'intervention sous 24h ouvrées — Devis technique sous 48h",
+    "statusBadge": "SYSTÈMES OPÉRATIONNELS — 5 PÔLES ACTIFS",
+    "contactEmail": "contact@pixelthings.fr",
+    "location": "France — Europe",
+    "model3dType": "procedural",
+    "customGlbPath": "/models/box-sample.glb"
+  },
+  "ventures": [
+    {
+      "id": "voxelprint",
+      "name": "VoxelPrint",
+      "baseline": "Fabrication Additive & Cartographie Paramétrique",
+      "description": "Laboratoire de matérialisation 3D haute précision. Des cartographies topographiques et modèles de patrimoine aux pièces techniques certifiées (norme EN 71-3 sans migration nocive, filaments Nanovia et Bambu Lab, traçabilité rigoureuse).",
+      "primaryColor": "#0284c7",
+      "secondaryColor": "#38bdf8",
+      "symbol": "Matrice de voxels superposés",
+      "metric": "50 microns de tolérance — Filaments conformes EN 71-3",
+      "tags": ["Impression 3D", "Cartographie GPX", "Norme EN 71-3", "Patrimoine 3D", "Séries Précises"],
+      "logo": "/assets/logos/voxelprint-logo.png",
+      "videoReveal": "/assets/videos/voxelprint-reveal.mp4",
+      "status": "En production",
+      "pricing": "Sur devis technique personnalisé"
+    },
+    {
+      "id": "voxelshield",
+      "name": "VoxelShield",
+      "baseline": "Souveraineté Numérique & Forteresse de Vie Privée",
+      "description": "Service grand public d'éradication des empreintes personnelles auprès des Data Brokers. Surveillance continue du Dark Web, signature de mandat légal RGPD unifié et tableau de bord sécurisé avec authentification 2FA à un tarif transparent et accessible.",
+      "primaryColor": "#2563eb",
+      "secondaryColor": "#60a5fa",
+      "symbol": "Bouclier angulaire protecteur",
+      "metric": "3€/mois sans engagement — 100% Souveraineté RGPD",
+      "tags": ["Anti Data-Brokers", "Mandat Juridique", "Surveillance Dark Web", "2FA Sécurisé"],
+      "logo": "/assets/logos/voxelshield-logo.png",
+      "videoReveal": "/assets/videos/voxelshield-reveal.mp4",
+      "status": "En déploiement",
+      "pricing": "3€ / mois sans engagement"
+    },
+    {
+      "id": "voxelcipher",
+      "name": "VoxelCipher",
+      "baseline": "Cryptographie Post-Quantique & Protocoles Zero-Knowledge",
+      "description": "Infrastructure cryptographique résistante aux futurs calculateurs quantiques. Conforme aux nouveaux standards NIST FIPS 203/204 (ML-KEM pour l'échange de clés et ML-DSA pour la signature), messagerie P2P décentralisée WebRTC sans transit de clair, et SDK pour développeurs.",
+      "primaryColor": "#4f46e5",
+      "secondaryColor": "#818cf8",
+      "symbol": "Treillis euclidien et tesseract",
+      "metric": "Standards NIST ML-KEM / ML-DSA — Architecture Zero-Knowledge",
+      "tags": ["Post-Quantique", "NIST ML-KEM", "Messagerie P2P", "SDK Développeur", "Zero-Knowledge"],
+      "status": "R&D Avancée & SDK",
+      "pricing": "Licence développeur & Cloud API"
+    },
+    {
+      "id": "voxelmind",
+      "name": "VoxelMind",
+      "baseline": "Compagnon d'Intelligence Artificielle Vocale Zéro-Latence",
+      "description": "Expérience d'interaction vocale en streaming continu à latence quasi-nulle (<150ms). Architecture neuronale à routeur intelligent (triage ultra-rapide par modèles légers et délégation transparente aux modèles de raisonnement profonds) couplée à une mémoire vectorielle RAG persistante.",
+      "primaryColor": "#d97706",
+      "secondaryColor": "#fbbf24",
+      "symbol": "Onde synaptique résonante",
+      "metric": "< 150 ms latence vocale — Mémoire vectorielle continue",
+      "tags": ["Streaming Vocal", "Routeur Intelligent", "Mémoire RAG", "Compagnon IA"],
+      "status": "Prototype validé",
+      "pricing": "Freemium & Abonnement Pro"
+    }
+  ],
+  "forge": {
+    "title": "PixelForge — AI Application Studio",
+    "subtitle": "Création d'Outils Métiers & d'Applications Natives Accélérées par IA",
+    "description": "Le studio applicatif interne de PixelThings. Nous fusionnons l'ingénierie logicielle avancée et les pipelines d'IA générative pour concevoir, prototyper et expédier des produits complets et des outils d'automatisation haute performance.",
+    "apps": [
+      {
+        "id": "nousdeux",
+        "name": "NousDeux",
+        "subtitle": "L'application de complicité et de rituels quotidiens pour les couples",
+        "description": "Développée avec React Native et Expo, NousDeux transforme la dynamique de couple : 12 thématiques de questions profondes (Amour, Intime, Débat, Défi, Futur, Souvenirs...), séries quotidiennes stimulantes, système de récompenses par pétales, synchronisation temps réel instantanée et expérience visuelle intimiste.",
+        "icon": "/assets/logos/nousdeux-icon.png",
+        "glow": "/assets/logos/nousdeux-glow.png",
+        "metrics": "12 Thématiques — Séries quotidiennes — Synchronisation temps réel",
+        "stack": ["React Native", "Expo Router", "TypeScript", "IA Prompting Engine", "Offline-First"],
+        "status": "Bêta Privée & TestFlight",
+        "linkText": "En savoir plus",
+        "linkUrl": "#nousdeux"
+      },
+      {
+        "id": "broker-automator",
+        "name": "Broker Automator",
+        "subtitle": "Moteur interne d'automatisation légale et navigation de suppression",
+        "description": "Outil interne combinant Playwright et gestion de presse-papier intelligente (Pyperclip) pour orchestrer les requêtes de suppression chez les data brokers avec supervision humaine des captchas et traitement sécurisé des mandats.",
+        "metrics": "Traitement multi-plateformes — Lecture IMAP automatisée — Zéro fuite",
+        "stack": ["Python", "Playwright", "Pyperclip", "Chiffrement AES-256"],
+        "status": "Usage interne VoxelShield"
+      },
+      {
+        "id": "neural-router",
+        "name": "Smart API Router",
+        "subtitle": "Passerelle de routage hybride et d'optimisation de coûts d'inférence",
+        "description": "Middleware de triage temps réel évaluant la complexité des requêtes conversationnelles pour acheminer le flux soit vers des modèles d'inférence ultra-rapides, soit vers des modèles de raisonnement lourd avec zéro friction perçue.",
+        "metrics": "Économie d'infrastructure de 70% — Streaming HTTP/SSE natif",
+        "stack": ["Node.js", "Streaming SSE", "Groq / Llama-3", "Vector DB"],
+        "status": "Moteur VoxelMind"
+      }
+    ]
+  },
+  "caseStudies": [
+    {
+      "id": "place-stanislas",
+      "ventureId": "voxelprint",
+      "ventureName": "VoxelPrint",
+      "title": "Modélisation & Usinage 3D de la Place Stanislas",
+      "challenge": "Restituer avec une fidélité architecturale absolue les reliefs baroques, les arcades et la statue monumentale de Stanislas Leszczyński sans défauts de surplomb ni fragilité structurelle.",
+      "solution": "Fusion de données photogrammétriques et modélisation paramétrique, segmentation modulaire des grilles d'or et usinage additif par couches ultra-fines (0.05 mm) avec filament technique rigoureusement contrôlé.",
+      "result": "Maquette de collection d'une grande netteté avec conformité aux exigences de résistance et sécurité matière (norme EN 71-3).",
+      "badge": "Ingénierie Physique"
+    },
+    {
+      "id": "data-eradication",
+      "ventureId": "voxelshield",
+      "ventureName": "VoxelShield",
+      "title": "Éradication des Données chez 45 Data Brokers",
+      "challenge": "Supprimer les informations nominatives, téléphones et adresses revendus en ligne sans imposer des dizaines de formulaires complexes et chronophages aux utilisateurs particuliers.",
+      "solution": "Mise en place d'un mandat juridique RGPD unifié et d'une suite semi-automatisée propriétaire pour soumettre et valider les demandes d'effacement avec traçabilité complète sur journal 2FA.",
+      "result": "85% des fiches neutralisées sous 30 jours pour 3€/mois, garantissant un soulagement immédiat de l'empreinte numérique.",
+      "badge": "Cybersécurité B2C"
+    },
+    {
+      "id": "nousdeux-app",
+      "ventureId": "pixelforge",
+      "ventureName": "PixelForge",
+      "title": "Lancement Accéléré de l'Application Mobile NousDeux",
+      "challenge": "Concevoir et déployer une application mobile native réactive pour deux partenaires simultanés avec des dizaines de cartes thématiques, des animations douces et une fiabilité hors-ligne sans latence.",
+      "solution": "Architecture Expo Router optimisée, génération et validation de plus de 500 questions originales via nos prompts d'IA spécialisés, et persistance d'états asynchrone sécurisée.",
+      "result": "Expérience utilisateur fluide et émotionnellement engageante, prête pour le déploiement sur les stores iOS et Android.",
+      "badge": "Studio Applicatif"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Qu'est-ce que PixelThings par rapport aux différentes filiales ?",
+      "answer": "PixelThings est l'entreprise mère et le studio d'ingénierie central. Elle détient la propriété intellectuelle, assure la R&D transverse et fédère les pôles d'activité : VoxelPrint (matérialisation physique 3D), VoxelShield (protection des données), VoxelCipher (cryptographie post-quantique), VoxelMind (IA vocale) et PixelForge (studio d'applications).",
+      "category": "Général"
+    },
+    {
+      "question": "Pourquoi les filaments 3D de VoxelPrint respectent-ils la norme EN 71-3 ?",
+      "answer": "La norme EN 71-3 teste rigoureusement la migration chimique des éléments toxiques pour s'assurer que les pièces manipulées (même par des enfants ou en intérieur) ne présentent aucun danger. Nous sélectionnons exclusivement des filaments de fabricants certifiés (tels que Nanovia ou Bambu Lab) avec rapports de conformité stricts référence par référence.",
+      "category": "VoxelPrint"
+    },
+    {
+      "question": "Comment VoxelShield garantit-il la suppression des données à 3€/mois ?",
+      "answer": "Grâce à notre mandat d'action juridique et nos outils internes d'automatisation semi-assistée, nous éliminons les coûts d'infrastructure superflus. Vos requêtes d'effacement sont traitées directement auprès des courtiers en données avec un suivi clair dans votre espace sécurisé par double authentification.",
+      "category": "VoxelShield"
+    },
+    {
+      "question": "Qu'apporte la cryptographie post-quantique de VoxelCipher face aux algorithmes actuels ?",
+      "answer": "Les algorithmes RSA ou ECC traditionnels seront vulnérables à l'avènement des ordinateurs quantiques exploitant l'algorithme de Shor ('Store now, decrypt later'). VoxelCipher intègre dès aujourd'hui les standards NIST officialisés (ML-KEM et ML-DSA) basés sur la difficulté des réseaux euclidiens.",
+      "category": "VoxelCipher"
+    },
+    {
+      "question": "Comment fonctionne le studio PixelForge et son application NousDeux ?",
+      "answer": "PixelForge est notre pôle de création d'applications. Nous combinons l'expertise logicielle native (React Native / Expo / TypeScript) avec des outils d'assistance IA pour concevoir des produits ergonomiques et élégants. NousDeux est notre réalisation phare pour cultiver la connexion des couples à travers des rituels quotidiens.",
+      "category": "PixelForge"
+    },
+    {
+      "question": "Quels sont vos engagements de délai pour les demandes et commandes ?",
+      "answer": "Nous répondons à toute sollicitation technique ou demande de contact sous 24 heures ouvrées. Pour les projets d'impression ou de modélisation VoxelPrint, une estimation technique et un devis chiffré sont délivrés sous 48 heures.",
+      "category": "Général"
+    }
+  ],
+  "legal": {
+    "companyName": "PixelThings",
+    "legalStatus": "Société en cours d'immatriculation / Entreprise individuelle (Régime Micro-Entreprise déclarée URSSAF)",
+    "addressNotice": "Pour des raisons de sécurité et de protection de la vie privée, l'adresse du siège est domiciliée via un service professionnel de domiciliation agréé conformément aux dispositions du Code de commerce.",
+    "urssafNotice": "Déclarations sociales et fiscales trimestrielles gérées conformément aux obligations URSSAF / ACRE en vigueur en France.",
+    "contactEmail": "contact@pixelthings.fr",
+    "complianceEN71": "Les fabrications 3D proposées par VoxelPrint utilisent des filaments testés selon la norme européenne EN 71-3 (sécurité chimique et absence de migration de métaux lourds). Marquage CE appliqué selon la catégorie de produit.",
+    "cookiesPolicy": "Ce site utilise uniquement des cookies strictement techniques nécessaires à votre navigation et à la mémorisation de vos préférences (ex: son, mode d'affichage). Aucun traceur publicitaire tiers n'est installé sans votre consentement préalable explicite.",
+    "privacyPolicy": "Nous limitons la collecte de données au strict minimum nécessaire : lorsque vous utilisez le formulaire de contact, seuls votre nom, adresse email et message sont traités pour vous répondre. Vos données ne sont jamais vendues, cédées ou transmises à des tiers.",
+    "refundPolicy": "Pour toute commande de service dématérialisé ou prestation sur-mesure non entamée, vous bénéficiez du délai légal de rétractation de 14 jours. Pour les fabrications 3D personnalisées selon vos spécifications (sur-mesure), le droit de rétractation s'applique conformément à l'article L. 221-28 du Code de la consommation.",
+    "termsOfService": "L'utilisation du site pixelthings.fr implique l'acceptation pleine et entière des conditions générales d'utilisation. Les marques, logos et modèles 3D présentés demeurent la propriété exclusive de PixelThings et de ses filiales respectives."
+  }
+}

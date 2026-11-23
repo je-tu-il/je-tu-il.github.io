@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Sign - Sans Clic (Hover / Trackpad)</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --success: #10b981;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      margin-top: 6px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 860px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .toolbar {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .tool-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    input[type="color"] {
+      appearance: none;
+      -webkit-appearance: none;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    input[type="color"]::-webkit-color-swatch {
+      border: 2px solid var(--border);
+      border-radius: 6px;
+    }
+
+    input[type="range"] {
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .btn {
+      background: #334155;
+      color: #fff;
+      border: none;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #475569;
+    }
+
+    .btn-toggle {
+      border: 1px solid var(--border);
+    }
+
+    .btn-toggle.active {
+      background: #0284c7;
+      color: #fff;
+      border-color: #38bdf8;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .canvas-wrapper {
+      position: relative;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      border: 2px solid var(--border);
+      touch-action: none;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 380px;
+      cursor: crosshair;
+    }
+
+    .baseline {
+      position: absolute;
+      bottom: 50px;
+      left: 10%;
+      right: 10%;
+      border-bottom: 2px dashed #e2e8f0;
+      pointer-events: none;
+    }
+
+    .baseline::after {
+      content: "Glissez le doigt sur le trackpad (aucun clic requis)";
+      position: absolute;
+      bottom: 6px;
+      left: 0;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    .shortcuts-bar {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    kbd {
+      background: #334155;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #f1f5f9;
+      font-family: inherit;
+    }
+
+    .dot-active {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      display: inline-block;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>✍️ Simple Sign</h1>
+    <div class="badge-status">
+      <span class="dot-active"></span>
+      <span>Mode <strong>Sans Clic actif</strong> : glissez simplement le doigt sur le trackpad</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Barre d'outils supérieure -->
+    <div class="toolbar">
+      <div class="tool-group">
+        <!-- Bascule Mode Sans Clic / Mode Standard -->
+        <button id="toggleNoClick" class="btn btn-toggle active" title="Activer/Désactiver le tracé automatique au survol">
+          ✨ Tracé sans clic : <strong>ACTIVÉ</strong>
+        </button>
+
+        <label title="Couleur de l'encre">
+          Couleur :
+          <input type="color" id="strokeColor" value="#0f172a">
+        </label>
+
+        <label title="Épaisseur du trait">
+          Épaisseur :
+          <input type="range" id="lineWidth" min="1" max="15" value="3">
+          <span id="widthValue">3px</span>
+        </label>
+      </div>
+
+      <div class="tool-group">
+        <button id="btnUndo" class="btn" title="Annuler le dernier trait (Ctrl+Z)">↩️ Annuler</button>
+        <button id="btnRedo" class="btn" title="Rétablir (Ctrl+Y)">↪️ Rétablir</button>
+        <button id="btnClear" class="btn btn-danger" title="Tout effacer (Échap)">🗑️ Effacer</button>
+      </div>
+    </div>
+
+    <!-- Zone Canvas -->
+    <div class="canvas-wrapper">
+      <div class="baseline" id="guideline"></div>
+      <canvas id="signatureCanvas"></canvas>
+    </div>
+
+    <!-- Barre d'export -->
+    <div class="toolbar">
+      <div class="tool-group">
+        <label>
+          <input type="checkbox" id="transparentBg" checked>
+          Fond transparent
+        </label>
+        <label>
+          <input type="checkbox" id="trimCanvas" checked>
+          Recadrer marges vides
+        </label>
+      </div>
+
+      <div class="tool-group">
+        <button id="btnCopy" class="btn" title="Copier l'image dans le presse-papier">📋 Copier</button>
+        <button id="btnExportSVG" class="btn" title="Télécharger le fichier vectoriel SVG">SVG</button>
+        <button id="btnExportPNG" class="btn btn-primary" title="Télécharger l'image PNG">💾 Télécharger (PNG)</button>
+      </div>
+    </div>
+
+    <div class="shortcuts-bar">
+      💡 <strong>Raccourcis clavier :</strong> 
+      <kbd>Espace</kbd> ou Lever le doigt : Séparer les traits &nbsp;|&nbsp; 
+      <kbd>Ctrl+Z</kbd> : Annuler &nbsp;|&nbsp; 
+      <kbd>Échap</kbd> : Effacer
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    const guideline = document.getElementById('guideline');
+
+    const toggleNoClickBtn = document.getElementById('toggleNoClick');
+    const strokeColorInput = document.getElementById('strokeColor');
+    const lineWidthInput = document.getElementById('lineWidth');
+    const widthValueSpan = document.getElementById('widthValue');
+    const transparentBgCheckbox = document.getElementById('transparentBg');
+    const trimCanvasCheckbox = document.getElementById('trimCanvas');
+
+    const btnUndo = document.getElementById('btnUndo');
+    const btnRedo = document.getElementById('btnRedo');
+    const btnClear = document.getElementById('btnClear');
+    const btnExportPNG = document.getElementById('btnExportPNG');
+    const btnExportSVG = document.getElementById('btnExportSVG');
+    const btnCopy = document.getElementById('btnCopy');
+
+    let noClickMode = true; // ACTIVÉ PAR DÉFAUT
+    let strokes = [];
+    let undoneStrokes = [];
+    let currentStroke = null;
+    let isDrawing = false;
+    let lastMoveTime = 0;
+    let gapTimer = null;
+
+    // Détection de pause du doigt (si l'utilisateur s'arrête 350ms, on sépare le trait)
+    const PAUSE_THRESHOLD_MS = 350;
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      
+      ctx.scale(dpr, dpr);
+      redraw();
+    }
+
+    function getPointerPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+    }
+
+    function redraw() {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+
+      guideline.style.opacity = strokes.length > 0 ? '0.15' : '1';
+
+      for (const stroke of strokes) {
+        drawStroke(stroke);
+      }
+    }
+
+    function drawStroke(stroke) {
+      if (!stroke || stroke.points.length === 0) return;
+
+      ctx.save();
+      ctx.strokeStyle = stroke.color;
+      ctx.fillStyle = stroke.color;
+      ctx.lineWidth = stroke.width;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      if (stroke.points.length === 1) {
+        const p = stroke.points[0];
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, stroke.width / 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        return;
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+
+      for (let i = 1; i < stroke.points.length - 1; i++) {
+        const xc = (stroke.points[i].x + stroke.points[i + 1].x) / 2;
+        const yc = (stroke.points[i].y + stroke.points[i + 1].y) / 2;
+        ctx.quadraticCurveTo(stroke.points[i].x, stroke.points[i].y, xc, yc);
+      }
+
+      const last = stroke.points[stroke.points.length - 1];
+      const prev = stroke.points[stroke.points.length - 2];
+      ctx.quadraticCurveTo(prev.x, prev.y, last.x, last.y);
+
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function startNewStroke(pos) {
+      currentStroke = {
+        color: strokeColorInput.value,
+        width: parseFloat(lineWidthInput.value),
+        points: [pos]
+      };
+      strokes.push(currentStroke);
+      undoneStrokes = [];
+      redraw();
+    }
+
+    // Gestion du basculement Sans Clic / Clic Standard
+    toggleNoClickBtn.addEventListener('click', () => {
+      noClickMode = !noClickMode;
+      if (noClickMode) {
+        toggleNoClickBtn.classList.add('active');
+        toggleNoClickBtn.innerHTML = `✨ Tracé sans clic : <strong>ACTIVÉ</strong>`;
+      } else {
+        toggleNoClickBtn.classList.remove('active');
+        toggleNoClickBtn.innerHTML = `🖱️ Tracé au clic : <strong>ACTIVÉ</strong>`;
+      }
+    });
+
+    // Événements sur la zone Canvas
+    canvas.addEventListener('pointerenter', (e) => {
+      if (noClickMode) {
+        const pos = getPointerPos(e);
+        startNewStroke(pos);
+        isDrawing = true;
+        lastMoveTime = Date.now();
+      }
+    });
+
+    canvas.addEventListener('pointermove', (e) => {
+      const now = Date.now();
+      const pos = getPointerPos(e);
+
+      if (noClickMode) {
+        // En mode sans clic : si le doigt a été soulevé ou s'est arrêté un instant
+        if (!isDrawing || (now - lastMoveTime > PAUSE_THRESHOLD_MS)) {
+          startNewStroke(pos);
+          isDrawing = true;
+        } else if (currentStroke) {
+          currentStroke.points.push(pos);
+          redraw();
+        }
+        lastMoveTime = now;
+
+        clearTimeout(gapTimer);
+        gapTimer = setTimeout(() => {
+          // Pause détectée : prêt pour un nouveau trait quand le doigt rebougera
+          isDrawing = false;
+        }, PAUSE_THRESHOLD_MS);
+
+      } else {
+        // Mode avec clic standard
+        if (isDrawing && currentStroke) {
+          currentStroke.points.push(pos);
+          redraw();
+        }
+      }
+    });
+
+    canvas.addEventListener('pointerdown', (e) => {
+      if (!noClickMode) {
+        canvas.setPointerCapture(e.pointerId);
+        isDrawing = true;
+        const pos = getPointerPos(e);
+        startNewStroke(pos);
+      }
+    });
+
+    function stopDrawing() {
+      isDrawing = false;
+      currentStroke = null;
+    }
+
+    canvas.addEventListener('pointerleave', stopDrawing);
+    canvas.addEventListener('pointerup', stopDrawing);
+    canvas.addEventListener('pointercancel', stopDrawing);
+
+    // Raccourcis clavier (Espace pour lever le stylet manuellement, Ctrl+Z, etc.)
+    window.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.code === 'Space') {
+        e.preventDefault();
+        stopDrawing();
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')) {
+        e.preventDefault();
+        if (strokes.length > 0) {
+          undoneStrokes.push(strokes.pop());
+          redraw();
+        }
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || e.key === 'Y')) {
+        e.preventDefault();
+        if (undoneStrokes.length > 0) {
+          strokes.push(undoneStrokes.pop());
+          redraw();
+        }
+      } else if (e.key === 'Escape') {
+        if (strokes.length > 0) {
+          strokes = [];
+          undoneStrokes = [];
+          redraw();
+        }
+      }
+    });
+
+    // Modification du tracé
+    lineWidthInput.addEventListener('input', (e) => {
+      widthValueSpan.textContent = `${e.target.value}px`;
+    });
+
+    btnUndo.addEventListener('click', () => {
+      if (strokes.length > 0) {
+        undoneStrokes.push(strokes.pop());
+        redraw();
+      }
+    });
+
+    btnRedo.addEventListener('click', () => {
+      if (undoneStrokes.length > 0) {
+        strokes.push(undoneStrokes.pop());
+        redraw();
+      }
+    });
+
+    btnClear.addEventListener('click', () => {
+      strokes = [];
+      undoneStrokes = [];
+      redraw();
+    });
+
+    // Rognage & Exportation
+    function getBoundingBox() {
+      if (strokes.length === 0) return null;
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      let maxWidth = 0;
+
+      for (const stroke of strokes) {
+        maxWidth = Math.max(maxWidth, stroke.width);
+        for (const pt of stroke.points) {
+          if (pt.x < minX) minX = pt.x;
+          if (pt.y < minY) minY = pt.y;
+          if (pt.x > maxX) maxX = pt.x;
+          if (pt.y > maxY) maxY = pt.y;
+        }
+      }
+
+      const padding = maxWidth + 12;
+      return {
+        x: Math.max(0, minX - padding),
+        y: Math.max(0, minY - padding),
+        width: Math.max(1, (maxX - minX) + (padding * 2)),
+        height: Math.max(1, (maxY - minY) + (padding * 2))
+      };
+    }
+
+    function createExportCanvas() {
+      const isTrimmed = trimCanvasCheckbox.checked;
+      const isTransparent = transparentBgCheckbox.checked;
+      const bbox = getBoundingBox();
+
+      const expCanvas = document.createElement('canvas');
+      const expCtx = expCanvas.getContext('2d');
+      const rect = canvas.getBoundingClientRect();
+
+      let originX = 0, originY = 0;
+
+      if (isTrimmed && bbox) {
+        expCanvas.width = bbox.width;
+        expCanvas.height = bbox.height;
+        originX = bbox.x;
+        originY = bbox.y;
+      } else {
+        expCanvas.width = rect.width;
+        expCanvas.height = rect.height;
+      }
+
+      if (!isTransparent) {
+        expCtx.fillStyle = '#ffffff';
+        expCtx.fillRect(0, 0, expCanvas.width, expCanvas.height);
+      }
+
+      expCtx.translate(-originX, -originY);
+
+      for (const stroke of strokes) {
+        expCtx.save();
+        expCtx.strokeStyle = stroke.color;
+        expCtx.fillStyle = stroke.color;
+        expCtx.lineWidth = stroke.width;
+        expCtx.lineCap = 'round';
+        expCtx.lineJoin = 'round';
+
+        if (stroke.points.length === 1) {
+          const p = stroke.points[0];
+          expCtx.beginPath();
+          expCtx.arc(p.x, p.y, stroke.width / 2, 0, Math.PI * 2);
+          expCtx.fill();
+        } else {
+          expCtx.beginPath();
+          expCtx.moveTo(stroke.points[0].x, stroke.points[0].y);
+          for (let i = 1; i < stroke.points.length - 1; i++) {
+            const xc = (stroke.points[i].x + stroke.points[i + 1].x) / 2;
+            const yc = (stroke.points[i].y + stroke.points[i + 1].y) / 2;
+            expCtx.quadraticCurveTo(stroke.points[i].x, stroke.points[i].y, xc, yc);
+          }
+          const last = stroke.points[stroke.points.length - 1];
+          const prev = stroke.points[stroke.points.length - 2];
+          expCtx.quadraticCurveTo(prev.x, prev.y, last.x, last.y);
+          expCtx.stroke();
+        }
+        expCtx.restore();
+      }
+
+      return expCanvas;
+    }
+
+    // Export PNG
+    btnExportPNG.addEventListener('click', () => {
+      if (strokes.length === 0) {
+        alert("Veuillez d'abord réaliser votre signature.");
+        return;
+      }
+      const expCanvas = createExportCanvas();
+      const a = document.createElement('a');
+      a.download = `signature-${Date.now()}.png`;
+      a.href = expCanvas.toDataURL('image/png');
+      a.click();
+    });
+
+    // Copie Presse-papier
+    btnCopy.addEventListener('click', async () => {
+      if (strokes.length === 0) {
+        alert("Veuillez d'abord réaliser votre signature.");
+        return;
+      }
+      const expCanvas = createExportCanvas();
+      expCanvas.toBlob(async (blob) => {
+        try {
+          await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]);
+          const oldText = btnCopy.textContent;
+          btnCopy.textContent = "✅ Copié !";
+          setTimeout(() => btnCopy.textContent = oldText, 2000);
+        } catch (err) {
+          alert("Erreur lors de la copie.");
+        }
+      });
+    });
+
+    // Export SVG
+    btnExportSVG.addEventListener('click', () => {
+      if (strokes.length === 0) {
+        alert("Veuillez d'abord réaliser votre signature.");
+        return;
+      }
+
+      const isTrimmed = trimCanvasCheckbox.checked;
+      const isTransparent = transparentBgCheckbox.checked;
+      const bbox = getBoundingBox();
+      const rect = canvas.getBoundingClientRect();
+
+      let width = rect.width;
+      let height = rect.height;
+      let ox = 0, oy = 0;
+
+      if (isTrimmed && bbox) {
+        width = bbox.width;
+        height = bbox.height;
+        ox = bbox.x;
+        oy = bbox.y;
+      }
+
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">\n`;
+      if (!isTransparent) {
+        svg += `  <rect width="100%" height="100%" fill="#ffffff"/>\n`;
+      }
+
+      for (const stroke of strokes) {
+        if (stroke.points.length === 0) continue;
+        if (stroke.points.length === 1) {
+          const p = stroke.points[0];
+          svg += `  <circle cx="${p.x - ox}" cy="${p.y - oy}" r="${stroke.width / 2}" fill="${stroke.color}" />\n`;
+          continue;
+        }
+
+        let d = `M ${(stroke.points[0].x - ox).toFixed(1)} ${(stroke.points[0].y - oy).toFixed(1)}`;
+        for (let i = 1; i < stroke.points.length - 1; i++) {
+          const xc = ((stroke.points[i].x + stroke.points[i + 1].x) / 2 - ox).toFixed(1);
+          const yc = ((stroke.points[i].y + stroke.points[i + 1].y) / 2 - oy).toFixed(1);
+          d += ` Q ${(stroke.points[i].x - ox).toFixed(1)} ${(stroke.points[i].y - oy).toFixed(1)}, ${xc} ${yc}`;
+        }
+        const last = stroke.points[stroke.points.length - 1];
+        const prev = stroke.points[stroke.points.length - 2];
+        d += ` Q ${(prev.x - ox).toFixed(1)} ${(prev.y - oy).toFixed(1)}, ${(last.x - ox).toFixed(1)} ${(last.y - oy).toFixed(1)}`;
+
+        svg += `  <path d="${d}" fill="none" stroke="${stroke.color}" stroke-width="${stroke.width}" stroke-linecap="round" stroke-linejoin="round"/>\n`;
+      }
+
+      svg += `</svg>`;
+
+      const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+      const a = document.createElement('a');
+      a.download = `signature-${Date.now()}.svg`;
+      a.href = URL.createObjectURL(blob);
+      a.click();
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+  </script>
+</body>
+</html>

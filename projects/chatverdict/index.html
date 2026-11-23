@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatVerdict — Analyseur de Conversations & Tribunal de Couple</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <span class="brand-icon">⚖️</span>
+            <div>
+                <h1 class="brand-title">ChatVerdict</h1>
+                <div class="brand-subtitle">AI & HEURISTIC RELATIONSHIP ANALYZER</div>
+            </div>
+        </div>
+        <div style="font-size: 0.85rem; color: var(--accent-pink); font-weight: 700;">
+            WhatsApp • Instagram • SMS
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-box">
+            <span class="hero-tag">PSYCHOLOGIE & ARBITRAGE DE COUPLE</span>
+            <h2 class="hero-heading">Décodez vos Conversations & Sachez Qui a Tort</h2>
+            <p class="hero-desc">
+                Importez un échange WhatsApp, Instagram ou SMS pour mesurer l'indice de toxicité, la compatibilité amoureuse et obtenir une analyse croisée fille/gars.
+            </p>
+
+            <!-- Presets Bar -->
+            <div class="presets-bar">
+                <button class="preset-chip" data-preset="toxic">🚩 Dispute Toxique & Gaslighting</button>
+                <button class="preset-chip" data-preset="household">🍳 Dispute Ménagère (Qui a tort ?)</button>
+                <button class="preset-chip" data-preset="flirt">💘 Flirt & Alchimie 95%</button>
+                <button class="preset-chip" data-preset="cold">❄️ Friendzone & Réponses 1 mot</button>
+            </div>
+        </section>
+
+        <!-- Input Section -->
+        <section class="glass-card">
+            <div class="card-header">
+                <div class="card-title">📝 Collez ou Déposez votre Conversation</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Format : Prénom: Message</div>
+            </div>
+
+            <textarea id="chatInput" placeholder="Exemple :&#10;Alice: Pourquoi tu réponds plus ?&#10;Bob: J'étais occupé..."></textarea>
+
+            <!-- File dropzone -->
+            <div id="fileDropArea" style="border: 1px dashed var(--border); border-radius: 0.75rem; padding: 0.75rem; text-align: center; cursor: pointer; background: rgba(10,14,23,0.4); margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                📁 Glissez un export WhatsApp (.txt) ou cliquez pour importer un fichier
+                <input type="file" id="fileInputUpload" accept=".txt,.json" style="display: none;" />
+            </div>
+
+            <button id="btnAnalyze" class="btn-magic">
+                ✨ Lancer le Verdict & l'Analyse Psychologique
+            </button>
+        </section>
+
+        <!-- RESULTS SECTION (DASHBOARD) -->
+        <section id="resultsSection" style="display: none;">
+            
+            <!-- Metric Gauges (Toxicity & Compatibility) -->
+            <div class="dashboard-grid">
+                <!-- Compatibility -->
+                <div class="metric-box" style="border-top: 4px solid var(--accent-pink);">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">INDICE DE COMPATIBILITÉ</div>
+                    <div id="compatScoreValue" class="metric-score-huge score-compat">--%</div>
+                    <div id="compatVerdictLabel" class="metric-subtitle">Calcul en cours...</div>
+                </div>
+
+                <!-- Toxicity -->
+                <div class="metric-box" style="border-top: 4px solid var(--accent-red);">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">TOXIMÈTRE GLOBAL</div>
+                    <div id="toxicScoreValue" class="metric-score-huge score-toxic">--%</div>
+                    <div id="toxicLevelBadge" class="metric-subtitle">Calcul en cours...</div>
+                </div>
+            </div>
+
+            <!-- TRIBUNAL: QUI A TORT ? -->
+            <div class="tribunal-card">
+                <div class="card-title">
+                    <span>⚖️ Le Tribunal du Chat : Qui a Tort ?</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 800; margin-top: 0.5rem;">
+                    <span id="tribunalLabelP1" style="color: var(--accent-pink);">Personne 1 (50%)</span>
+                    <span id="tribunalLabelP2" style="color: var(--accent-cyan);">Personne 2 (50%)</span>
+                </div>
+
+                <!-- Fault Ratio Bar -->
+                <div class="tribunal-meter">
+                    <div id="tribunalBarP1" class="meter-p1" style="width: 50%;">50%</div>
+                    <div id="tribunalBarP2" class="meter-p2" style="width: 50%;">50%</div>
+                </div>
+
+                <div class="verdict-box" id="tribunalSummaryText">
+                    Analyse de la dynamique de conflit...
+                </div>
+
+                <!-- First provocation trigger -->
+                <div id="firstProvocationCard" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 0.75rem; padding: 0.75rem 1rem; font-size: 0.9rem;">
+                    <div style="font-weight: 700; color: var(--accent-red); margin-bottom: 0.25rem;">
+                        💥 Étincelle Initiale / Première Provocation Détectée :
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">
+                        Initié par <strong id="provocationSender" style="color: var(--text-main);"></strong> <span id="provocationType"></span> :
+                    </div>
+                    <div id="provocationQuote" style="font-style: italic; color: var(--text-main); margin-top: 0.25rem;"></div>
+                </div>
+            </div>
+
+            <!-- PERSPECTIVES: FILLE VS GARS -->
+            <div class="perspectives-container">
+                <!-- Fille -->
+                <div class="perspective-column fille">
+                    <div class="perspective-title" style="color: var(--accent-pink);">
+                        👩 Ce que la Fille ressent & Décodage
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-label">Ressenti profond :</div>
+                        <div id="filleRessenti" class="insight-text"></div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-label">Le sous-texte féminin :</div>
+                        <div id="filleSousTexte" class="insight-text" style="color: #fbcfe8;"></div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-label">Conseil relationnel :</div>
+                        <div id="filleConseil" class="insight-text" style="color: var(--accent-green);"></div>
+                    </div>
+                </div>
+
+                <!-- Gars -->
+                <div class="perspective-column gars">
+                    <div class="perspective-title" style="color: var(--accent-cyan);">
+                        👨 Ce que le Gars ressent & Décodage
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-label">Ressenti profond :</div>
+                        <div id="garsRessenti" class="insight-text"></div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-label">Le sous-texte masculin :</div>
+                        <div id="garsSousTexte" class="insight-text" style="color: #cffafe;"></div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-label">Conseil relationnel :</div>
+                        <div id="garsConseil" class="insight-text" style="color: var(--accent-green);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RED FLAGS & GREEN FLAGS -->
+            <div class="flags-grid">
+                <div class="flag-card" style="border-top: 3px solid var(--accent-red);">
+                    <div style="font-weight: 800; color: var(--accent-red); margin-bottom: 0.75rem; font-size: 1.05rem;">
+                        🚩 Drapeaux Rouges Détectés
+                    </div>
+                    <div id="redFlagsList"></div>
+                </div>
+
+                <div class="flag-card" style="border-top: 3px solid var(--accent-green);">
+                    <div style="font-weight: 800; color: var(--accent-green); margin-bottom: 0.75rem; font-size: 1.05rem;">
+                        🟢 Drapeaux Verts & Empathie
+                    </div>
+                    <div id="greenFlagsList"></div>
+                </div>
+            </div>
+
+            <!-- RECONCILIATION SCRIPT -->
+            <div class="reconciliation-card">
+                <div style="font-weight: 800; font-size: 1.1rem; color: var(--accent-green); margin-bottom: 0.4rem;">
+                    💌 Message d'Apaisement & Réconciliation Recommandé
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">
+                    Formulation psychologique optimisée pour désamorcer l'ego sans s'écraser :
+                </div>
+                <div id="reconciliationScriptText" class="script-box"></div>
+                <button id="btnCopyReconciliation" class="btn-copy">
+                    📋 Copier le message d'apaisement
+                </button>
+            </div>
+
+            <!-- STYLED CHAT STREAM BUBBLES -->
+            <div class="glass-card">
+                <div class="card-title" style="margin-bottom: 1rem;">
+                    💬 Transcription Visuelle du Chat
+                </div>
+                <div id="chatStreamContainer" class="chat-stream-card"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        ChatVerdict • Arbitrage impartial & Analyse de communication interpersonnelle • 2026
+    </footer>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

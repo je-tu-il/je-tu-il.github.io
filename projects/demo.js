@@ -17,9 +17,17 @@
   details.href = 'project.html?id=' + encodeURIComponent(project.id);
   details.hidden = false;
   if (project.isRunnable && project.runnableUrl) {
-    get('live').href = '../' + project.runnableUrl;
+    get('live').href = /^https:\/\//.test(project.runnableUrl) ? project.runnableUrl : '../' + project.runnableUrl;
     get('live').hidden = false;
   }
+
+  const workflow = window.PORTFOLIO_WORKFLOWS?.[id];
+  if (workflow) {
+    workflow(get('workflow'));
+    get('workflow').hidden = false;
+    return;
+  }
+  get('scenario-title').textContent = 'Exemple guidé';
 
   const output = get('result');
   const run = get('run');

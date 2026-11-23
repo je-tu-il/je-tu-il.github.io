@@ -18,7 +18,7 @@ const paletteInput = document.getElementById('paletteInput');
 const paletteResults = document.getElementById('paletteResults');
 
 function demoUrl(project) {
-  return "projects/demo.html?id=" + encodeURIComponent(project.id);
+  return project.runnableUrl || "projects/demo.html?id=" + encodeURIComponent(project.id);
 }
 
 // Initialize
@@ -102,7 +102,8 @@ function renderProjects() {
 
     const techPills = (p.techStack || []).slice(0, 4).map(t => `<span class="tech-tag">${t}</span>`).join('');
     
-    const primaryBtn = `<a href="${demoUrl(p)}" class="btn-card-launch">Essayer la démo</a>`;
+    const action = p.runnableUrl ? 'Ouvrir sur le web' : 'Voir le parcours';
+    const primaryBtn = `<a href="${demoUrl(p)}" class="btn-card-launch">${action}</a>`;
 
     return `
       <div class="project-card" data-id="${p.id}">

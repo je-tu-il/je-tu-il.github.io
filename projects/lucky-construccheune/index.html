@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucky Construccheune - Le Jeu de Plateau Moderne</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fbf7ee',
+              500: '#eab308',
+              600: '#ca8a04',
+              900: '#422006',
+            },
+            darkBg: '#0b0f19',
+            cardBg: '#131b2e',
+            accentGold: '#f59e0b',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    /* Glow & Visual animations */
+    .glow-gold {
+      box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.45);
+    }
+    .glow-cell {
+      box-shadow: inset 0 0 12px rgba(245, 158, 11, 0.35);
+    }
+    .neon-border {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    @keyframes pulse-subtle {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+    .animate-pulse-subtle {
+      animation: pulse-subtle 2s infinite ease-in-out;
+    }
+    /* Board Grid styling */
+    .board-cell {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .board-cell:hover {
+      filter: brightness(1.2);
+    }
+  </style>
+</head>
+<body class="bg-darkBg text-slate-100 font-sans min-h-screen flex flex-col selection:bg-amber-500 selection:text-slate-900 overflow-x-hidden">
+
+  <!-- Audio Synthesizer (Zero External Dependencies) -->
+  <script>
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      beep(freq = 440, type = 'sine', duration = 0.08, volume = 0.15) {
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch (e) { console.warn(e); }
+      },
+      click() {
+        this.beep(800, 'triangle', 0.04, 0.1);
+      },
+      coin() {
+        this.init();
+        this.beep(987.77, 'sine', 0.08, 0.15);
+        setTimeout(() => this.beep(1318.51, 'sine', 0.2, 0.15), 70);
+      },
+      fanfare() {
+        this.init();
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((n, i) => {
+          setTimeout(() => this.beep(n, 'triangle', 0.2, 0.2), i * 90);
+        });
+      },
+      hit() {
+        this.init();
+        this.beep(160, 'sawtooth', 0.12, 0.2);
+      },
+      paperToss() {
+        this.init();
+        this.beep(400, 'sine', 0.15, 0.1);
+      }
+    };
+    window.addEventListener('click', () => AudioEngine.init(), { once: true });
+  </script>
+
+  <!-- TOP NAVIGATION HEADER -->
+  <header class="border-b border-slate-800/80 bg-slate-950/70 backdrop-blur-md sticky top-0 z-40 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/20 text-xl tracking-tighter">
+          LC
+        </div>
+        <div>
+          <h1 class="text-lg md:text-xl font-bold bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-200 bg-clip-text text-transparent flex items-center gap-2">
+            Lucky Construccheune
+            <span class="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-medium">Édition Moderne</span>
+          </h1>
+          <p class="text-xs text-slate-400 hidden sm:block">Jeu de plateau d'exploration, d'adresse, de stratégie et d'immobilier</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="btn-open-rules" class="px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-xs font-medium text-slate-300 transition flex items-center gap-1.5 border border-slate-700">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Règles & Astuces
+        </button>
+        <button id="btn-restart" class="px-3 py-1.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-xs font-medium text-rose-300 border border-rose-800/50 transition">
+          Nouvelle Partie
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- LOBBY SCREEN (GAME SETUP) -->
+  <section id="lobby-screen" class="flex-1 flex items-center justify-center p-4">
+    <div class="w-full max-w-xl bg-slate-900/90 border border-slate-800 p-6 md:p-8 rounded-3xl shadow-2xl backdrop-blur-xl relative overflow-hidden">
+      <div class="absolute -top-24 -right-24 w-52 h-52 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-extrabold text-white mb-2">Configuration de la Partie</h2>
+        <p class="text-sm text-slate-400">Passez l'appareil entre amis en multijoueur local (Pass & Play) !</p>
+      </div>
+
+      <div class="space-y-6">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Nombre de Joueurs (2 à 6)</label>
+          <div class="grid grid-cols-5 gap-2" id="player-count-buttons">
+            <button data-count="2" class="player-count-btn py-2.5 rounded-xl border border-slate-700 bg-slate-800 font-bold hover:bg-amber-500/20 hover:border-amber-500 transition">2</button>
+            <button data-count="3" class="player-count-btn py-2.5 rounded-xl border border-slate-700 bg-slate-800 font-bold hover:bg-amber-500/20 hover:border-amber-500 transition">3</button>
+            <button data-count="4" class="player-count-btn py-2.5 rounded-xl border border-amber-500 bg-amber-500/20 text-amber-300 font-bold hover:bg-amber-500/30 transition">4</button>
+            <button data-count="5" class="player-count-btn py-2.5 rounded-xl border border-slate-700 bg-slate-800 font-bold hover:bg-amber-500/20 hover:border-amber-500 transition">5</button>
+            <button data-count="6" class="player-count-btn py-2.5 rounded-xl border border-slate-700 bg-slate-800 font-bold hover:bg-amber-500/20 hover:border-amber-500 transition">6</button>
+          </div>
+        </div>
+
+        <div id="player-inputs-container" class="space-y-3">
+          <!-- Dynamically generated name & color badges -->
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Pactole Initial de Départ</label>
+          <select id="start-money-select" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-200 focus:outline-none focus:border-amber-400">
+            <option value="6000">6 000 € (Partie Rapide)</option>
+            <option value="10000" selected>10 000 € (Standard Équilibré)</option>
+            <option value="15000">15 000 € (Bâtisseurs)</option>
+          </select>
+        </div>
+
+        <button id="btn-start-game" class="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-base uppercase tracking-wider shadow-xl shadow-amber-500/20 active:scale-[0.99] transition transform">
+          Lancer Lucky Construccheune !
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN GAME INTERFACE (SPLIT VIEW) -->
+  <main id="game-screen" class="hidden flex-1 max-w-7xl mx-auto w-full p-2 sm:p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+    
+    <!-- LEFT COLUMN: STATUS & DASHBOARD (4 Cols) -->
+    <div class="lg:col-span-4 flex flex-col gap-4">
+
+      <!-- ACTIVE PLAYER CARD -->
+      <div id="active-player-panel" class="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-5 shadow-xl relative overflow-hidden">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div id="active-avatar" class="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xl text-white shadow-lg"></div>
+            <div>
+              <span class="text-xs uppercase font-bold tracking-wider text-slate-400">Au tour de</span>
+              <h3 id="active-name" class="text-xl font-extrabold text-white leading-tight">Joueur 1</h3>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="text-xs uppercase font-bold text-slate-400">Trésorerie</span>
+            <div id="active-cash" class="text-xl font-black text-amber-400">10 000 €</div>
+          </div>
+        </div>
+
+        <!-- Health and Inventory Badges -->
+        <div class="bg-slate-950/60 rounded-2xl p-3 border border-slate-800/80 mb-4 flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs text-slate-400 font-semibold mr-1">Vies:</span>
+            <div id="active-hearts" class="flex text-rose-500 text-lg tracking-widest font-black">❤️❤️❤️</div>
+          </div>
+          <div class="flex items-center gap-1 text-xs">
+            <span class="text-slate-400 font-semibold">Prison :</span>
+            <span id="active-jail" class="font-bold text-slate-300">Non</span>
+          </div>
+        </div>
+
+        <!-- Active Player Items -->
+        <div class="mb-4">
+          <span class="text-xs uppercase tracking-wider font-semibold text-slate-400 mb-2 block">Équipements & Objets :</span>
+          <div id="active-inventory" class="flex flex-wrap gap-1.5 text-xs">
+            <!-- Badges -->
+          </div>
+        </div>
+
+        <!-- ACTION BUTTONS IN TURN -->
+        <div class="space-y-2">
+          <div class="grid grid-cols-2 gap-2">
+            <!-- ROLL DICE / STEP -->
+            <button id="btn-roll" class="py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 shadow-md shadow-amber-500/20 transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+              <span>Déplacer (1-6)</span>
+            </button>
+            
+            <!-- WHEEL OF FORTUNE -->
+            <button id="btn-open-wheel" class="py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm flex items-center justify-center gap-1.5 active:scale-95 transition">
+              <span>🎡 Roulette</span>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <!-- TARGET PAPER TOSS -->
+            <button id="btn-open-target" class="py-2.5 px-3 rounded-xl bg-emerald-600/80 hover:bg-emerald-600 text-white font-semibold text-xs flex items-center justify-center gap-1 active:scale-95 transition">
+              <span>🎯 Loterie Cible</span>
+            </button>
+            
+            <!-- SHOP / BUY BUILDINGS -->
+            <button id="btn-open-shop" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-semibold text-xs flex items-center justify-center gap-1 border border-slate-700 transition">
+              <span>🛒 Boutique & Bâtiments</span>
+            </button>
+          </div>
+
+          <button id="btn-end-turn" disabled class="w-full py-3 rounded-xl bg-slate-800 text-slate-400 font-bold text-sm border border-slate-700 transition flex items-center justify-center gap-2">
+            <span>Passer le tour</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- PLAYERS OVERVIEW LEADERBOARD -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-4 flex-1 flex flex-col shadow-lg">
+        <h4 class="text-xs uppercase font-bold tracking-wider text-slate-400 mb-3 flex items-center justify-between">
+          <span>Classement des Joueurs</span>
+          <span class="text-amber-400 font-semibold" id="round-counter">Tour 1</span>
+        </h4>
+        <div id="players-list-overview" class="space-y-2 flex-1 overflow-y-auto max-h-56 lg:max-h-64 pr-1">
+          <!-- Dynamic Player Item list -->
+        </div>
+      </div>
+
+      <!-- GAME LOG PANEL -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-3xl p-4 flex flex-col h-44 shadow-lg">
+        <h4 class="text-xs uppercase font-bold tracking-wider text-slate-400 mb-2 flex items-center justify-between">
+          <span>Journal de Bord</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        </h4>
+        <div id="game-logs" class="flex-1 overflow-y-auto space-y-1.5 text-xs text-slate-300 pr-1">
+          <p class="text-slate-500 italic">La partie démarre. Bonne chance à tous les bâtisseurs !</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: THE BOARD GRID CANVAS/DOM (8 Cols) -->
+    <div class="lg:col-span-8 flex flex-col bg-slate-900/80 border border-slate-800 rounded-3xl p-3 sm:p-5 shadow-2xl relative">
+      
+      <!-- Board header details -->
+      <div class="flex items-center justify-between mb-3 px-1">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">Plateau Tactique Quadrillé (11 x 11)</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs text-slate-400">
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-emerald-500 inline-block"></span> Départ (+1000€)</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-rose-500 inline-block"></span> Feu</span>
+          <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded bg-teal-500 inline-block"></span> Marais</span>
+        </div>
+      </div>
+
+      <!-- Grid wrapper responsive -->
+      <div class="flex-1 flex items-center justify-center overflow-auto p-1 sm:p-2 bg-slate-950/60 rounded-2xl border border-slate-800/80">
+        <div id="board-grid" class="grid grid-cols-11 gap-1 sm:gap-1.5 w-full max-w-[680px] aspect-square p-2">
+          <!-- 121 cells generated via Javascript -->
+        </div>
+      </div>
+
+      <!-- Board Foot Legend -->
+      <div class="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-400 bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60">
+        <div class="flex items-center gap-1.5">
+          <span class="font-bold text-amber-300">M :</span> Maison (loyer passage)
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="font-bold text-cyan-300">H :</span> Hôpital (soin +❤️)
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="font-bold text-rose-300">A :</span> Armée (raser bâtiment)
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span class="font-bold text-indigo-300">P :</span> Pont (péage imposé)
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: ROULETTE / WHEEL OF FORTUNE -->
+  <div id="modal-wheel" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl relative text-center">
+      <h3 class="text-xl font-black text-amber-400 mb-1">🎡 Roue de la Fortune</h3>
+      <p class="text-xs text-slate-400 mb-4">Tournez la roue pour empocher un gain, une carte ou éviter les pièges !</p>
+      
+      <!-- Wheel Canvas Container -->
+      <div class="relative w-64 h-64 mx-auto my-2 flex items-center justify-center">
+        <!-- Pointer Indicator at top -->
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[20px] border-t-amber-400 z-10 drop-shadow-md"></div>
+        <canvas id="wheel-canvas" width="250" height="250" class="rounded-full shadow-2xl"></canvas>
+      </div>
+
+      <div id="wheel-result" class="h-10 my-3 flex items-center justify-center text-sm font-bold text-white bg-slate-950/60 rounded-xl border border-slate-800">
+        Prêt à tourner ?
+      </div>
+
+      <div class="flex gap-2">
+        <button id="btn-spin-wheel" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-sm uppercase tracking-wider hover:brightness-110 active:scale-95 transition">
+          Faire Tourner !
+        </button>
+        <button id="btn-close-wheel" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: LOTERIE CIBLE (BOULETTE DE PAPIER MINI-GAME) -->
+  <div id="modal-target" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl relative text-center">
+      <h3 class="text-xl font-black text-emerald-400 mb-1">🎯 Loterie Cible (Tir de Papier)</h3>
+      <p class="text-xs text-slate-400 mb-3">Arrêtez la jauge au bon moment pour viser le mille (5 000 € au centre) !</p>
+
+      <!-- Target Canvas -->
+      <div class="relative w-64 h-64 mx-auto my-2">
+        <canvas id="target-canvas" width="256" height="256" class="rounded-2xl shadow-inner border border-slate-800 bg-slate-950"></canvas>
+        <!-- Paper projectile icon animated -->
+        <div id="target-ball" class="w-6 h-6 rounded-full bg-slate-100 border-2 border-slate-400 shadow-lg absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-500 pointer-events-none opacity-0 flex items-center justify-center text-[10px] font-bold text-slate-800">
+          ⚪
+        </div>
+      </div>
+
+      <!-- Moving Power Bar / Timing -->
+      <div class="my-3">
+        <div class="flex justify-between text-xs text-slate-400 mb-1">
+          <span>Précision du Tir</span>
+          <span id="target-power-label">50%</span>
+        </div>
+        <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden relative border border-slate-700">
+          <div id="target-power-fill" class="h-full bg-gradient-to-r from-amber-500 via-emerald-400 to-amber-500 w-1/2"></div>
+        </div>
+      </div>
+
+      <div id="target-result-text" class="h-8 mb-3 flex items-center justify-center text-sm font-bold text-emerald-300 bg-slate-950/60 rounded-xl border border-slate-800">
+        Appuyez sur "Tirer la boulette !"
+      </div>
+
+      <div class="flex gap-2">
+        <button id="btn-fire-target" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-sm uppercase tracking-wider hover:brightness-110 active:scale-95 transition">
+          Lancer la boulette !
+        </button>
+        <button id="btn-close-target" class="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-sm">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CARD EVENT (3D FLIP) -->
+  <div id="modal-card" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="max-w-sm w-full text-center">
+      <div id="card-inner" class="bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950 border-2 border-amber-400/50 rounded-3xl p-6 shadow-2xl relative transform transition duration-500 scale-100">
+        <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-400/20 text-amber-400 flex items-center justify-center text-2xl mb-3 border border-amber-400/30">
+          🎴
+        </div>
+        <span class="text-xs uppercase font-extrabold tracking-widest text-amber-400">Carte Événement</span>
+        <h3 id="card-title" class="text-xl font-black text-white mt-2 mb-2">Titre de Carte</h3>
+        <p id="card-desc" class="text-sm text-slate-300 mb-6 min-h-[60px] flex items-center justify-center">Description de l'action qui affecte la partie.</p>
+        
+        <button id="btn-card-apply" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm uppercase tracking-wider active:scale-95 transition shadow-lg shadow-amber-400/20">
+          Appliquer l'Événement
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SHOP & REAL ESTATE -->
+  <div id="modal-shop" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl relative">
+      <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+        <div>
+          <h3 class="text-xl font-black text-amber-400 flex items-center gap-2">
+            🛒 Boutique & Immobilier
+          </h3>
+          <p class="text-xs text-slate-400">Équipez-vous pour surmonter les obstacles ou construisez des bâtiments !</p>
+        </div>
+        <button id="btn-close-shop" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center font-bold">✕</button>
+      </div>
+
+      <div class="space-y-4 max-h-[65vh] overflow-y-auto pr-1">
+        <!-- ITEM SECTION -->
+        <div>
+          <h4 class="text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">Objets & Survie</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+              <div>
+                <p class="font-bold text-white">💧 Sceau d'eau</p>
+                <p class="text-slate-400 text-[11px]">Éteint / passe le feu</p>
+                <span class="text-amber-400 font-extrabold">9 000 €</span>
+              </div>
+              <button onclick="Game.buyItem('seau', 9000)" class="px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 font-bold border border-amber-500/30 transition">Acheter</button>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+              <div>
+                <p class="font-bold text-white">☂️ Parapluie</p>
+                <p class="text-slate-400 text-[11px]">Franchit certains murs</p>
+                <span class="text-amber-400 font-extrabold">8 000 €</span>
+              </div>
+              <button onclick="Game.buyItem('parapluie', 8000)" class="px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 font-bold border border-amber-500/30 transition">Acheter</button>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+              <div>
+                <p class="font-bold text-white">✨ Tout Petit</p>
+                <p class="text-slate-400 text-[11px]">Passe les petits murs</p>
+                <span class="text-amber-400 font-extrabold">7 000 €</span>
+              </div>
+              <button onclick="Game.buyItem('tout_petit', 7000)" class="px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 font-bold border border-amber-500/30 transition">Acheter</button>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+              <div>
+                <p class="font-bold text-white">🪨 Rocher (lot)</p>
+                <p class="text-slate-400 text-[11px]">Traverse marais toxique</p>
+                <span class="text-amber-400 font-extrabold">2 000 €</span>
+              </div>
+              <button onclick="Game.buyItem('rocher', 2000)" class="px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 font-bold border border-amber-500/30 transition">+1 Rocher</button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- BUILDINGS SECTION -->
+        <div>
+          <h4 class="text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">Bâtir sur votre case actuelle</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+              <div>
+                <p class="font-bold text-amber-300">🏠 Maison (M)</p>
+                <p class="text-slate-400 text-[11px]">Loyer de 1 500 €</p>
+                <span class="text-amber-400 font-extrabold">6 000 €</span>
+              </div>
+              <button onclick="Game.buildOnCurrentCell('M', 6000)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-amber-500 text-amber-300 hover:text-slate-950 font-bold border border-slate-700 transition">Bâtir</button>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+              <div>
+                <p class="font-bold text-cyan-300">🏥 Hôpital (H)</p>
+                <p class="text-slate-400 text-[11px]">Soigne +1 ❤️ ou taxe</p>
+                <span class="text-amber-400 font-extrabold">10 000 €</span>
+              </div>
+              <button onclick="Game.buildOnCurrentCell('H', 10000)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-cyan-500 text-cyan-300 hover:text-slate-950 font-bold border border-slate-700 transition">Bâtir</button>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+              <div>
+                <p class="font-bold text-rose-400">⚔️ Armée (A)</p>
+                <p class="text-slate-400 text-[11px]">Détruit un bâtiment</p>
+                <span class="text-amber-400 font-extrabold">15 000 €</span>
+              </div>
+              <button onclick="Game.buildOnCurrentCell('A', 15000)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-500 text-rose-300 hover:text-slate-950 font-bold border border-slate-700 transition">Bâtir</button>
+            </div>
+
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+              <div>
+                <p class="font-bold text-indigo-400">🌉 Pont (P)</p>
+                <p class="text-slate-400 text-[11px]">Péage de passage 2 000 €</p>
+                <span class="text-amber-400 font-extrabold">8 000 €</span>
+              </div>
+              <button onclick="Game.buildOnCurrentCell('P', 8000)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-indigo-500 text-indigo-300 hover:text-slate-950 font-bold border border-slate-700 transition">Bâtir</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RULES -->
+  <div id="modal-rules" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl relative text-xs text-slate-300 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+        <h3 class="text-base font-bold text-amber-400">Guide de Jeu & Règles d'Origine</h3>
+        <button id="btn-close-rules" class="text-slate-400 hover:text-white font-bold text-sm">✕</button>
+      </div>
+      <p><strong class="text-white">But du jeu :</strong> Développez votre empire immobilier, survived aux épreuves du plateau (feux, gouffres, marais toxique, prison) et devenez le plus riche ou le dernier survivant !</p>
+      <ul class="list-disc pl-4 space-y-1 text-slate-300">
+        <li><strong>Départ :</strong> Situé en bas à droite. Chaque passage ou atterrissage rapporte +1 000 €.</li>
+        <li><strong>Loterie Cible (boulette de papier) :</strong> Arrêtez le viseur avec précision pour marquer jusqu'à 5 000 €.</li>
+        <li><strong>Roulette de la Fortune :</strong> Offre des bonus en cash, des cœurs ou des cartes mystères.</li>
+        <li><strong>Bâtiments (M, H, A, P) :</strong> Posez-les sur vos cases pour prélever des loyers aux adversaires. L'Armée permet de raser un bâtiment adverse !</li>
+        <li><strong>Obstacles :</strong> Un joueur arrivant sur du feu perd 1 ❤️ sans sceau d'eau. Le marais toxique consomme 3 rochers.</li>
+      </ul>
+      <div class="pt-2 text-center">
+        <button onclick="document.getElementById('modal-rules').classList.add('hidden')" class="px-5 py-2 rounded-xl bg-amber-500 text-slate-950 font-bold">Compris !</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT GAME ENGINE -->
+  <script>
+    /* -------------------------------------------------------------
+       PALETTES & PRESETS
+       ------------------------------------------------------------- */
+    const PLAYER_COLORS = [
+      { name: 'Bleu Azur', hex: '#3b82f6', bg: 'bg-blue-500' },
+      { name: 'Vert Émeraude', hex: '#10b981', bg: 'bg-emerald-500' },
+      { name: 'Rose Bonbon', hex: '#ec4899', bg: 'bg-pink-500' },
+      { name: 'Jaune Soleil', hex: '#eab308', bg: 'bg-yellow-500' },
+      { name: 'Violet Néon', hex: '#a855f7', bg: 'bg-purple-500' },
+      { name: 'Orange Solaire', hex: '#f97316', bg: 'bg-orange-500' }
+    ];
+
+    /* -------------------------------------------------------------
+       BOARD LAYOUT (11x11 = 121 cells)
+       Faithful to the original sheet: Start bottom right,
+       walls, fire, pipes, taxes, cards, void/ravines.
+       ------------------------------------------------------------- */
+    const GRID_SIZE = 11;
+    const TOTAL_CELLS = GRID_SIZE * GRID_SIZE;
+
+    // Special cell mapping
+    const SPECIAL_CELLS = {
+      // START at bottom-right (row 10, col 10)
+      120: { type: 'start', label: 'DÉPART', icon: '🏁', bonus: 1000 },
+      // Pipes (Shortcuts)
+      18: { type: 'pipe', target: 78, label: 'Tuyau A', icon: '🌀' },
+      78: { type: 'pipe', target: 18, label: 'Tuyau B', icon: '🌀' },
+      52: { type: 'pipe', target: 94, label: 'Tuyau C', icon: '🌀' },
+      94: { type: 'pipe', target: 52, label: 'Tuyau D', icon: '🌀' },
+      // Prison
+      36: { type: 'jail', label: 'PRISON', icon: '⛓️' },
+      // Cash Gains & Losses
+      15: { type: 'gain', amount: 4000, label: '+4 000€', icon: '💰' },
+      40: { type: 'gain', amount: 2000, label: '+2 000€', icon: '💵' },
+      82: { type: 'tax', amount: 1000, label: '-1 000€', icon: '💸' },
+      69: { type: 'tax', amount: 5000, label: '-5 000€', icon: '⚠️' },
+      91: { type: 'tax', amount: 20000, label: '-20 000€', icon: '💥' },
+      // Cards
+      24: { type: 'card', label: 'Carte', icon: '🎴' },
+      58: { type: 'card', label: 'Carte', icon: '🎴' },
+      102: { type: 'card', label: 'Carte', icon: '🎴' },
+      // Obstacles
+      30: { type: 'fire', label: 'Feu', icon: '🔥' },
+      73: { type: 'fire', label: 'Feu', icon: '🔥' },
+      48: { type: 'swamp', label: 'Marais', icon: '🧪' },
+      86: { type: 'swamp', label: 'Marais', icon: '🧪' },
+      // Ravins / Void (Hachures)
+      4: { type: 'void', label: 'Ravin', icon: '🕳️' },
+      14: { type: 'void', label: 'Ravin', icon: '🕳️' },
+      60: { type: 'void', label: 'Ravin', icon: '🕳️' },
+      61: { type: 'void', label: 'Ravin', icon: '🕳️' },
+      84: { type: 'void', label: 'Ravin', icon: '🕳️' },
+      // Target & Wheel triggers on board
+      46: { type: 'target_spot', label: 'Cible', icon: '🎯' },
+      29: { type: 'wheel_spot', label: 'Loterie', icon: '🎡' }
+    };
+
+    /* -------------------------------------------------------------
+       CARDS DECK (Transcribed from handwritten slips)
+       ------------------------------------------------------------- */
+    const CARDS_DECK = [
+      {
+        title: "Loterie pour tous les joueurs !",
+        desc: "Tous les joueurs participent immédiatement au tirage de la Roulette de la Fortune !",
+        action: (g) => { g.log("Tous les joueurs bénéficient d'un tirage chance !"); g.openWheelModal(); }
+      },
+      {
+        title: "Loterie Cible collective !",
+        desc: "Tous les joueurs lancent une boulette sur la cible pour tenter d'empocher jusqu'à 5 000 €.",
+        action: (g) => { g.log("Loterie Cible collective déclenchée !"); g.openTargetModal(); }
+      },
+      {
+        title: "Téléportation Tactique",
+        desc: "Téléportez-vous ou avancez de 3 cases en avant, même en traversant un mur !",
+        action: (g) => {
+          const p = g.getActivePlayer();
+          p.pos = Math.min(TOTAL_CELLS - 1, p.pos + 3);
+          g.log(`${p.name} est propulsé de 3 cases en avant par la carte !`);
+          g.renderBoard();
+        }
+      },
+      {
+        title: "Prime du Bâtisseur (+5 000 €)",
+        desc: "Une subvention municipale vous octroie 5 000 € d'argent frais.",
+        action: (g) => {
+          const p = g.getActivePlayer();
+          p.money += 5000;
+          AudioEngine.coin();
+          g.log(`${p.name} touche 5 000 € de prime !`);
+        }
+      },
+      {
+        title: "Coup Dur (-5 000 €)",
+        desc: "Une tempête s'abat sur vos chantiers. Vous perdez 5 000 €.",
+        action: (g) => {
+          const p = g.getActivePlayer();
+          p.money = Math.max(0, p.money - 5000);
+          AudioEngine.hit();
+          g.log(`${p.name} subit une perte financière de 5 000 €.`);
+        }
+      },
+      {
+        title: "Bénédiction de Vie (+1 ❤️)",
+        desc: "Vous récupérez immédiatement 1 cœur de vie.",
+        action: (g) => {
+          const p = g.getActivePlayer();
+          p.hearts = Math.min(5, p.hearts + 1);
+          AudioEngine.fanfare();
+          g.log(`${p.name} gagne +1 ❤️ !`);
+        }
+      },
+      {
+        title: "Accident de Chantier (-1 ❤️)",
+        desc: "Vous vous blessez sur un obstacle. Vous perdez 1 cœur.",
+        action: (g) => {
+          const p = g.getActivePlayer();
+          p.hearts = Math.max(0, p.hearts - 1);
+          AudioEngine.hit();
+          g.log(`${p.name} perd 1 ❤️ lors d'un accident.`);
+        }
+      },
+      {
+        title: "Retour à la Case Départ",
+        desc: "Retournez immédiatement sur la case Départ et touchez la prime de 1 000 € !",
+        action: (g) => {
+          const p = g.getActivePlayer();
+          p.pos = 120;
+          p.money += 1000;
+          AudioEngine.coin();
+          g.log(`${p.name} est renvoyé à la case Départ (+1 000 €).`);
+          g.renderBoard();
+        }
+      }
+    ];
+
+    /* -------------------------------------------------------------
+       GAME STATE OBJECT
+       ------------------------------------------------------------- */
+    const Game = {
+      players: [],
+      activePlayerIndex: 0,
+      round: 1,
+      buildings: {}, // cellIndex -> { type: 'M'|'H'|'A'|'P', owner: playerIndex }
+      hasMovedThisTurn: false,
+      isRolling: false,
+
+      initLobby() {
+        const container = document.getElementById('player-inputs-container');
+        container.innerHTML = '';
+        const count = 4; // default
+        this.renderPlayerInputs(count);
+
+        // Player count selector click handlers
+        document.querySelectorAll('.player-count-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            AudioEngine.click();
+            document.querySelectorAll('.player-count-btn').forEach(b => {
+              b.classList.remove('border-amber-500', 'bg-amber-500/20', 'text-amber-300');
+              b.classList.add('border-slate-700', 'bg-slate-800');
+            });
+            btn.classList.add('border-amber-500', 'bg-amber-500/20', 'text-amber-300');
+            btn.classList.remove('border-slate-700', 'bg-slate-800');
+            this.renderPlayerInputs(parseInt(btn.dataset.count));
+          });
+        });
+
+        document.getElementById('btn-start-game').addEventListener('click', () => {
+          AudioEngine.fanfare();
+          this.startGame();
+        });
+
+        document.getElementById('btn-restart').addEventListener('click', () => {
+          if (confirm("Voulez-vous réinitialiser et démarrer une nouvelle partie ?")) {
+            location.reload();
+          }
+        });
+
+        document.getElementById('btn-open-rules').addEventListener('click', () => {
+          AudioEngine.click();
+          document.getElementById('modal-rules').classList.remove('hidden');
+        });
+
+        document.getElementById('btn-close-rules').addEventListener('click', () => {
+          document.getElementById('modal-rules').classList.add('hidden');
+        });
+      },
+
+      renderPlayerInputs(count) {
+        const container = document.getElementById('player-inputs-container');
+        container.innerHTML = '';
+        for (let i = 0; i < count; i++) {
+          const color = PLAYER_COLORS[i % PLAYER_COLORS.length];
+          const div = document.createElement('div');
+          div.className = "flex items-center gap-3 bg-slate-950 p-2.5 rounded-xl border border-slate-800";
+          div.innerHTML = `
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white shadow-md" style="background-color: ${color.hex}">
+              ${i + 1}
+            </div>
+            <input type="text" id="player-name-${i}" value="Bâtisseur ${i + 1}" maxlength="14" class="flex-1 bg-transparent border-none text-slate-200 text-sm font-semibold focus:outline-none">
+            <span class="text-xs text-slate-500 font-medium">${color.name}</span>
+          `;
+          container.appendChild(div);
+        }
+      },
+
+      startGame() {
+        const startMoney = parseInt(document.getElementById('start-money-select').value) || 10000;
+        const inputDivs = document.getElementById('player-inputs-container').children;
+        this.players = [];
+
+        for (let i = 0; i < inputDivs.length; i++) {
+          const nameInput = document.getElementById(`player-name-${i}`);
+          const name = nameInput ? nameInput.value.trim() || `Joueur ${i + 1}` : `Joueur ${i + 1}`;
+          this.players.push({
+            id: i,
+            name: name,
+            color: PLAYER_COLORS[i % PLAYER_COLORS.length],
+            money: startMoney,
+            hearts: 3,
+            pos: 120, // Start cell
+            jailTurns: 0,
+            items: {
+              seau: 0,
+              parapluie: 0,
+              tout_petit: 0,
+              rocher: 2,
+              sable: 0
+            }
+          });
+        }
+
+        // Hide lobby, show game
+        document.getElementById('lobby-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+
+        this.renderBoard();
+        this.updateActivePlayerUI();
+        this.updateLeaderboard();
+        this.initEventListeners();
+        this.initWheel();
+        this.initTargetMiniGame();
+
+        this.log(`Partie lancée avec ${this.players.length} bâtisseurs. Départ donné !`);
+      },
+
+      getActivePlayer() {
+        return this.players[this.activePlayerIndex];
+      },
+
+      log(msg) {
+        const container = document.getElementById('game-logs');
+        const p = document.createElement('p');
+        p.className = "text-slate-300 leading-snug";
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        p.innerHTML = `<span class="text-slate-500 text-[10px] font-mono mr-1">[${time}]</span> ${msg}`;
+        container.prepend(p);
+      },
+
+      /* -------------------------------------------------------------
+         BOARD RENDERING & PATH CALCULATION
+         ------------------------------------------------------------- */
+      renderBoard() {
+        const grid = document.getElementById('board-grid');
+        grid.innerHTML = '';
+
+        for (let i = 0; i < TOTAL_CELLS; i++) {
+          const cell = document.createElement('div');
+          cell.dataset.index = i;
+          cell.className = "board-cell relative rounded-lg border flex flex-col items-center justify-center p-0.5 text-center select-none overflow-hidden ";
+
+          const spec = SPECIAL_CELLS[i];
+          const building = this.buildings[i];
+
+          // Cell Base Styling based on type
+          if (spec) {
+            if (spec.type === 'start') {
+              cell.className += "bg-emerald-950/70 border-emerald-500/70 text-emerald-300";
+            } else if (spec.type === 'jail') {
+              cell.className += "bg-slate-900 border-slate-600 text-slate-300";
+            } else if (spec.type === 'fire') {
+              cell.className += "bg-rose-950/70 border-rose-600/70 text-rose-300";
+            } else if (spec.type === 'swamp') {
+              cell.className += "bg-teal-950/70 border-teal-600/70 text-teal-300";
+            } else if (spec.type === 'void') {
+              cell.className += "bg-slate-950/90 border-slate-900 opacity-30 cursor-not-allowed";
+            } else if (spec.type === 'pipe') {
+              cell.className += "bg-sky-950/70 border-sky-500/70 text-sky-300";
+            } else if (spec.type === 'gain') {
+              cell.className += "bg-amber-950/40 border-amber-500/50 text-amber-300";
+            } else if (spec.type === 'tax') {
+              cell.className += "bg-red-950/40 border-red-500/50 text-red-300";
+            } else if (spec.type === 'card') {
+              cell.className += "bg-indigo-950/50 border-indigo-500/50 text-indigo-300";
+            } else {
+              cell.className += "bg-slate-900/60 border-slate-800 text-slate-400";
+            }
+          } else {
+            cell.className += "bg-slate-900/60 border-slate-800/80 text-slate-400";
+          }
+
+          // Content of Cell
+          let innerHTML = '';
+          if (spec) {
+            innerHTML = `
+              <span class="text-xs sm:text-base leading-none">${spec.icon}</span>
+              <span class="text-[8px] sm:text-[9px] font-bold leading-tight mt-0.5 truncate max-w-full">${spec.label}</span>
+            `;
+          } else {
+            innerHTML = `<span class="text-[8px] font-mono text-slate-600">#${i + 1}</span>`;
+          }
+
+          // Building Overlays (M, H, A, P)
+          if (building) {
+            const owner = this.players[building.owner];
+            innerHTML += `
+              <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center">
+                <span class="font-black text-xs sm:text-sm px-1 rounded shadow" style="color: ${owner.color.hex}; border: 1px solid ${owner.color.hex}">
+                  ${building.type}
+                </span>
+              </div>
+            `;
+          }
+
+          // Render Players standing on this cell
+          const occupants = this.players.filter(p => p.pos === i);
+          if (occupants.length > 0) {
+            innerHTML += `<div class="absolute bottom-0.5 inset-x-0 flex items-center justify-center gap-0.5 z-10">`;
+            occupants.forEach(p => {
+              innerHTML += `
+                <div class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border border-white/80 shadow-md flex items-center justify-center text-[8px] font-black text-white" style="background-color: ${p.color.hex}">
+                  ${p.id + 1}
+                </div>
+              `;
+            });
+            innerHTML += `</div>`;
+          }
+
+          cell.innerHTML = innerHTML;
+          grid.appendChild(cell);
+        }
+      },
+
+      /* -------------------------------------------------------------
+         TURN ACTIONS & MECHANICS
+         ------------------------------------------------------------- */
+      initEventListeners() {
+        document.getElementById('btn-roll').addEventListener('click', () => this.rollAndMove());
+        document.getElementById('btn-end-turn').addEventListener('click', () => this.endTurn());
+
+        document.getElementById('btn-open-wheel').addEventListener('click', () => {
+          AudioEngine.click();
+          this.openWheelModal();
+        });
+        document.getElementById('btn-close-wheel').addEventListener('click', () => {
+          document.getElementById('modal-wheel').classList.add('hidden');
+        });
+
+        document.getElementById('btn-open-target').addEventListener('click', () => {
+          AudioEngine.click();
+          this.openTargetModal();
+        });
+        document.getElementById('btn-close-target').addEventListener('click', () => {
+          document.getElementById('modal-target').classList.add('hidden');
+        });
+
+        document.getElementById('btn-open-shop').addEventListener('click', () => {
+          AudioEngine.click();
+          document.getElementById('modal-shop').classList.remove('hidden');
+        });
+        document.getElementById('btn-close-shop').addEventListener('click', () => {
+          document.getElementById('modal-shop').classList.add('hidden');
+        });
+
+        document.getElementById('btn-card-apply').addEventListener('click', () => {
+          document.getElementById('modal-card').classList.add('hidden');
+          if (this.currentCardAction) {
+            this.currentCardAction(this);
+            this.currentCardAction = null;
+          }
+          this.updateActivePlayerUI();
+          this.updateLeaderboard();
+        });
+      },
+
+      rollAndMove() {
+        if (this.hasMovedThisTurn || this.isRolling) return;
+        const player = this.getActivePlayer();
+
+        // Jail Check
+        if (player.jailTurns > 0) {
+          player.jailTurns--;
+          this.log(`⛓️ ${player.name} purge sa peine en prison (encore ${player.jailTurns} tour(s)).`);
+          this.hasMovedThisTurn = true;
+          this.updateActivePlayerUI();
+          return;
+        }
+
+        this.isRolling = true;
+        AudioEngine.click();
+
+        const rollBtn = document.getElementById('btn-roll');
+        rollBtn.disabled = true;
+
+        // Animated Dice Roll
+        let rollsCount = 0;
+        const interval = setInterval(() => {
+          rollsCount++;
+          const tempVal = Math.floor(Math.random() * 6) + 1;
+          rollBtn.querySelector('span').innerText = `Lancer : ${tempVal}...`;
+          if (rollsCount > 8) {
+            clearInterval(interval);
+            const finalRoll = Math.floor(Math.random() * 6) + 1;
+            rollBtn.querySelector('span').innerText = `Dé : ${finalRoll}`;
+            this.isRolling = false;
+            this.movePlayerSteps(player, finalRoll);
+          }
+        }, 60);
+      },
+
+      movePlayerSteps(player, steps) {
+        let currentPos = player.pos;
+        let stepsLeft = steps;
+
+        const stepInterval = setInterval(() => {
+          if (stepsLeft > 0) {
+            currentPos = (currentPos + 1) % TOTAL_CELLS;
+            // Check pass start
+            if (currentPos === 120) {
+              player.money += 1000;
+              AudioEngine.coin();
+              this.log(`🏁 ${player.name} franchit la case Départ (+1 000 €) !`);
+            }
+            player.pos = currentPos;
+            this.renderBoard();
+            AudioEngine.beep(350 + (steps - stepsLeft) * 40, 'triangle', 0.05, 0.1);
+            stepsLeft--;
+          } else {
+            clearInterval(stepInterval);
+            this.hasMovedThisTurn = true;
+            this.handleCellArrival(player, player.pos);
+            this.updateActivePlayerUI();
+            this.updateLeaderboard();
+          }
+        }, 150);
+      },
+
+      handleCellArrival(player, cellIndex) {
+        const spec = SPECIAL_CELLS[cellIndex];
+        const building = this.buildings[cellIndex];
+
+        // 1. Building interactions
+        if (building && building.owner !== player.id) {
+          const owner = this.players[building.owner];
+          if (building.type === 'M') {
+            const rent = 1500;
+            player.money = Math.max(0, player.money - rent);
+            owner.money += rent;
+            AudioEngine.coin();
+            this.log(`🏠 ${player.name} s'arrête chez ${owner.name} et paie un loyer de ${rent} € !`);
+          } else if (building.type === 'P') {
+            const toll = 2000;
+            player.money = Math.max(0, player.money - toll);
+            owner.money += toll;
+            AudioEngine.coin();
+            this.log(`🌉 Péage du Pont : ${player.name} verse ${toll} € à ${owner.name}.`);
+          }
+        }
+
+        // 2. Special Cell triggers
+        if (!spec) return;
+
+        if (spec.type === 'start') {
+          player.money += 1000;
+          AudioEngine.coin();
+          this.log(`🏁 ${player.name} atterrit pile sur le DÉPART (+1 000 €) !`);
+        } else if (spec.type === 'gain') {
+          player.money += spec.amount;
+          AudioEngine.coin();
+          this.log(`💰 Gain : ${player.name} empoche ${spec.amount} € !`);
+        } else if (spec.type === 'tax') {
+          player.money = Math.max(0, player.money - spec.amount);
+          AudioEngine.hit();
+          this.log(`💸 Taxe : ${player.name} subit une perte de ${spec.amount} €.`);
+        } else if (spec.type === 'pipe') {
+          this.log(`🌀 ${player.name} plonge dans le tuyau et ressort en case #${spec.target + 1} !`);
+          player.pos = spec.target;
+          AudioEngine.fanfare();
+          this.renderBoard();
+        } else if (spec.type === 'jail') {
+          player.jailTurns = 2;
+          AudioEngine.hit();
+          this.log(`⛓️ Prison ferme ! ${player.name} est écroué pour 2 tours.`);
+        } else if (spec.type === 'fire') {
+          if (player.items.seau > 0) {
+            player.items.seau--;
+            this.log(`💧 Sceau d'eau salvateur ! ${player.name} éteint le brasier sans encombre.`);
+          } else {
+            player.hearts = Math.max(0, player.hearts - 1);
+            AudioEngine.hit();
+            this.log(`🔥 Aïe ! ${player.name} traverse le feu sans protection et perd 1 ❤️.`);
+          }
+        } else if (spec.type === 'swamp') {
+          if (player.items.rocher >= 3) {
+            player.items.rocher -= 3;
+            this.log(`🪨 ${player.name} dispose 3 rochers et franchit le marais toxique sain et sauf.`);
+          } else {
+            player.hearts = Math.max(0, player.hearts - 1);
+            AudioEngine.hit();
+            this.log(`🧪 Marais toxique ! Sans 3 rochers, ${player.name} perd 1 ❤️.`);
+          }
+        } else if (spec.type === 'void') {
+          player.hearts = Math.max(0, player.hearts - 1);
+          player.pos = 120; // Falling sends to start
+          AudioEngine.hit();
+          this.log(`🕳️ Ravin ! ${player.name} trébuche dans le vide (-1 ❤️) et réapparaît au Départ.`);
+          this.renderBoard();
+        } else if (spec.type === 'card') {
+          this.drawCard();
+        } else if (spec.type === 'target_spot') {
+          this.openTargetModal();
+        } else if (spec.type === 'wheel_spot') {
+          this.openWheelModal();
+        }
+      },
+
+      drawCard() {
+        AudioEngine.click();
+        const randCard = CARDS_DECK[Math.floor(Math.random() * CARDS_DECK.length)];
+        document.getElementById('card-title').innerText = randCard.title;
+        document.getElementById('card-desc').innerText = randCard.desc;
+        this.currentCardAction = randCard.action;
+        document.getElementById('modal-card').classList.remove('hidden');
+      },
+
+      buyItem(itemKey, cost) {
+        const p = this.getActivePlayer();
+        if (p.money < cost) {
+          this.log(`❌ Fonds insuffisants pour acheter cet objet (${cost} € requis).`);
+          return;
+        }
+        p.money -= cost;
+        p.items[itemKey] = (p.items[itemKey] || 0) + 1;
+        AudioEngine.coin();
+        this.log(`🛒 ${p.name} achète l'équipement : ${itemKey.toUpperCase()} (-${cost} €).`);
+        this.updateActivePlayerUI();
+        this.updateLeaderboard();
+      },
+
+      buildOnCurrentCell(bType, cost) {
+        const p = this.getActivePlayer();
+        const currentCell = p.pos;
+
+        if (p.money < cost) {
+          this.log(`❌ Fonds insuffisants pour bâtir (${cost} € requis).`);
+          return;
+        }
+
+        // Army ability to destroy opponent's building
+        if (bType === 'A') {
+          const existing = this.buildings[currentCell];
+          if (existing && existing.owner !== p.id) {
+            p.money -= cost;
+            delete this.buildings[currentCell];
+            AudioEngine.hit();
+            this.log(`⚔️ Assaut Militaire ! ${p.name} déploie l'armée et rase le bâtiment de ${this.players[existing.owner].name} !`);
+            this.renderBoard();
+            this.updateActivePlayerUI();
+            this.updateLeaderboard();
+            return;
+          }
+        }
+
+        if (this.buildings[currentCell]) {
+          this.log(`❌ Un bâtiment est déjà érigé sur cette parcelle !`);
+          return;
+        }
+
+        p.money -= cost;
+        this.buildings[currentCell] = { type: bType, owner: p.id };
+        AudioEngine.coin();
+        this.log(`🏗️ Construction : ${p.name} érige un bâtiment [${bType}] en case #${currentCell + 1} !`);
+        this.renderBoard();
+        this.updateActivePlayerUI();
+        this.updateLeaderboard();
+      },
+
+      endTurn() {
+        if (!this.hasMovedThisTurn) return;
+        AudioEngine.click();
+
+        this.hasMovedThisTurn = false;
+        this.activePlayerIndex = (this.activePlayerIndex + 1) % this.players.length;
+        if (this.activePlayerIndex === 0) {
+          this.round++;
+          document.getElementById('round-counter').innerText = `Tour ${this.round}`;
+        }
+
+        // Reset roll button label
+        document.getElementById('btn-roll').querySelector('span').innerText = "Déplacer (1-6)";
+        document.getElementById('btn-roll').disabled = false;
+
+        this.updateActivePlayerUI();
+        this.updateLeaderboard();
+      },
+
+      updateActivePlayerUI() {
+        const p = this.getActivePlayer();
+        document.getElementById('active-name').innerText = p.name;
+        document.getElementById('active-cash').innerText = `${p.money.toLocaleString()} €`;
+        
+        // Avatar
+        const avatar = document.getElementById('active-avatar');
+        avatar.style.backgroundColor = p.color.hex;
+        avatar.innerText = p.id + 1;
+
+        // Hearts
+        const heartsContainer = document.getElementById('active-hearts');
+        let heartsStr = '';
+        for (let i = 0; i < p.hearts; i++) heartsStr += '❤️';
+        if (p.hearts === 0) heartsStr = '💀 Éliminé';
+        heartsContainer.innerText = heartsStr;
+
+        // Jail
+        document.getElementById('active-jail').innerText = p.jailTurns > 0 ? `${p.jailTurns} tour(s)` : 'Libre';
+
+        // Inventory badges
+        const invContainer = document.getElementById('active-inventory');
+        invContainer.innerHTML = '';
+        const items = [
+          { key: 'seau', label: "💧 Eau", count: p.items.seau },
+          { key: 'parapluie', label: "☂️ Parapluie", count: p.items.parapluie },
+          { key: 'tout_petit', label: "✨ Tout-petit", count: p.items.tout_petit },
+          { key: 'rocher', label: "🪨 Rochers", count: p.items.rocher }
+        ];
+
+        items.forEach(it => {
+          if (it.count > 0) {
+            const badge = document.createElement('span');
+            badge.className = "px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-medium";
+            badge.innerText = `${it.label} x${it.count}`;
+            invContainer.appendChild(badge);
+          }
+        });
+
+        if (invContainer.children.length === 0) {
+          invContainer.innerHTML = `<span class="text-slate-500 italic">Aucun objet</span>`;
+        }
+
+        // Enable/Disable End Turn button
+        const endBtn = document.getElementById('btn-end-turn');
+        if (this.hasMovedThisTurn) {
+          endBtn.disabled = false;
+          endBtn.className = "w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-sm border-none shadow-lg active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer";
+        } else {
+          endBtn.disabled = true;
+          endBtn.className = "w-full py-3 rounded-xl bg-slate-800 text-slate-500 font-bold text-sm border border-slate-700 transition flex items-center justify-center gap-2 cursor-not-allowed";
+        }
+      },
+
+      updateLeaderboard() {
+        const container = document.getElementById('players-list-overview');
+        container.innerHTML = '';
+        // Sort by money descending
+        const sorted = [...this.players].sort((a, b) => b.money - a.money);
+
+        sorted.forEach((p, rank) => {
+          const isCurrent = p.id === this.players[this.activePlayerIndex].id;
+          const row = document.createElement('div');
+          row.className = `p-2.5 rounded-xl border flex items-center justify-between transition ${
+            isCurrent ? 'bg-amber-500/10 border-amber-500/40 glow-cell' : 'bg-slate-950/40 border-slate-800/80'
+          }`;
+          row.innerHTML = `
+            <div class="flex items-center gap-2.5">
+              <span class="text-xs font-mono font-bold text-slate-500">#${rank + 1}</span>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black text-white" style="background-color: ${p.color.hex}">
+                ${p.id + 1}
+              </div>
+              <span class="text-xs font-bold text-slate-200">${p.name}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black text-amber-400">${p.money.toLocaleString()} €</span>
+              <span class="text-[10px]">${p.hearts > 0 ? '❤️'.repeat(p.hearts) : '💀'}</span>
+            </div>
+          `;
+          container.appendChild(row);
+        });
+      },
+
+      /* -------------------------------------------------------------
+         MINI-GAME 1: LA ROUE DE LA FORTUNE (CANVAS)
+         ------------------------------------------------------------- */
+      wheelSlices: [
+        { label: '+3 000 €', val: 3000, type: 'cash', color: '#10b981' },
+        { label: '-1 000 €', val: -1000, type: 'cash', color: '#ef4444' },
+        { label: '+1 ❤️', val: 1, type: 'heart', color: '#ec4899' },
+        { label: 'Pioche Carte', type: 'card', color: '#6366f1' },
+        { label: '+5 000 €', val: 5000, type: 'cash', color: '#f59e0b' },
+        { label: '-5 000 €', val: -5000, type: 'cash', color: '#dc2626' },
+        { label: '+1 000 €', val: 1000, type: 'cash', color: '#3b82f6' },
+        { label: '-1 ❤️', val: -1, type: 'heart', color: '#991b1b' }
+      ],
+      wheelAngle: 0,
+      isWheelSpinning: false,
+
+      initWheel() {
+        this.drawWheel();
+        document.getElementById('btn-spin-wheel').addEventListener('click', () => this.spinWheel());
+      },
+
+      openWheelModal() {
+        document.getElementById('modal-wheel').classList.remove('hidden');
+        document.getElementById('wheel-result').innerText = "Appuyez sur 'Faire Tourner' !";
+        this.drawWheel();
+      },
+
+      drawWheel() {
+        const canvas = document.getElementById('wheel-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const radius = cx - 10;
+        const sliceAngle = (2 * Math.PI) / this.wheelSlices.length;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(this.wheelAngle);
+
+        this.wheelSlices.forEach((slice, i) => {
+          const a1 = i * sliceAngle;
+          const a2 = a1 + sliceAngle;
+
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.arc(0, 0, radius, a1, a2);
+          ctx.closePath();
+          ctx.fillStyle = slice.color;
+          ctx.fill();
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = '#0f172a';
+          ctx.stroke();
+
+          // Text label
+          ctx.save();
+          ctx.rotate(a1 + sliceAngle / 2);
+          ctx.textAlign = 'right';
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 11px Inter, sans-serif';
+          ctx.fillText(slice.label, radius - 15, 4);
+          ctx.restore();
+        });
+
+        // Center hub
+        ctx.beginPath();
+        ctx.arc(0, 0, 18, 0, 2 * Math.PI);
+        ctx.fillStyle = '#0f172a';
+        ctx.fill();
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.restore();
+      },
+
+      spinWheel() {
+        if (this.isWheelSpinning) return;
+        this.isWheelSpinning = true;
+        AudioEngine.click();
+
+        const resultDisplay = document.getElementById('wheel-result');
+        resultDisplay.innerText = "La roue tourne...";
+
+        const totalRotations = 5 + Math.random() * 4;
+        const targetAngle = this.wheelAngle + totalRotations * 2 * Math.PI;
+        const duration = 3000;
+        const startTime = performance.now();
+
+        const animateWheel = (now) => {
+          const elapsed = now - startTime;
+          const progress = Math.min(1, elapsed / duration);
+          // Ease-out cubic
+          const ease = 1 - Math.pow(1 - progress, 3);
+          this.wheelAngle = this.wheelAngle + (targetAngle - this.wheelAngle) * (ease * 0.08);
+          this.drawWheel();
+
+          // Sound click tick
+          if (Math.floor(elapsed / 120) !== Math.floor((elapsed - 16) / 120)) {
+            AudioEngine.beep(800, 'sine', 0.02, 0.04);
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(animateWheel);
+          } else {
+            this.wheelAngle = targetAngle % (2 * Math.PI);
+            this.drawWheel();
+            this.isWheelSpinning = false;
+            this.evaluateWheelResult();
+          }
+        };
+        requestAnimationFrame(animateWheel);
+      },
+
+      evaluateWheelResult() {
+        const sliceAngle = (2 * Math.PI) / this.wheelSlices.length;
+        // Pointer is at the very top (3*PI/2)
+        const normalized = (2 * Math.PI - (this.wheelAngle % (2 * Math.PI)) + (3 * Math.PI / 2)) % (2 * Math.PI);
+        const index = Math.floor(normalized / sliceAngle) % this.wheelSlices.length;
+        const outcome = this.wheelSlices[index];
+
+        const player = this.getActivePlayer();
+        const display = document.getElementById('wheel-result');
+
+        if (outcome.type === 'cash') {
+          player.money = Math.max(0, player.money + outcome.val);
+          display.innerText = `Résultat : ${outcome.label} pour ${player.name} !`;
+          if (outcome.val > 0) AudioEngine.coin(); else AudioEngine.hit();
+        } else if (outcome.type === 'heart') {
+          player.hearts = Math.max(0, Math.min(5, player.hearts + outcome.val));
+          display.innerText = `Résultat : ${outcome.label} pour ${player.name} !`;
+          if (outcome.val > 0) AudioEngine.fanfare(); else AudioEngine.hit();
+        } else if (outcome.type === 'card') {
+          display.innerText = `Résultat : Pioche de Carte !`;
+          setTimeout(() => {
+            document.getElementById('modal-wheel').classList.add('hidden');
+            this.drawCard();
+          }, 1000);
+        }
+
+        this.log(`🎡 Roulette : ${player.name} obtient ${outcome.label}.`);
+        this.updateActivePlayerUI();
+        this.updateLeaderboard();
+      },
+
+      /* -------------------------------------------------------------
+         MINI-GAME 2: LOTERIE CIBLE (BOULETTE DE PAPIER)
+         ------------------------------------------------------------- */
+      targetPower: 0,
+      targetDirection: 1,
+      targetInterval: null,
+      isTargetRunning: false,
+
+      initTargetMiniGame() {
+        this.drawTargetCanvas();
+        document.getElementById('btn-fire-target').addEventListener('click', () => this.firePaperBall());
+      },
+
+      openTargetModal() {
+        document.getElementById('modal-target').classList.remove('hidden');
+        document.getElementById('target-result-text').innerText = "Visez le centre (5 000 €) !";
+        const ball = document.getElementById('target-ball');
+        ball.style.opacity = '0';
+        ball.style.left = '50%';
+        ball.style.top = '90%';
+
+        this.startPowerBar();
+      },
+
+      drawTargetCanvas() {
+        const canvas = document.getElementById('target-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Concentric Rings as on notebook
+        const rings = [
+          { r: 110, val: '1 000 €', color: '#1e293b', border: '#475569' },
+          { r: 85, val: '2 000 €', color: '#0f766e', border: '#14b8a6' },
+          { r: 60, val: '3 000 €', color: '#0369a1', border: '#38bdf8' },
+          { r: 38, val: '4 000 €', color: '#854d0e', border: '#facc15' },
+          { r: 18, val: '5 000 €', color: '#b91c1c', border: '#f87171' }
+        ];
+
+        rings.forEach(ring => {
+          ctx.beginPath();
+          ctx.arc(cx, cy, ring.r, 0, 2 * Math.PI);
+          ctx.fillStyle = ring.color;
+          ctx.fill();
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = ring.border;
+          ctx.stroke();
+
+          // Label text
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 9px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(ring.val, cx, cy - ring.r + 12);
+        });
+      },
+
+      startPowerBar() {
+        if (this.targetInterval) clearInterval(this.targetInterval);
+        this.isTargetRunning = true;
+        this.targetPower = 0;
+        this.targetDirection = 1;
+
+        const fill = document.getElementById('target-power-fill');
+        const label = document.getElementById('target-power-label');
+
+        this.targetInterval = setInterval(() => {
+          this.targetPower += this.targetDirection * 2;
+          if (this.targetPower >= 100) {
+            this.targetPower = 100;
+            this.targetDirection = -1;
+          } else if (this.targetPower <= 0) {
+            this.targetPower = 0;
+            this.targetDirection = 1;
+          }
+          fill.style.width = `${this.targetPower}%`;
+          label.innerText = `${this.targetPower}%`;
+        }, 16);
+      },
+
+      firePaperBall() {
+        if (!this.isTargetRunning) return;
+        clearInterval(this.targetInterval);
+        this.isTargetRunning = false;
+        AudioEngine.paperToss();
+
+        const canvas = document.getElementById('target-canvas');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const ball = document.getElementById('target-ball');
+
+        // Perfect accuracy at 50%
+        const accuracyDelta = Math.abs(this.targetPower - 50); // 0 (best) to 50 (worst)
+        const maxOffset = 100;
+        const offset = (accuracyDelta / 50) * maxOffset;
+        const angle = Math.random() * 2 * Math.PI;
+
+        const landingX = cx + Math.cos(angle) * offset;
+        const landingY = cy + Math.sin(angle) * offset;
+
+        // Animate paper ball toss
+        ball.style.opacity = '1';
+        ball.style.left = `${landingX}px`;
+        ball.style.top = `${landingY}px`;
+
+        setTimeout(() => {
+          // Distance from center
+          const dist = Math.hypot(landingX - cx, landingY - cy);
+          let reward = 0;
+          if (dist <= 20) reward = 5000;
+          else if (dist <= 40) reward = 4000;
+          else if (dist <= 62) reward = 3000;
+          else if (dist <= 87) reward = 2000;
+          else if (dist <= 112) reward = 1000;
+
+          const p = this.getActivePlayer();
+          const res = document.getElementById('target-result-text');
+
+          if (reward > 0) {
+            p.money += reward;
+            AudioEngine.coin();
+            res.innerText = `🎯 Dans le mille ! +${reward.toLocaleString()} € pour ${p.name} !`;
+            this.log(`🎯 Loterie Cible : ${p.name} réussit son tir et gagne ${reward.toLocaleString()} €.`);
+          } else {
+            AudioEngine.hit();
+            res.innerText = `💨 Tir manqué en dehors de la cible (0 €).`;
+            this.log(`🎯 Loterie Cible : Tir manqué par ${p.name}.`);
+          }
+
+          this.updateActivePlayerUI();
+          this.updateLeaderboard();
+        }, 550);
+      }
+    };
+
+    // Initialize Game on load
+    window.addEventListener('DOMContentLoaded', () => {
+      Game.initLobby();
+    });
+  </script>
+</body>
+</html>

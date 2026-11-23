@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LostCall - Mini Carnet de Secours Imprimable</title>
+  <!-- Google Fonts: Inter & Roboto Condensed for extreme high density printing -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              900: '#064e3b'
+            },
+            accent: {
+              500: '#3b82f6',
+              600: '#2563eb'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            condensed: ['Roboto Condensed', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="h-full flex flex-col font-sans antialiased overflow-hidden select-none">
+
+  <!-- Top App Navigation Bar -->
+  <header class="no-print bg-slate-950/80 backdrop-blur border-b border-slate-800 px-4 py-2.5 flex items-center justify-between shrink-0 z-30">
+    <div class="flex items-center space-x-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/20">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+          <path d="M18 10V2"/>
+        </svg>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-bold text-base tracking-tight text-white flex items-center gap-1.5">
+            LostCall <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">Secours Papier</span>
+          </h1>
+        </div>
+        <p class="text-xs text-slate-400 hidden sm:block">Générez votre annuaire d'urgence physique, condensé et ultra-compact</p>
+      </div>
+    </div>
+
+    <!-- Center Navigation Tabs -->
+    <div class="flex bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-xs">
+      <button id="tab-btn-generator" class="px-3.5 py-1.5 rounded-lg font-medium transition-all text-white bg-slate-800 shadow-sm flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14" rx="1"/></svg>
+        <span>Générateur & Aperçu</span>
+      </button>
+      <button id="tab-btn-tutorials" class="px-3.5 py-1.5 rounded-lg font-medium transition-all text-slate-400 hover:text-slate-200 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+        <span>Guide d'export par OS</span>
+      </button>
+    </div>
+
+    <!-- Right Quick Actions -->
+    <div class="flex items-center gap-2">
+      <button id="load-demo-btn" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 transition flex items-center gap-1.5" title="Tester immédiatement avec un faux carnet de 45 contacts">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 2 2 4-4"/><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/></svg>
+        <span class="hidden md:inline">Charger Démo (45 contacts)</span>
+        <span class="md:hidden">Démo</span>
+      </button>
+
+      <button id="print-main-btn" class="text-xs px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold shadow-lg shadow-emerald-500/25 transition-all flex items-center gap-2 cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+        <span>Imprimer / PDF</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="flex-1 flex overflow-hidden relative">
+
+    <!-- VIEW 1: GENERATOR & PREVIEW -->
+    <div id="view-generator" class="w-full h-full flex flex-col md:flex-row overflow-hidden">
+      
+      <!-- LEFT SIDEBAR: CONTROLS & CONFIGURATION -->
+      <aside class="no-print w-full md:w-96 lg:w-[410px] bg-slate-950 border-r border-slate-800 flex flex-col shrink-0 overflow-y-auto">
+        <div class="p-4 space-y-5 text-sm">
+
+          <!-- 1. FILE UPLOAD / IMPORT ZONE -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> 1. Fichier Annuaire
+              </label>
+              <span id="contact-count-badge" class="text-[11px] font-mono px-2 py-0.5 rounded-md bg-slate-800 text-slate-400">0 contact</span>
+            </div>
+
+            <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-emerald-500/60 bg-slate-900/60 hover:bg-slate-900 transition-all rounded-xl p-4 text-center cursor-pointer group">
+              <input type="file" id="file-input" accept=".vcf,.vcard,.csv" class="hidden" />
+              <div class="flex flex-col items-center gap-2">
+                <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-emerald-400 group-hover:scale-110 transition-all">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div>
+                  <p class="font-medium text-slate-200 text-xs">Déposez votre fichier <span class="text-emerald-400 font-mono">.vcf</span> ou <span class="text-blue-400 font-mono">.csv</span></p>
+                  <p class="text-[11px] text-slate-500 mt-0.5">ou cliquez pour parcourir vos fichiers</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active File Info -->
+            <div id="file-status" class="hidden text-xs bg-slate-900 border border-slate-800 p-2.5 rounded-lg flex items-center justify-between">
+              <div class="flex items-center gap-2 truncate">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span id="file-name" class="font-mono text-slate-300 truncate text-[11px]">contacts.vcf</span>
+              </div>
+              <button id="clear-file-btn" class="text-slate-500 hover:text-red-400 p-1 text-xs" title="Retirer ce fichier">✕</button>
+            </div>
+          </div>
+
+          <!-- 2. LAYOUT & POCKET SIZES -->
+          <div class="space-y-3 pt-2 border-t border-slate-800/80">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span> 2. Format & Découpe
+              </label>
+              <span id="layout-summary-badge" class="text-[10px] text-cyan-400 font-mono">A4 standard</span>
+            </div>
+
+            <!-- Format Grid -->
+            <div class="grid grid-cols-2 gap-2">
+              <!-- Full Page -->
+              <button type="button" data-format="full" class="format-btn active p-2.5 rounded-xl border border-emerald-500/50 bg-emerald-500/10 text-left flex flex-col gap-1 transition">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-emerald-300">Pleine page A4</span>
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400">1/1</span>
+                </div>
+                <p class="text-[10px] text-slate-400 leading-tight">Grande lisibilité, 1 à 4 colonnes denses</p>
+              </button>
+
+              <!-- Half Page (A5) -->
+              <button type="button" data-format="half" class="format-btn p-2.5 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-900 text-left flex flex-col gap-1 transition">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-slate-300">1/2 Feuille (A5)</span>
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">2 blocs</span>
+                </div>
+                <p class="text-[10px] text-slate-400 leading-tight">Pliage en deux ou coupe centrale</p>
+              </button>
+
+              <!-- Quarter Page (A6 Pocket) -->
+              <button type="button" data-format="quarter" class="format-btn p-2.5 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-900 text-left flex flex-col gap-1 transition">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-slate-300">1/4 Feuille (A6)</span>
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">Poche</span>
+                </div>
+                <p class="text-[10px] text-slate-400 leading-tight">4 volets compacts par feuille A4</p>
+              </button>
+
+              <!-- PocketMod Booklet (8-fold Zine) -->
+              <button type="button" data-format="pocketmod" class="format-btn p-2.5 rounded-xl border border-slate-800 bg-slate-900/80 hover:bg-slate-900 text-left flex flex-col gap-1 transition">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-semibold text-slate-300">Mini-Livret Plié</span>
+                  <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-400">8 volets</span>
+                </div>
+                <p class="text-[10px] text-slate-400 leading-tight">Pliage origami 1 feuille en livre 8 pages</p>
+              </button>
+            </div>
+
+            <!-- Recto-Verso and Guides Options -->
+            <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-800/80 space-y-2.5">
+              <!-- Recto Verso Switch -->
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-xs font-medium text-slate-200">Mode Recto-Verso (Duplex)</span>
+                  <p class="text-[10px] text-slate-500">Imprimer sur les 2 faces de la feuille</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="duplex-toggle" class="sr-only peer">
+                  <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
+              </div>
+
+              <!-- Cut lines Switch -->
+              <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+                <div>
+                  <span class="text-xs font-medium text-slate-200">Traits de coupe & pointillés de pliage</span>
+                  <p class="text-[10px] text-slate-500">Repères ciseaux pour découper facilement</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="guides-toggle" checked class="sr-only peer">
+                  <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. TYPOGRAPHY & DENSITY (MICRO-PRINT) -->
+          <div class="space-y-3 pt-2 border-t border-slate-800/80">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-violet-400"></span> 3. Police & Densité
+              </label>
+              <span id="font-size-badge" class="text-[11px] font-mono px-2 py-0.5 rounded-md bg-violet-950 text-violet-300">6.5 pt</span>
+            </div>
+
+            <!-- Font Size Slider -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs text-slate-400">
+                <span>Taille de texte (descend très bas) :</span>
+                <span class="font-mono text-violet-400 font-bold" id="font-size-val">6.5 pt</span>
+              </div>
+              <input type="range" id="font-size-slider" min="4" max="11" step="0.5" value="6.5" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-violet-500" />
+              <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                <span>4 pt (Micro-carte)</span>
+                <span>6.5 pt (Poche dense)</span>
+                <span>11 pt (Standard)</span>
+              </div>
+            </div>
+
+            <!-- Columns Selector -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs text-slate-400">
+                <span>Colonnes par volet :</span>
+                <span class="font-mono text-cyan-400" id="cols-val">Automatique (2)</span>
+              </div>
+              <div class="grid grid-cols-5 gap-1 text-center font-mono text-xs">
+                <button type="button" data-cols="auto" class="col-btn active py-1.5 rounded bg-cyan-600 text-white font-bold">Auto</button>
+                <button type="button" data-cols="1" class="col-btn py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">1</button>
+                <button type="button" data-cols="2" class="col-btn py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">2</button>
+                <button type="button" data-cols="3" class="col-btn py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">3</button>
+                <button type="button" data-cols="4" class="col-btn py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300">4</button>
+              </div>
+            </div>
+
+            <!-- Font Family -->
+            <div class="space-y-1.5">
+              <span class="text-xs text-slate-400">Style de typographie :</span>
+              <div class="grid grid-cols-3 gap-1.5 text-xs">
+                <button type="button" data-font="condensed" class="font-btn active py-1.5 px-2 rounded-lg bg-slate-800 border border-emerald-500 text-emerald-300 text-center font-condensed">Condensé (Max info)</button>
+                <button type="button" data-font="sans" class="font-btn py-1.5 px-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 text-center font-sans">Moderne (Inter)</button>
+                <button type="button" data-font="mono" class="font-btn py-1.5 px-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 text-center font-mono">Monospace (Code)</button>
+              </div>
+            </div>
+
+            <!-- Spacing density -->
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-slate-400">Compacité des lignes :</span>
+              <div class="inline-flex rounded-md shadow-sm" role="group">
+                <button type="button" data-density="tight" class="density-btn active px-2.5 py-1 text-xs font-medium text-emerald-300 bg-slate-800 border border-emerald-500/50 rounded-l-lg">Ultra-serré</button>
+                <button type="button" data-density="normal" class="density-btn px-2.5 py-1 text-xs font-medium text-slate-400 bg-slate-900 border border-slate-800 rounded-r-lg hover:text-white">Aéré</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. FIELDS SELECTION (Pas d'anniv, que l'essentiel) -->
+          <div class="space-y-2.5 pt-2 border-t border-slate-800/80">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span> 4. Champs à afficher
+              </label>
+              <button id="preset-minimal-btn" class="text-[10px] text-amber-400 hover:underline">Mode Ultra-Essentiel</button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 text-xs bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+              <label class="flex items-center gap-2 cursor-pointer text-slate-200">
+                <input type="checkbox" id="field-name" checked disabled class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+                <span class="font-medium">Nom complet</span>
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer text-slate-200">
+                <input type="checkbox" id="field-phone" checked class="field-toggle rounded border-slate-700 text-emerald-500 focus:ring-0">
+                <span class="font-medium text-emerald-400">Numéro principal</span>
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                <input type="checkbox" id="field-other-phones" checked class="field-toggle rounded border-slate-700 text-emerald-500 focus:ring-0">
+                <span>Tous téléphones (fixe/pro)</span>
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                <input type="checkbox" id="field-email" class="field-toggle rounded border-slate-700 text-emerald-500 focus:ring-0">
+                <span>Adresse email</span>
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                <input type="checkbox" id="field-org" class="field-toggle rounded border-slate-700 text-emerald-500 focus:ring-0">
+                <span>Entreprise / Métier</span>
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                <input type="checkbox" id="field-address" class="field-toggle rounded border-slate-700 text-emerald-500 focus:ring-0">
+                <span>Adresse postale</span>
+              </label>
+
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                <input type="checkbox" id="field-note" checked class="field-toggle rounded border-slate-700 text-emerald-500 focus:ring-0">
+                <span>Notes & Urgence (ICE)</span>
+              </label>
+
+              <!-- Anniversaires expressément décochés selon la demande de l'utilisateur -->
+              <label class="flex items-center gap-2 cursor-pointer text-slate-500 hover:text-slate-300">
+                <input type="checkbox" id="field-bday" class="field-toggle rounded border-slate-700 text-emerald-500 focus:ring-0">
+                <span>Date d'anniversaire</span>
+              </label>
+            </div>
+
+            <!-- Options additionnelles -->
+            <div class="flex items-center justify-between text-xs pt-1">
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                <input type="checkbox" id="opt-alpha-headers" checked class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+                <span>Index alphabétique (A, B, C...)</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                <input type="checkbox" id="opt-row-borders" checked class="rounded border-slate-700 text-emerald-500 focus:ring-0">
+                <span>Lignes séparatrices</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 5. HEADER & PERSONAL EMERGENCY INFO -->
+          <div class="space-y-2 pt-2 border-t border-slate-800/80">
+            <label class="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-rose-400"></span> 5. En-tête du carnet
+            </label>
+            
+            <input type="text" id="header-title-input" value="CARNET DE SECOURS - RÉPERTOIRE D'URGENCE" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" placeholder="Titre en haut de page" />
+            
+            <input type="text" id="header-subtitle-input" value="Propriétaire : ________________ | Tél d'urgence / ICE : ________________" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-400 focus:outline-none focus:border-emerald-500" placeholder="Ligne d'identification ou contact ICE" />
+          </div>
+
+          <!-- SEARCH & FILTER -->
+          <div class="space-y-2 pt-2 border-t border-slate-800/80">
+            <div class="flex items-center justify-between text-xs text-slate-400">
+              <span>Filtrer les contacts :</span>
+              <span id="filtered-stats" class="font-mono text-[11px] text-emerald-400">Tous inclus</span>
+            </div>
+            <div class="relative">
+              <input type="text" id="search-contact-input" placeholder="Rechercher ou exclure..." class="w-full bg-slate-900 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- RIGHT MAIN AREA: REALISTIC LIVE PRINT PREVIEW -->
+      <section class="flex-1 flex flex-col bg-slate-900/40 relative overflow-hidden">
+        
+        <!-- Preview Control Bar -->
+        <div class="no-print bg-slate-950/70 border-b border-slate-800 px-4 py-2 flex items-center justify-between shrink-0 text-xs">
+          <div class="flex items-center gap-3">
+            <span class="font-medium text-slate-300 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Aperçu fidèle de la feuille imprimée
+            </span>
+            <div class="h-4 w-px bg-slate-800"></div>
+            <!-- Page count badge -->
+            <div id="pages-badge" class="font-mono bg-slate-800 text-slate-300 px-2.5 py-0.5 rounded-full border border-slate-700 flex items-center gap-1">
+              <span>Feuille <strong id="current-sheet-num" class="text-emerald-400">1</strong> sur <strong id="total-sheets-num" class="text-white">1</strong></span>
+            </div>
+            <!-- Packing efficiency hint -->
+            <span id="density-hint" class="text-slate-400 hidden lg:inline">
+              Page remplie à 100%
+            </span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <!-- Zoom controls -->
+            <div class="flex items-center gap-1 bg-slate-900 px-2 py-1 rounded-lg border border-slate-800">
+              <button id="zoom-out-btn" class="text-slate-400 hover:text-white px-1 font-mono font-bold">-</button>
+              <span id="zoom-val" class="font-mono text-[11px] text-slate-300 min-w-10 text-center">85%</span>
+              <button id="zoom-in-btn" class="text-slate-400 hover:text-white px-1 font-mono font-bold">+</button>
+              <button id="zoom-fit-btn" class="text-[10px] text-cyan-400 ml-1 px-1.5 py-0.5 rounded hover:bg-slate-800">Ajuster</button>
+            </div>
+
+            <!-- Print Direct CTA -->
+            <button id="print-sheet-btn" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-3 py-1 rounded-lg flex items-center gap-1.5 shadow transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+              <span>Lancer l'impression</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Scrollable Paper Canvas Container -->
+        <div id="preview-viewport" class="flex-1 overflow-auto p-4 md:p-8 flex flex-col items-center gap-8 bg-slate-950/50">
+          
+          <!-- Virtual Sheet rendered here by JavaScript -->
+          <div id="sheets-container" class="transition-transform origin-top flex flex-col items-center gap-8">
+            <!-- Dynamic pages injected here -->
+          </div>
+
+        </div>
+
+        <!-- Folding tutorial notice for PocketMod / 1/4 -->
+        <div id="pocket-fold-help" class="no-print hidden absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-950/95 border border-amber-500/30 text-amber-300 px-4 py-2 rounded-xl shadow-2xl flex items-center gap-3 text-xs backdrop-blur z-20">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><strong>Format Livret de poche :</strong> Les traits en pointillés indiquent les plis. Suivez le guide pour plier votre feuille en carnet 8 pages sans colle ni agrafe !</span>
+          <button id="close-fold-help" class="text-amber-500 hover:text-amber-300">✕</button>
+        </div>
+
+      </section>
+
+    </div>
+
+    <!-- VIEW 2: OS EXPORT TUTORIALS -->
+    <div id="view-tutorials" class="hidden w-full h-full overflow-y-auto bg-slate-950 p-6 md:p-10">
+      <div class="max-w-5xl mx-auto space-y-8">
+        
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-3">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            Tutoriel pas à pas
+          </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Comment exporter votre répertoire selon votre téléphone ou PC</h2>
+          <p class="text-sm text-slate-400 mt-1">L'exportation produit un fichier <code class="font-mono text-emerald-400 bg-slate-900 px-1.5 py-0.5 rounded">.vcf</code> (vCard) universel contenant tous vos numéros. Aucune donnée ne quitte votre navigateur.</p>
+        </div>
+
+        <!-- OS Selector tabs -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5" id="tutorial-os-tabs">
+          <button data-os="ios" class="tuto-tab-btn active p-3 rounded-xl border border-blue-500 bg-blue-500/10 text-white flex flex-col items-center gap-2 text-center transition">
+            <svg class="w-6 h-6 text-slate-100" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.9.04-2 .6-2.63 1.34-.56.64-1.05 1.71-.92 2.74 1.01.08 2.02-.46 2.63-1.21z"/></svg>
+            <span class="text-xs font-semibold">iPhone (iOS)</span>
+          </button>
+
+          <button data-os="android" class="tuto-tab-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-300 hover:text-white flex flex-col items-center gap-2 text-center transition">
+            <svg class="w-6 h-6 text-emerald-400" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.0818 12 8.0818s-3.5902.3298-5.1367.8679L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+            <span class="text-xs font-semibold">Android (Google)</span>
+          </button>
+
+          <button data-os="google" class="tuto-tab-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-300 hover:text-white flex flex-col items-center gap-2 text-center transition">
+            <svg class="w-6 h-6 text-amber-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            <span class="text-xs font-semibold">Google Web</span>
+          </button>
+
+          <button data-os="mac" class="tuto-tab-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-300 hover:text-white flex flex-col items-center gap-2 text-center transition">
+            <svg class="w-6 h-6 text-slate-300" viewBox="0 0 24 24" fill="currentColor"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2h-4zM4 6h16v10H4V6z"/></svg>
+            <span class="text-xs font-semibold">Mac (macOS)</span>
+          </button>
+
+          <button data-os="windows" class="tuto-tab-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-slate-300 hover:text-white flex flex-col items-center gap-2 text-center transition">
+            <svg class="w-6 h-6 text-sky-400" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.949-1.801"/></svg>
+            <span class="text-xs font-semibold">Windows / Outlook</span>
+          </button>
+        </div>
+
+        <!-- TUTO CARD CONTENT -->
+        <div id="tutorial-content" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 space-y-6">
+          <!-- Content dynamically swapped via JS -->
+        </div>
+
+        <!-- Back to generator button -->
+        <div class="text-center pt-4">
+          <button id="tuto-back-btn" class="px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/20 transition">
+            J'ai mon fichier, retourner au générateur ➔
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

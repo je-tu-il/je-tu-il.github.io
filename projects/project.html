@@ -310,7 +310,18 @@
         // Action buttons
         const demoBtn = document.getElementById('liveDemoBtn');
         demoBtn.style.display = 'inline-flex';
-        demoBtn.href = 'demo.html?id=' + encodeURIComponent(p.id);
+        const walkthrough = 'demo.html?id=' + encodeURIComponent(p.id);
+        demoBtn.href = p.runnableUrl
+          ? new URL(p.runnableUrl, new URL('../', window.location.href)).href
+          : walkthrough;
+        demoBtn.textContent = p.runnableUrl ? 'Ouvrir sur le web' : 'Voir le parcours';
+        if (p.runnableUrl) {
+          const preview = document.createElement('a');
+          preview.href = walkthrough;
+          preview.className = 'btn-secondary';
+          preview.textContent = 'Voir le parcours';
+          demoBtn.after(preview);
+        }
 
         const ghBtn = document.getElementById('githubBtn');
         if (p.githubUrl) ghBtn.href = p.githubUrl;

@@ -42,8 +42,8 @@
         "category":  "3d-hardware",
         "categoryLabel":  "Entreprise, 3D \u0026 E-commerce",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/facturefast/index.html",
         "githubUrl":  "https://github.com/je-tu-il/FactureFast",
         "techStack":  [
                           "Next.js 14",
@@ -100,8 +100,8 @@
         "category":  "mobile",
         "categoryLabel":  "Applications Mobiles",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "https://nousdeux.app/",
         "githubUrl":  "https://github.com/je-tu-il/NousDeux",
         "techStack":  [
                           "React Native",
@@ -1916,8 +1916,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/dicechess/index.html",
         "githubUrl":  "https://github.com/je-tu-il/DiceChess",
         "techStack":  [
                           "React 19",
@@ -1944,8 +1944,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/extremechess/index.html",
         "githubUrl":  "https://github.com/je-tu-il/ExtremeChessMat",
         "techStack":  [
                           "HTML5",
@@ -1972,8 +1972,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/geogallery/index.html",
         "githubUrl":  "https://github.com/je-tu-il/GeoGallery",
         "techStack":  [
                           "React 19",
@@ -2001,8 +2001,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/handtracking/index.html",
         "githubUrl":  "https://github.com/je-tu-il/HandTracking",
         "techStack":  [
                           "HTML5 Canvas",
@@ -2028,8 +2028,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/laps/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Laps",
         "techStack":  [
                           "HTML5 Canvas",
@@ -2055,8 +2055,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/mindschem/index.html",
         "githubUrl":  "https://github.com/je-tu-il/MindSchem",
         "techStack":  [
                           "React 19",
@@ -2111,8 +2111,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/quizzyquiz/index.html",
         "githubUrl":  "https://github.com/je-tu-il/QuizzyQuiz",
         "techStack":  [
                           "Vite 8",
@@ -2166,8 +2166,8 @@
         "category":  "3d-hardware",
         "categoryLabel":  "Entreprise, 3D \u0026 E-commerce",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/pixelthings/index.html",
         "githubUrl":  "https://github.com/je-tu-il/PixelThings",
         "techStack":  [
                           "React 19",
@@ -2980,8 +2980,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/bonplan/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Bonplan",
         "techStack":  [
                           "React 19",
@@ -3009,8 +3009,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/champibad/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Champibad-Website",
         "techStack":  [
                           "React",
@@ -3037,8 +3037,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/lostcall/index.html",
         "githubUrl":  "https://github.com/je-tu-il/LostCall",
         "techStack":  [
                           "HTML5",
@@ -3291,8 +3291,8 @@
         "category":  "games",
         "categoryLabel":  "Web, Jeux \u0026 Démos",
         "status":  "Live Demo",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/lucky-construccheune/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Lucky-Construccheune",
         "techStack":  [
                           "HTML5",
@@ -3509,8 +3509,8 @@
         "category":  "web",
         "categoryLabel":  "Applications Web \u0026 Outils",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/simple-sign/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Simple_Sign",
         "techStack":  [
                           "HTML5",
@@ -3537,8 +3537,8 @@
         "category":  "web",
         "categoryLabel":  "Applications Web \u0026 Jeux",
         "status":  "Production",
-        "isRunnable":  false,
-        "runnableUrl":  "",
+        "isRunnable":  true,
+        "runnableUrl":  "projects/game-revive/index.html",
         "githubUrl":  "https://github.com/je-tu-il/Game-Revive",
         "techStack":  [
                           "React 19",
@@ -3652,8 +3652,8 @@
         ],
         "icon": "🌊",
         "description": "Expérimentation de transfert par lumière, son ou vibration.",
-        "runnableUrl": "",
-        "isRunnable": false
+        "runnableUrl": "projects/wavedrop/index.html",
+        "isRunnable": true
     },
     {
         "id": "chatverdict",
@@ -3668,7 +3668,7 @@
         ],
         "icon": "💬",
         "description": "Visualisation de conversations et synthèse de désaccords.",
-        "runnableUrl": "",
-        "isRunnable": false
+        "runnableUrl": "projects/chatverdict/index.html",
+        "isRunnable": true
     }
 ]

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WaveDrop — Transfert Son, Lumière & Vibration</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>">
+</head>
+<body>
+    <header>
+        <div class="logo-badge">
+            <span class="logo-icon">📡</span>
+            <div>
+                <h1 class="logo-title">WaveDrop</h1>
+                <span class="badge-tag">AIR-GAP PHY TRANSFER</span>
+            </div>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--accent-cyan);">
+            v1.0 • PWA
+        </div>
+    </header>
+
+    <main>
+        <!-- Nav Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="send">🚀 Émettre</button>
+            <button class="tab-btn" data-tab="receive">📥 Recevoir</button>
+            <button class="tab-btn" data-tab="lab">🧪 Test Direct</button>
+        </nav>
+
+        <!-- INSTANT RECEIVED MODAL / HERO DISPLAY -->
+        <div id="instantReceiveModal" class="instant-receive-modal">
+            <div class="instant-header">
+                <span id="instantTypeBadge" class="instant-badge">✨ DONNÉE REÇUE EN DIRECT</span>
+                <button class="btn-secondary" style="width: auto; padding: 0.3rem 0.8rem; margin: 0;" onclick="document.getElementById('instantReceiveModal').style.display='none'">Fermer</button>
+            </div>
+            
+            <!-- Immediate Image View -->
+            <img id="instantImageView" class="received-image-view" style="display: none;" alt="Image Reçue Directement" />
+
+            <!-- Immediate Text View -->
+            <div id="instantTextBox" class="received-text-box" style="display: none;"></div>
+
+            <!-- Immediate File Card -->
+            <div id="instantFileCard" style="display: none; background: rgba(15,23,42,0.8); padding: 1rem; border-radius: 0.75rem;">
+                <div style="font-weight: 700; margin-bottom: 0.3rem;" id="instantFileName">fichier.bin</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem;" id="instantFileSize">0 Ko</div>
+                <button id="btnDownloadFile" class="btn-primary" style="padding: 0.6rem;">💾 Télécharger le fichier</button>
+            </div>
+        </div>
+
+        <!-- TAB 1: EMISSION (SEND) -->
+        <section id="tab-send" class="tab-content active">
+            <!-- Channel Selection -->
+            <div class="card">
+                <div class="card-title">1. Canal Physique d'Émission</div>
+                <div id="sendModeGrid" class="pill-grid">
+                    <div class="pill-option selected" data-mode="sound">
+                        <div class="pill-icon">🔊</div>
+                        <div class="pill-label">Son / Acoustique</div>
+                    </div>
+                    <div class="pill-option" data-mode="light">
+                        <div class="pill-icon">💡</div>
+                        <div class="pill-label">Lumière / Flash</div>
+                    </div>
+                    <div class="pill-option" data-mode="vibe">
+                        <div class="pill-icon">📳</div>
+                        <div class="pill-label">Vibration Haptique</div>
+                    </div>
+                </div>
+
+                <!-- Acoustic Preset Options -->
+                <div style="margin-top: 0.5rem;">
+                    <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Fréquences Audio :</label>
+                    <select id="soundPresetSelect" style="width: 100%; padding: 0.6rem; background: var(--bg-secondary); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 0.6rem; outline: none;">
+                        <option value="AUDIBLE">🔊 Audible FSK (1.8 - 2.4 kHz) — Résistance maximale</option>
+                        <option value="ULTRASOUND">🦇 Ultrasonore (18.5 - 19.5 kHz) — Inaudible</option>
+                        <option value="TURBO">⚡ Turbo FSK (80 Baud) — Vitesse doublée</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Payload Selection -->
+            <div class="card">
+                <div class="card-title">2. Contenu à Transférer</div>
+
+                <label style="font-size: 0.85rem; color: var(--text-muted);">Message Texte :</label>
+                <textarea id="textPayload" rows="2" placeholder="Tapez un message direct à envoyer...">Salut ! Transfert sans Wi-Fi ni Bluetooth réussi 🚀</textarea>
+
+                <div style="text-align: center; margin: 0.5rem 0; font-size: 0.8rem; color: var(--text-muted);">— OU ENVOYER UNE IMAGE / FICHIER —</div>
+
+                <div id="fileDropzone" class="file-dropzone">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📸📁</div>
+                    <div id="dropzoneLabel" style="font-weight: 600; font-size: 0.95rem;">Cliquez ou glissez une image / fichier ici</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">L'image sera automatiquement redimensionnée pour affichage direct</div>
+                    <input type="file" id="fileInput" style="display: none;" />
+                </div>
+
+                <div id="imagePreviewBox" class="image-preview-box">
+                    <img id="imagePreview" alt="Aperçu avant envoi" />
+                </div>
+
+                <!-- Optical Strobe Canvas (when in light mode) -->
+                <div id="opticalCanvasWrapper" style="display: none; margin: 1rem 0;">
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.4rem;">Canevas Stroboscopique / Optique :</div>
+                    <div class="viz-container">
+                        <canvas id="opticalCanvas" width="400" height="120"></canvas>
+                    </div>
+                </div>
+
+                <!-- Progress & Action -->
+                <div id="sendProgressTrack" class="progress-bar-container">
+                    <div class="progress-track">
+                        <div id="sendProgressFill" class="progress-fill"></div>
+                    </div>
+                    <div class="progress-label">
+                        <span>Émission en cours</span>
+                        <span id="sendProgressCount">0%</span>
+                    </div>
+                </div>
+
+                <button id="btnStartSend" class="btn-primary">📡 Lancer la Transmission</button>
+                <button id="btnStopSend" class="btn-primary" style="display: none; background: #ef4444;">🛑 Stopper l'Émission</button>
+                <div id="sendStatusLabel" class="status-indicator">Prêt pour émission</div>
+            </div>
+        </section>
+
+        <!-- TAB 2: RECEPTION (RECEIVE) -->
+        <section id="tab-receive" class="tab-content">
+            <div class="card">
+                <div class="card-title">Récepteur Sans-Contact (Air-Gap)</div>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    Placez le microphone, l'écran ou le dos de l'appareil à proximité de l'émetteur.
+                </p>
+
+                <!-- Audio Visualizer Spectrogram -->
+                <div class="viz-container">
+                    <canvas id="spectrumCanvas" width="400" height="120"></canvas>
+                </div>
+
+                <div id="receiveProgressTrack" class="progress-bar-container">
+                    <div class="progress-track">
+                        <div id="receiveProgressFill" class="progress-fill"></div>
+                    </div>
+                    <div class="progress-label">
+                        <span>Paquets reçus</span>
+                        <span id="receiveProgressCount">0%</span>
+                    </div>
+                </div>
+
+                <button id="btnStartListen" class="btn-primary">🎙️ Activer l'Écoute / Récepteur</button>
+                <button id="btnStopListen" class="btn-primary" style="display: none; background: #ef4444;">⏹️ Désactiver l'Écoute</button>
+                <div id="receiveStatusLabel" class="status-indicator">En attente d'activation</div>
+            </div>
+        </section>
+
+        <!-- TAB 3: LAB & LOOPBACK TEST -->
+        <section id="tab-lab" class="tab-content">
+            <div class="card">
+                <div class="card-title">Laboratoire de Démonstration Immédiate</div>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    Permet de tester instantanément l'encodage par paquets, la vérification CRC8 et l'<strong>affichage direct automatique</strong> d'une image générée en direct, sans avoir besoin d'un second appareil.
+                </p>
+
+                <button id="btnLoopbackTest" class="btn-primary" style="background: linear-gradient(135deg, #10b981, #06b6d4);">
+                    ⚡ Simuler Envoi & Affichage Direct d'Image
+                </button>
+
+                <div id="labStatusLabel" class="status-indicator" style="margin-top: 1rem;">Prêt pour la simulation</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        WaveDrop • Transfert physique sans réseau par Son, Lumière & Vibration • 2026
+    </footer>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

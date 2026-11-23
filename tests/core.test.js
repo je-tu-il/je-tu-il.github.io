@@ -57,7 +57,10 @@ test('every project opens, runs a distinct scenario, resets, and links to existi
     const expected = windowData.PORTFOLIO_DEMOS[project.id];
     assert.equal(run.textContent, expected.action);
     assert.equal(get('live').hidden, !project.isRunnable);
-    if (project.isRunnable) assert.ok(fs.existsSync(path.join(root, project.runnableUrl)));
+    if (project.isRunnable) {
+      if (project.runnableUrl.startsWith('https://')) assert.equal(get('live').href, project.runnableUrl);
+      else assert.ok(fs.existsSync(path.join(root, project.runnableUrl)));
+    }
     for (const field of get('inputs').children) {
       const input = field.children[0];
       input.value = input.defaultValue;
@@ -91,4 +94,68 @@ test('NousDeux reveals both answers only after the second response', () => {
   assert.equal(get('run').disabled, true);
   get('controls').events.reset();
   assert.equal(get('run').disabled, false);
+});
+
+test('catalogue launches each web version directly and serves its entry assets', () => {
+  const context = {document: {getElementById() {}, addEventListener() {}}, window: {addEventListener() {}}};
+  vm.createContext(context);
+  vm.runInContext(read('main.js'), context);
+  for (const project of projects) {
+    const expected = project.runnableUrl || 'projects/demo.html?id=' + project.id;
+    assert.equal(context.demoUrl(project), expected);
+    if (!project.isRunnable || /^https:\/\//.test(expected)) continue;
+    const html = read(expected);
+    for (const [, ref] of html.matchAll(/<(?:script|link)\b[^>]*?\b(?:src|href)=["']([^"'<>\s]+)["']/gi)) {
+      if (/^(?:https?:|data:|\/\/|#)/i.test(ref)) continue;
+      const local = new URL(ref, 'https://portfolio.test/' + expected).pathname;
+      assert.ok(fs.existsSync(path.join(root, decodeURIComponent(local))), expected + ' → ' + ref);
+    }
+  }
+});
+
+test('workflow state changes with the controls and can be reset', () => {
+  function node() {
+    return {
+      children: [], rows: [], cells: [], events: {}, value: '',
+      append(...children) { this.children.push(...children); },
+      replaceChildren(...children) { this.children = children; },
+      addEventListener(name, handler) { this.events[name] = handler; },
+      setAttribute() {},
+      add(option) { if (!this.value) this.value = option.value; },
+      createTHead() { const head = node(); this.append(head); return head; },
+      createTBody() { const body = node(); this.append(body); return body; },
+      insertRow() { const row = node(); this.rows.push(row); return row; },
+      insertCell() { const cell = node(); this.cells.push(cell); return cell; },
+    };
+  }
+  const window = {};
+  vm.runInNewContext(read('projects/workflows.js'), {
+    window, document: {createElement: node},
+    Option: function Option(text, value) { this.text = text; this.value = value; },
+  });
+  const root = node();
+  window.PORTFOLIO_WORKFLOWS.autobackup(root);
+  const [, , backupControls, backupResult, backupStatus] = root.children[0].children;
+  const statusOf = index => backupResult.children[0].children[1].rows[index].cells[3].textContent;
+  assert.equal(statusOf(0), 'Modifié');
+  assert.equal(statusOf(2), 'Nouveau');
+  backupControls.children[0].events.click();
+  assert.match(backupStatus.textContent, /^2 fichier/);
+  assert.equal(statusOf(0), 'Identique');
+  backupControls.children[3].events.click();
+  backupControls.children[2].events.click();
+  assert.match(backupStatus.textContent, /version 1/);
+  assert.equal(statusOf(0), 'Identique');
+
+  const court = node();
+  window.PORTFOLIO_WORKFLOWS['champibad-plateforme-comp-tition-club-badminton'](court);
+  const [, , controls, , status] = court.children[0].children;
+  for (let i = 0; i < 20; i++) {
+    controls.children[0].events.click();
+    controls.children[1].events.click();
+  }
+  controls.children[0].events.click();
+  assert.doesNotMatch(status.textContent, /remporte/);
+  controls.children[0].events.click();
+  assert.match(status.textContent, /remporte la manche/);
 });
