@@ -812,3 +812,21 @@ footer a {
   color: var(--accent-cyan);
   text-decoration: none;
 }
+
+.hero-title { font-size: clamp(2.6rem, 7vw, 5.6rem); letter-spacing: -.06em; line-height: 1.04; text-wrap: balance; }
+.hero-subtitle { max-width: 59ch; margin-inline: auto; line-height: 1.65; }
+.projects-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 19.5rem), 1fr)); }
+.project-card { box-shadow: none; }
+.card-title { text-wrap: pretty; }
+.card-tagline { line-height: 1.55; }
+.category-pills { gap: .5rem; }
+.category-pills button, .btn-card-launch { min-height: 44px; }
+#mainSearchInput { min-height: 48px; }
+:where(a, button, input, select):focus-visible { outline: 3px solid #a4d5ff; outline-offset: 3px; }
+@media (max-width: 540px) {
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .search-input-wrapper { min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-card, .hero-badge { animation: none; transition: none; }
+}
