@@ -41,18 +41,18 @@
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/champibad.png",
       "tintColor": "#10B981",
       "version": "1.0.0",
-      "versionDate": "2026-10-24",
+      "versionDate": "2026-11-25",
       "versionDescription": "Version 1.0.0 — Build iOS officiel (Champibad).",
       "downloadURL": "https://github.com/je-tu-il/Champibad/releases/download/v1.0.0/Champibad-unsigned.ipa",
-      "size": 8494911,
+      "size": 8371036,
       "versions": [
         {
           "version": "1.0.0",
           "buildNumber": "1",
-          "date": "2026-10-24",
+          "date": "2026-11-25",
           "localizedDescription": "Release v1.0.0 publiée sur GitHub.",
           "downloadURL": "https://github.com/je-tu-il/Champibad/releases/download/v1.0.0/Champibad-unsigned.ipa",
-          "size": 8494911
+          "size": 8371036
         }
       ]
     },
@@ -65,18 +65,18 @@
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/passapp.png",
       "tintColor": "#7C3AED",
       "version": "0.1.0",
-      "versionDate": "2026-10-10",
+      "versionDate": "2026-11-25",
       "versionDescription": "Version 0.1.0 — Build iOS officiel (PassApp).",
       "downloadURL": "https://github.com/je-tu-il/PassApp/releases/download/v0.1.0/PassApp-AltStore.ipa",
-      "size": 179997,
+      "size": 772842,
       "versions": [
         {
           "version": "0.1.0",
           "buildNumber": "1",
-          "date": "2026-10-10",
+          "date": "2026-11-25",
           "localizedDescription": "Release v0.1.0 publiée sur GitHub.",
           "downloadURL": "https://github.com/je-tu-il/PassApp/releases/download/v0.1.0/PassApp-AltStore.ipa",
-          "size": 179997
+          "size": 772842
         }
       ]
     },
@@ -89,18 +89,18 @@
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/bestcam.png",
       "tintColor": "#10B981",
       "version": "1.0.0",
-      "versionDate": "2026-10-24",
+      "versionDate": "2026-11-25",
       "versionDescription": "Version 1.0.0 — Build iOS officiel (BestCam).",
       "downloadURL": "https://github.com/je-tu-il/BestCam/releases/download/v1.0.0/BestCam.ipa",
-      "size": 53286,
+      "size": 754608,
       "versions": [
         {
           "version": "1.0.0",
           "buildNumber": "1",
-          "date": "2026-10-24",
+          "date": "2026-11-25",
           "localizedDescription": "Release v1.0.0 publiée sur GitHub.",
           "downloadURL": "https://github.com/je-tu-il/BestCam/releases/download/v1.0.0/BestCam.ipa",
-          "size": 53286
+          "size": 754608
         }
       ]
     },
@@ -113,18 +113,18 @@
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/synctrain.png",
       "tintColor": "#38BDF8",
       "version": "1.0.0",
-      "versionDate": "2026-11-11",
+      "versionDate": "2026-11-25",
       "versionDescription": "Version 1.0.0 — Build iOS officiel (SyncTrain_OfflineMusic).",
       "downloadURL": "https://github.com/je-tu-il/SyncTrain_OfflineMusic/releases/download/v1.0.0/SyncTrain.ipa",
-      "size": 165902,
+      "size": 832358,
       "versions": [
         {
           "version": "1.0.0",
           "buildNumber": "1",
-          "date": "2026-11-11",
+          "date": "2026-11-25",
           "localizedDescription": "Release v1.0.0 publiée sur GitHub.",
           "downloadURL": "https://github.com/je-tu-il/SyncTrain_OfflineMusic/releases/download/v1.0.0/SyncTrain.ipa",
-          "size": 165902
+          "size": 832358
         }
       ]
     },
@@ -137,18 +137,18 @@
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/hidecam.png",
       "tintColor": "#06B6D4",
       "version": "1.0.0",
-      "versionDate": "2026-10-24",
+      "versionDate": "2026-11-25",
       "versionDescription": "Version 1.0.0 — Build iOS officiel (HideCam).",
       "downloadURL": "https://github.com/je-tu-il/HideCam/releases/download/v1.0.0/StealthRecorder.ipa",
-      "size": 316428,
+      "size": 1331762,
       "versions": [
         {
           "version": "1.0.0",
           "buildNumber": "1",
-          "date": "2026-10-24",
+          "date": "2026-11-25",
           "localizedDescription": "Release v1.0.0 publiée sur GitHub.",
           "downloadURL": "https://github.com/je-tu-il/HideCam/releases/download/v1.0.0/StealthRecorder.ipa",
-          "size": 316428
+          "size": 1331762
         }
       ]
     },
@@ -161,18 +161,18 @@
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/stacklaunch.png",
       "tintColor": "#0EA5E9",
       "version": "1.0.0",
-      "versionDate": "2026-10-24",
+      "versionDate": "2026-11-25",
       "versionDescription": "Version 1.0.0 — Build iOS officiel (Dump-phone).",
       "downloadURL": "https://github.com/je-tu-il/Dump-phone/releases/download/v1.0.0/StackLaunch-unsigned.ipa",
-      "size": 3904473,
+      "size": 3904533,
       "versions": [
         {
           "version": "1.0.0",
           "buildNumber": "1",
-          "date": "2026-10-24",
+          "date": "2026-11-25",
           "localizedDescription": "Release v1.0.0 publiée sur GitHub.",
           "downloadURL": "https://github.com/je-tu-il/Dump-phone/releases/download/v1.0.0/StackLaunch-unsigned.ipa",
-          "size": 3904473
+          "size": 3904533
         }
       ]
     },
@@ -185,18 +185,18 @@
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/offgrid.png",
       "tintColor": "#2DD4BF",
       "version": "1.0.0",
-      "versionDate": "2026-10-24",
+      "versionDate": "2026-11-25",
       "versionDescription": "Version 1.0.0 — Build iOS officiel (Guardian-Phone).",
       "downloadURL": "https://github.com/je-tu-il/Guardian-Phone/releases/download/v1.0.0/OffGrid.ipa",
-      "size": 4079913,
+      "size": 4079295,
       "versions": [
         {
           "version": "1.0.0",
           "buildNumber": "1",
-          "date": "2026-10-24",
+          "date": "2026-11-25",
           "localizedDescription": "Release v1.0.0 publiée sur GitHub.",
           "downloadURL": "https://github.com/je-tu-il/Guardian-Phone/releases/download/v1.0.0/OffGrid.ipa",
-          "size": 4079913
+          "size": 4079295
         }
       ]
     },
@@ -209,7 +209,7 @@
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/fingerpick.png",
       "tintColor": "#F59E0B",
       "version": "1.0.0",
-      "versionDate": "2026-10-24",
+      "versionDate": "2026-11-20",
       "versionDescription": "Version 1.0.0 — Build iOS officiel (StarterPlayer).",
       "downloadURL": "https://github.com/je-tu-il/StarterPlayer/releases/download/v1.0.0/fingerpick.ipa",
       "size": 5045832,
@@ -217,7 +217,7 @@
         {
           "version": "1.0.0",
           "buildNumber": "1",
-          "date": "2026-10-24",
+          "date": "2026-11-20",
           "localizedDescription": "Release v1.0.0 publiée sur GitHub.",
           "downloadURL": "https://github.com/je-tu-il/StarterPlayer/releases/download/v1.0.0/fingerpick.ipa",
           "size": 5045832
