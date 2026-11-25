@@ -5,9 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Je-tu-il | Portfolio Développeur & Hub de Projets</title>
   <meta name="description" content="Portfolio officiel de Jules R. (Je-tu-il) : applications web, cybersécurité, portages calculatrice TI-84, mobile iOS, outils bas niveau et intelligence artificielle.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="canonical" href="https://je-tu-il.github.io/">
+  <meta property="og:title" content="Je-tu-il | Portfolio Développeur & Hub de Projets">
+  <meta property="og:description" content="Explorez les applications iOS/Android, outils desktop, jeux web, projets 3D et solutions d'ingénierie logicielle de Je-tu-il.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://je-tu-il.github.io/">
+  <meta property="og:image" content="https://je-tu-il.github.io/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Portfolio Je-tu-il",
+    "url": "https://je-tu-il.github.io/",
+    "description": "Hub de projets logiciels, applications mobiles, jeux web et outils open-source par Jules R. (Je-tu-il).",
+    "author": {
+      "@type": "Person",
+      "name": "Jules R.",
+      "alternateName": "je-tu-il",
+      "url": "https://github.com/je-tu-il"
+    }
+  }
+  </script>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,7 +39,7 @@
   <header class="navbar">
     <div class="container nav-container">
       <a href="index.html" class="brand-link">
-        <div class="brand-avatar">J</div>
+        <img src="favicon.svg" alt="Logo Je-tu-il" class="brand-avatar" width="40" height="40" style="padding:0;background:transparent;">
         <div class="brand-text">
           <h2>Je-tu-il</h2>
           <p>github.io/portfolio</p>
@@ -82,6 +103,9 @@
         <button class="btn-hero-secondary" onclick="openPalette()">
           <span>⚡ Command Palette (Ctrl+K)</span>
         </button>
+        <button class="btn-hero-secondary" id="copyLcSourceBtn" onclick="navigator.clipboard?.writeText('https://je-tu-il.github.io/apps.json'); this.innerText='✓ Lien Source copié !'; setTimeout(() => this.innerText='📱 Source LiveContainer (iOS)', 2200);">
+          <span>📱 Source LiveContainer (iOS)</span>
+        </button>
       </div>
     </div>
   </section>
@@ -137,7 +161,10 @@
   <footer>
     <div class="container">
       <p style="margin-bottom:8px;">Portfolio et vitrine conçus pour <a href="https://je-tu-il.github.io">je-tu-il.github.io</a></p>
-      <p style="font-size:12px; color:var(--text-dim);">Code source & contributions sous licence libre • Hébergé sur GitHub Pages</p>
+      <p style="font-size:12px; color:var(--text-dim);">
+        Polices auto-hébergées localement (zéro fuite IP) • Aucun cookie publicitaire ni traceur •
+        <a href="mentions-legales.html" style="color:var(--accent-cyan);text-decoration:underline;">Mentions légales &amp; RGPD</a>
+      </p>
     </div>
   </footer>
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>WaveDrop — Transfert Son, Lumière & Vibration</title>
+  <meta name="description" content="WaveDrop — Transfert Son, Lumière & Vibration — Application interactive et démonstration en ligne.">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>">
 </head>
@@ -37,7 +38,7 @@
             </div>
             
             <!-- Immediate Image View -->
-            <img id="instantImageView" class="received-image-view" style="display: none;" alt="Image Reçue Directement" />
+            <img id="instantImageView" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" class="received-image-view" style="display: none;" alt="Image Reçue Directement" />
 
             <!-- Immediate Text View -->
             <div id="instantTextBox" class="received-text-box" style="display: none;"></div>
@@ -98,7 +99,7 @@
                 </div>
 
                 <div id="imagePreviewBox" class="image-preview-box">
-                    <img id="imagePreview" alt="Aperçu avant envoi" />
+                    <img id="imagePreview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E" alt="Aperçu avant envoi" />
                 </div>
 
                 <!-- Optical Strobe Canvas (when in light mode) -->

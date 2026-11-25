@@ -823,6 +823,18 @@ footer a {
 .category-pills button, .btn-card-launch { min-height: 44px; }
 #mainSearchInput { min-height: 48px; }
 :where(a, button, input, select):focus-visible { outline: 3px solid #a4d5ff; outline-offset: 3px; }
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  .nav-container { gap: 8px; }
+  .brand-text p { display: none; }
+  .btn-command-palette-trigger span { display: none; }
+  .btn-command-palette-trigger::before { content: "🔍"; font-size: 15px; }
+  .btn-command-palette-trigger kbd { display: none; }
+  .btn-command-palette-trigger { padding: 8px 12px; min-height: 40px; }
+  .nav-actions { gap: 8px; }
+  .hero-buttons { flex-direction: column; width: 100%; }
+  .hero-buttons button { width: 100%; }
+}
 @media (max-width: 540px) {
   .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .search-input-wrapper { min-width: 0; }
