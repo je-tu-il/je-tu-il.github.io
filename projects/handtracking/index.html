@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html data-atelier-app="dark" lang="en">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HandTrack Draw — HTML5 + MediaPipe</title>
   <meta name="description" content="HandTrack Draw — HTML5 + MediaPipe — Application interactive et démonstration en ligne.">
@@ -49,14 +48,34 @@
 
     .hint{font-size:12px; color:var(--muted)}
     .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; background:#0f1318;border:1px solid var(--border); padding:2px 6px; border-radius:6px}
-  </style>
+  
+header, header .actions { gap: .75rem; flex-wrap: wrap; }
+.stage { min-width: 0; }
+.toolbar .tool, header .btn { min-height: 40px; }
+:where(button, input, select):focus-visible { outline: 2px solid #8edafa; outline-offset: 2px; }
+@media (max-width: 680px) {
+  .toolbar { min-width: 0; }
+  .floating-ui { flex-wrap: wrap; max-width: calc(100% - 1rem); }
+  .hint { max-width: 100%; overflow-wrap: anywhere; }
+}
+</style>
 
   <!-- MediaPipe Hands (legacy) CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
-  <script defer src="../../assets/portfolio-back.js?v=atelier-2"></script>
-  <link rel="stylesheet" href="../../assets/atelier-app.css?v=1">
+<link rel="icon" type="image/png" href="./app-icon.png">
+<style>
+@media screen {
+  :root { --interface-accent: #5749a5; --interface-edge: color-mix(in srgb, var(--interface-accent) 58%, currentColor 42%); }
+  :where(h1, h2, h3) { text-wrap: balance; }
+  :where(button, input, select, textarea, a):focus-visible { outline: 2px solid var(--interface-edge); outline-offset: 3px; }
+  :where(header) { box-shadow: inset 0 2px 0 var(--interface-edge); }
+  :where(header) :where(h1), h1:where(header) { letter-spacing: -.035em; line-height: 1.12; }
+  :where(.stage) { border-color: color-mix(in srgb, var(--interface-accent) 45%, transparent); }
+  :where(input[type="checkbox"], input[type="radio"], input[type="range"]) { accent-color: var(--interface-accent); }
+  ::selection { background: var(--interface-accent); color: white; }
+}</style>
 </head>
 <body>
   <div class="app">

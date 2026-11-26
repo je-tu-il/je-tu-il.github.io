@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SitRun - Simulateur de Course & Générateur GPX Réaliste pour Strava</title>
+  <meta name="description" content="SitRun - Simulateur de Course & Générateur GPX Réaliste pour Strava — Application interactive et démonstration en ligne.">
+  
+  <!-- Favicon SVG -->
+
+  <!-- Google Fonts : Inter -->
+<link rel="stylesheet" href="fonts/fonts.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <!-- Stylesheet SitRun -->
+  <link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/png" href="./app-icon.png">
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="app-header">
+    <div class="brand-wrapper">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon">🛋️</div>
+        <span>SitRun</span>
+      </a>
+      <span class="brand-badge">⚡ 100% Gratuit & Réaliste</span>
+    </div>
+
+    <!-- Sélecteur de Sport -->
+    <div class="header-center">
+      <div class="sport-selector">
+        <button class="sport-btn active" data-sport="running">
+          <span>🏃</span> Course
+        </button>
+        <button class="sport-btn" data-sport="cycling">
+          <span>🚴</span> Vélo
+        </button>
+        <button class="sport-btn" data-sport="walking">
+          <span>🚶</span> Marche
+        </button>
+      </div>
+    </div>
+
+    <!-- Actions Rapides -->
+    <div class="header-actions">
+      <input type="file" id="file-input-gpx" accept=".gpx" style="display: none;">
+      <button class="btn-header-action" id="btn-import-gpx" title="Importer une trace GPX existante pour modifier son allure ou générer son horodatage">
+        <span>📂</span> Importer GPX
+      </button>
+      <button class="btn-header-action" id="btn-open-guide" title="Guide d'import Strava">
+        <span>❓</span> Guide Strava
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== CORPS DE L'APPLICATION ==================== -->
+  <main class="app-main">
+    
+    <!-- ===== SIDEBAR GAUCHE (Contrôles & Stats) ===== -->
+    <aside class="sidebar">
+      
+      <!-- Onglets Navigation -->
+      <nav class="sidebar-tabs">
+        <button class="tab-btn active" data-tab="tab-params">
+          <span>⚙️</span> Paramètres & Stats
+        </button>
+        <button class="tab-btn" data-tab="tab-analysis">
+          <span>📈</span> Profil & Splits
+        </button>
+        <button class="tab-btn" data-tab="tab-guide">
+          <span>💡</span> Astuces Strava
+        </button>
+      </nav>
+
+      <div class="sidebar-content">
+        
+        <!-- ========== ONGLET 1 : PARAMÈTRES & STATS ========== -->
+        <div class="tab-pane active" id="tab-params">
+          
+          <!-- Cartes Statistiques Principales -->
+          <div class="stats-grid">
+            <div class="stat-card highlight">
+              <span class="stat-title">📏 Distance</span>
+              <span class="stat-value" id="stat-distance">0.00 km</span>
+              <span class="stat-sub">Tracé sur la carte</span>
+            </div>
+            <div class="stat-card highlight">
+              <span class="stat-title">⏱️ Durée estimée</span>
+              <span class="stat-value" id="stat-duration">00:00:00</span>
+              <span class="stat-sub">Temps de course</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-title">⚡ Allure moyenne</span>
+              <span class="stat-value" id="stat-pace">--:-- /km</span>
+              <span class="stat-sub" id="stat-speed">0.0 km/h</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-title">⛰️ Dénivelé (D+)</span>
+              <span class="stat-value" id="stat-dplus">+0 m</span>
+              <span class="stat-sub">Relief réel Open-Meteo</span>
+            </div>
+          </div>
+
+          <!-- Bandeau métriques secondaires -->
+          <div class="stat-strip">
+            <div class="stat-mini-item">
+              <span class="stat-mini-label">FC Moyenne</span>
+              <span class="stat-mini-val" id="stat-avghr">-- bpm</span>
+            </div>
+            <div class="stat-mini-item">
+              <span class="stat-mini-label">Calories</span>
+              <span class="stat-mini-val" id="stat-calories">0 kcal</span>
+            </div>
+            <div class="stat-mini-item">
+              <span class="stat-mini-label">Précision</span>
+              <span class="stat-mini-val" style="color: #10b981;">1 Hz GNSS</span>
+            </div>
+          </div>
+
+          <!-- Section : Nom & Date de l'activité -->
+          <div class="form-section">
+            <div class="section-header">
+              <span class="section-title">📅 Date & Heure du Run</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Titre de l'activité Strava</label>
+              <input type="text" id="input-activity-name" class="form-input" value="Course à pied matinale 🏃" placeholder="Ex: Sortie longue au soleil">
+            </div>
+
+            <div class="date-time-row">
+              <div class="form-group">
+                <label class="form-label">Date</label>
+                <input type="date" id="input-date" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Heure de départ</label>
+                <input type="time" id="input-time" class="form-input" value="08:30">
+              </div>
+            </div>
+
+            <div class="quick-time-buttons">
+              <button class="btn-quick-time" data-time-mode="morning">🌅 Ce matin 08:30</button>
+              <button class="btn-quick-time" data-time-mode="evening">🌇 Hier 18:45</button>
+              <button class="btn-quick-time" data-time-mode="now">⏱️ Maintenant</button>
+            </div>
+          </div>
+
+          <!-- Section : Allure & Effort -->
+          <div class="form-section">
+            <div class="section-header">
+              <span class="section-title">🚀 Allure & Vitesse cible</span>
+              <span id="display-pace-label" style="font-size: 11px; font-weight: 700; color: #fc5200;">5:00 min/km (12.00 km/h)</span>
+            </div>
+
+            <div class="pace-sync-container">
+              <div class="pace-inputs-row">
+                <label class="form-label" style="margin: 0;">Min/Km :</label>
+                <div class="pace-min-sec-inputs">
+                  <input type="number" id="input-pace-min" class="pace-num-input" min="2" max="15" value="5">
+                  <span class="pace-separator">:</span>
+                  <input type="number" id="input-pace-sec" class="pace-num-input" min="0" max="59" value="00">
+                </div>
+
+                <div class="speed-input-container">
+                  <label class="form-label" style="margin: 0;">Km/h :</label>
+                  <input type="number" id="input-speed-kmh" class="speed-num-input" min="3" max="50" step="0.1" value="12.0">
+                </div>
+              </div>
+
+              <!-- Slider Allure (180s = 3:00 min/km à 540s = 9:00 min/km) -->
+              <input type="range" id="slider-pace-min" class="custom-range" min="150" max="600" value="300" step="5">
+            </div>
+
+            <!-- Profil d'allure -->
+            <div class="form-group">
+              <label class="form-label">Profil d'allure (Pacing Strategy)</label>
+              <select id="select-pacing-profile" class="form-select">
+                <option value="even" selected>Régulier (Allure stable avec micro-respiration ±3%)</option>
+                <option value="negative_split">Negative Split (Départ prudent, accélération progressive + sprint)</option>
+                <option value="positive_split">Positive Split (Départ rapide, légère fatigue sur la fin)</option>
+                <option value="intervals">Fractionné (Échauffement + blocs 400m rapide / 200m trot)</option>
+                <option value="gap">Adapté au relief (Ralentit en côte, accélère en descente)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Section : Données Physiologiques & Montre -->
+          <div class="form-section">
+            <div class="section-header">
+              <span class="section-title">❤️ Données Cardiaques & Montre</span>
+            </div>
+
+            <!-- Toggle Cardio -->
+            <div class="toggle-switch-row">
+              <label class="toggle-switch-label" for="check-heart-rate">
+                <span>Simuler la Fréquence Cardiaque</span>
+              </label>
+              <label class="switch">
+                <input type="checkbox" id="check-heart-rate" checked>
+                <span class="slider-round"></span>
+              </label>
+            </div>
+
+            <div id="hr-settings-container">
+              <div class="form-group">
+                <div class="form-label">
+                  <span>FC Moyenne cible :</span>
+                  <strong id="val-heart-rate" style="color: #ec4899;">155 bpm</strong>
+                </div>
+                <input type="range" id="slider-heart-rate" class="custom-range" min="110" max="190" value="155">
+              </div>
+
+              <div class="toggle-switch-row" style="margin-top: 4px;">
+                <label class="toggle-switch-label" for="check-warmup" style="font-size: 11px; color: var(--text-muted);">
+                  <span>Échauffement progressif (premier km)</span>
+                </label>
+                <label class="switch">
+                  <input type="checkbox" id="check-warmup" checked>
+                  <span class="slider-round"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Cadence -->
+            <div class="form-group">
+              <div class="form-label">
+                <span>Cadence moyenne :</span>
+                <strong id="val-cadence" style="color: #38bdf8;">172 spm</strong>
+              </div>
+              <input type="range" id="slider-cadence" class="custom-range" min="130" max="210" value="172">
+            </div>
+
+            <!-- Appareil émulé -->
+            <div class="form-group">
+              <label class="form-label">Montre GPS émulée (Tag Strava)</label>
+              <select id="select-device" class="form-select">
+                <option value="Garmin Forerunner 965" selected>Garmin Forerunner 965</option>
+                <option value="Garmin Forerunner 265">Garmin Forerunner 265</option>
+                <option value="Garmin Fēnix 7 Pro">Garmin Fēnix 7 Pro</option>
+                <option value="Apple Watch Ultra 2">Apple Watch Ultra 2</option>
+                <option value="COROS Pace 3">COROS Pace 3</option>
+                <option value="Garmin Edge 840">Garmin Edge 840 (Cyclisme)</option>
+                <option value="Strava App (iOS)">Application Strava (iPhone)</option>
+              </select>
+            </div>
+
+            <!-- Réalisme GPS -->
+            <div class="toggle-switch-row">
+              <label class="toggle-switch-label" for="check-gps-noise">
+                <span>Micro-gigue GPS réaliste (anti-détection)</span>
+              </label>
+              <label class="switch">
+                <input type="checkbox" id="check-gps-noise" checked>
+                <span class="slider-round"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Bouton de Téléchargement Principal -->
+          <button class="btn-export-main" id="btn-export-gpx">
+            <span>🚀</span>
+            <span>Télécharger le Fichier GPX Strava</span>
+          </button>
+          <div class="export-subtext">
+            Standard GPX 1.1 + Garmin Extensions (FC & Cadence incluses)
+          </div>
+
+        </div>
+
+        <!-- ========== ONGLET 2 : ANALYSE & SPLITS ========== -->
+        <div class="tab-pane" id="tab-analysis">
+          
+          <!-- Graphique interactif -->
+          <div class="chart-container">
+            <div class="chart-header">
+              <span>Profil Dénivelé & Fréquence Cardiaque</span>
+              <div class="chart-legend">
+                <div class="legend-item"><div class="legend-dot elevation"></div> Dénivelé</div>
+                <div class="legend-item"><div class="legend-dot hr"></div> Cardio</div>
+              </div>
+            </div>
+            <canvas id="elevation-chart"></canvas>
+            <div style="font-size: 10px; color: var(--text-dim); text-align: center;">
+              Survolez le graphique pour explorer les points synchronisés sur la carte
+            </div>
+          </div>
+
+          <!-- Tableau des splits au km -->
+          <div class="splits-table-container">
+            <table class="splits-table">
+              <thead>
+                <tr>
+                  <th>Split</th>
+                  <th>Allure</th>
+                  <th>Temps</th>
+                  <th>FC Moy.</th>
+                </tr>
+              </thead>
+              <tbody id="table-splits-body">
+                <tr>
+                  <td colspan="4" class="text-center text-muted">Tracez un itinéraire pour voir les splits</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <!-- ========== ONGLET 3 : GUIDE & ASTUCES ========== -->
+        <div class="tab-pane" id="tab-guide">
+          
+          <div class="guide-step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-title">Tracez et téléchargez</div>
+              <div class="step-desc">Cliquez sur la carte pour définir votre parcours, réglez l'allure souhaitée puis cliquez sur <strong>Télécharger le Fichier GPX</strong>.</div>
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-title">Rendez-vous sur Strava</div>
+              <div class="step-desc">Ouvrez la page de téléversement officielle sur <a href="https://www.strava.com/upload/select" target="_blank" style="color: #fc5200; font-weight: 600;">strava.com/upload/select</a> depuis votre navigateur.</div>
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-title">Glissez le fichier GPX</div>
+              <div class="step-desc">Déposez le fichier <code>.gpx</code> obtenu. Strava reconnaîtra instantanément l'itinéraire, le chrono, la cadence, les pulsations et le dénivelé !</div>
+            </div>
+          </div>
+
+          <!-- Boîte conseils sécurité -->
+          <div class="tip-box">
+            <strong>💡 Conseils de discrétion & réalisme :</strong><br>
+            • Choisissez des allures cohérentes avec votre niveau physique habituel.<br>
+            • Variez vos heures de départ pour ne pas chevaucher d'autres activités.<br>
+            • Le mode "Negative Split" donne des courbes de course très naturelles appréciées sur Strava.
+          </div>
+
+          <div class="warning-box">
+            <strong>⚠️ Fair-play sportif :</strong><br>
+            Évitez de pulvériser les records de segments compétitifs (KOM / QOM) à des allures surhumaines pour éviter tout signalement (flag) par la communauté.
+          </div>
+
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- ===== PANNEAU CARTE (DROITE) ===== -->
+    <section class="map-container">
+      
+      <!-- Barre d'outils flottante -->
+      <div class="floating-map-toolbar">
+        
+        <!-- Recherche d'adresse -->
+        <div class="search-wrapper toolbar-group">
+          <span class="search-icon-pos">🔍</span>
+          <input type="text" id="search-input" class="search-input" placeholder="Chercher une ville, rue, parc...">
+          <div id="search-results" class="search-dropdown"></div>
+        </div>
+
+        <!-- Outils de tracé -->
+        <div class="toolbar-group">
+          <button class="btn-tool active" id="btn-snap-mode" title="Aimant automatique sur les sentiers et routes OpenStreetMap">
+            <span class="icon">🛣️</span> Suivi de route
+          </button>
+          <button class="btn-tool" id="btn-undo" title="Annuler le dernier point (Ctrl+Z)">
+            <span>↶</span>
+          </button>
+          <button class="btn-tool" id="btn-redo" title="Rétablir le point">
+            <span>↷</span>
+          </button>
+          <button class="btn-tool" id="btn-loop" title="Boucler automatiquement le parcours vers le départ">
+            <span>🔁</span> Boucler
+          </button>
+          <button class="btn-tool" id="btn-reverse" title="Inverser le sens de la course">
+            <span>⇄</span> Inverser
+          </button>
+          <button class="btn-tool" id="btn-fit" title="Recentrer la vue sur le tracé">
+            <span>🎯</span>
+          </button>
+          <button class="btn-tool danger" id="btn-clear" title="Tout effacer">
+            <span>🗑️</span>
+          </button>
+        </div>
+
+        <!-- Choix du fond de carte -->
+        <div class="toolbar-group">
+          <select id="select-map-layer" class="map-style-select">
+            <option value="Voyager (Clair)">🗺️ Voyager (Clair)</option>
+            <option value="Dark (Sombre)">🌙 Dark (Sombre)</option>
+            <option value="OpenStreetMap">🌐 OpenStreetMap</option>
+            <option value="Satellite">🛰️ Satellite (Esri)</option>
+            <option value="Topographique (Relief)">⛰️ Relief Topo</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Conteneur Leaflet -->
+      <div id="map"></div>
+
+      <!-- Message d'aide si aucun tracé -->
+      <div class="map-hint-overlay" id="map-hint">
+        <span>📍</span> Cliquez n'importe où sur la carte pour tracer votre course
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ==================== MODALE GUIDE STRAVA ==================== -->
+  <div class="modal-backdrop" id="modal-strava-guide">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🚀</span> Importer votre sortie sur Strava
+        </div>
+        <button class="btn-modal-close" id="btn-close-guide">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+          Votre fichier GPX a été conçu pour reproduire à la perfection l'enregistrement d'une montre de sport haut de gamme (Garmin / Coros / Apple Watch), avec des données horodatées seconde par seconde, des pulsations cardiaques évolutives et le dénivelé réel.
+        </p>
+
+        <div class="guide-step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">Accédez à Strava Web</div>
+            <div class="step-desc">Ouvrez la page de téléversement officiel de fichiers Strava.</div>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">Téléversez le fichier .GPX</div>
+            <div class="step-desc">Sélectionnez le fichier téléchargé depuis votre dossier Téléchargements.</div>
+          </div>
+        </div>
+
+        <div class="guide-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">Validez et profitez des Kudos ! 👍</div>
+            <div class="step-desc">Strava traite l'activité, calcule vos splits kilométriques, votre courbe de dénivelé et votre rythme cardiaque.</div>
+          </div>
+        </div>
+
+        <div class="tip-box">
+          <strong>🔒 Indétectable :</strong> Le fichier utilise les balises standards Garmin TrackPointExtension v1 et un bruit GPS sub-métrique empêchant toute identification comme tracé artificiel.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-header-action" onclick="document.getElementById('modal-strava-guide').classList.remove('active')">Fermer</button>
+        <a href="https://www.strava.com/upload/select" target="_blank" rel="noopener noreferrer" class="btn-strava-link">
+          Ouvrir Strava.com &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conteneur Toasts -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Scripts Application SitRun -->
+  <script src="js/simulator.js"></script>
+  <script src="js/gpx.js"></script>
+  <script src="js/routing.js"></script>
+  <script src="js/elevation.js"></script>
+  <script src="js/chart.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

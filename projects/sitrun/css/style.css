@@ -1,0 +1,1204 @@
+/* ==========================================================================
+   SitRun - Stylesheets Principaux (Modern Sports & Dark UI)
+   ========================================================================== */
+
+:root {
+  --bg-primary: #0b0f19;
+  --bg-secondary: #131b2e;
+  --bg-card: #1e293b;
+  --bg-card-hover: #27354f;
+  --border-color: #2b3952;
+  --border-focus: #fc5200;
+
+  --strava-orange: #fc5200;
+  --strava-orange-hover: #e04800;
+  --strava-orange-glow: rgba(252, 82, 0, 0.35);
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --accent-green: #10b981;
+  --accent-blue: #38bdf8;
+  --accent-pink: #ec4899;
+  --accent-red: #ef4444;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Layout Principal --- */
+.app-header {
+  height: 58px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 1000;
+  flex-shrink: 0;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #fc5200 0%, #ff833a 100%);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 8px var(--strava-orange-glow);
+}
+
+.brand-badge {
+  background-color: rgba(252, 82, 0, 0.15);
+  color: #ff8544;
+  border: 1px solid rgba(252, 82, 0, 0.35);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Sports Selector Buttons */
+.sport-selector {
+  display: flex;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 3px;
+}
+
+.sport-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.sport-btn:hover {
+  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.sport-btn.active {
+  background-color: var(--strava-orange);
+  color: #ffffff;
+  box-shadow: 0 2px 8px var(--strava-orange-glow);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-header-action {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-header-action:hover {
+  background-color: var(--bg-card-hover);
+  border-color: #475569;
+}
+
+/* --- App Body (Split View) --- */
+.app-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- Sidebar Gauche --- */
+.sidebar {
+  width: 440px;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+/* Sidebar Tabs Header */
+.sidebar-tabs {
+  display: flex;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 12px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: var(--text-main);
+}
+
+.tab-btn.active {
+  color: var(--strava-orange);
+  border-bottom-color: var(--strava-orange);
+  background-color: rgba(252, 82, 0, 0.05);
+}
+
+/* Sidebar Tab Panes */
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tab-pane {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tab-pane.active {
+  display: flex;
+}
+
+/* --- Cartes de statistiques --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.stat-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.2s ease;
+}
+
+.stat-card:hover {
+  border-color: #475569;
+}
+
+.stat-card.highlight {
+  border-color: rgba(252, 82, 0, 0.4);
+  background: linear-gradient(145deg, #1e293b 0%, rgba(252, 82, 0, 0.08) 100%);
+}
+
+.stat-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.stat-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* Mini stat strip (vitesse, calories, FC) */
+.stat-strip {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+}
+
+.stat-mini-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat-mini-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.stat-mini-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* --- Groupes de formulaires / Contrôles --- */
+.form-section {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus, .form-select:focus {
+  border-color: var(--strava-orange);
+}
+
+.date-time-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 8px;
+}
+
+.quick-time-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-quick-time {
+  flex: 1;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-quick-time:hover {
+  color: var(--text-main);
+  border-color: #475569;
+}
+
+/* Synchronisation Allure min/km & km/h */
+.pace-sync-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pace-inputs-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pace-min-sec-inputs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pace-num-input {
+  width: 52px;
+  text-align: center;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.pace-num-input:focus {
+  border-color: var(--strava-orange);
+}
+
+.pace-separator {
+  color: var(--text-dim);
+  font-weight: 800;
+}
+
+.speed-input-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.speed-num-input {
+  width: 60px;
+  text-align: center;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* Sliders modernes */
+.custom-range {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--border-color);
+  border-radius: var(--radius-full);
+  outline: none;
+}
+
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--strava-orange);
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: transform 0.1s;
+}
+
+.custom-range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* Custom Checkbox Toggle */
+.toggle-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-switch-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider-round {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #334155;
+  transition: .3s;
+  border-radius: 20px;
+}
+
+.slider-round:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider-round {
+  background-color: var(--strava-orange);
+}
+
+input:checked + .slider-round:before {
+  transform: translateX(18px);
+}
+
+/* --- Bouton d'export principal GPX --- */
+.btn-export-main {
+  background: linear-gradient(135deg, #fc5200 0%, #ff6e26 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 16px var(--strava-orange-glow);
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.btn-export-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(252, 82, 0, 0.5);
+  background: linear-gradient(135deg, #e04800 0%, #fc5200 100%);
+}
+
+.btn-export-main:active {
+  transform: translateY(0);
+}
+
+.export-subtext {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+/* --- Onglet 2 : Analyse & Splits --- */
+.chart-container {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legend-dot.elevation {
+  background-color: var(--strava-orange);
+}
+
+.legend-dot.hr {
+  background-color: var(--accent-pink);
+}
+
+#elevation-chart {
+  width: 100%;
+  height: 160px;
+  display: block;
+}
+
+/* Splits Table */
+.splits-table-container {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.splits-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.splits-table th {
+  background-color: var(--bg-primary);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.splits-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.splits-table tr:last-child td {
+  border-bottom: none;
+}
+
+.font-bold {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--text-dim);
+}
+
+/* --- Onglet 3 : Guide Strava --- */
+.guide-step {
+  display: flex;
+  gap: 12px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 12px;
+}
+
+.step-num {
+  width: 26px;
+  height: 26px;
+  background-color: var(--strava-orange);
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.step-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.step-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.tip-box {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 12px;
+  color: #6ee7b7;
+  line-height: 1.4;
+}
+
+.warning-box {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 12px;
+  color: #fca5a5;
+  line-height: 1.4;
+}
+
+/* --- Panneau Carte (Droite) --- */
+.map-container {
+  flex: 1;
+  position: relative;
+  height: 100%;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Barre d'outils flottante au-dessus de la carte */
+.floating-map-toolbar {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 999;
+  pointer-events: none;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+/* Recherche d'adresse flottante */
+.search-wrapper {
+  position: relative;
+  width: 280px;
+}
+
+.search-input {
+  width: 100%;
+  background-color: rgba(19, 27, 46, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 12px 8px 32px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  box-shadow: var(--shadow-md);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--strava-orange);
+  background-color: var(--bg-secondary);
+}
+
+.search-icon-pos {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  max-height: 220px;
+  overflow-y: auto;
+  display: none;
+  z-index: 1000;
+}
+
+.search-item {
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-main);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.search-item:hover {
+  background-color: var(--bg-card-hover);
+  color: var(--strava-orange);
+}
+
+/* Boutons d'outils flottants */
+.btn-tool {
+  background-color: rgba(19, 27, 46, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s;
+}
+
+.btn-tool:hover {
+  background-color: var(--bg-card-hover);
+  border-color: #475569;
+}
+
+.btn-tool.active {
+  background-color: var(--strava-orange);
+  color: #ffffff;
+  border-color: var(--strava-orange);
+}
+
+.btn-tool.danger:hover {
+  background-color: var(--accent-red);
+  color: #ffffff;
+  border-color: var(--accent-red);
+}
+
+/* Sélecteur de style de carte */
+.map-style-select {
+  background-color: rgba(19, 27, 46, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 10px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  outline: none;
+  cursor: pointer;
+}
+
+/* Bannière d'aide discrète sur la carte si 0 point */
+.map-hint-overlay {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(19, 27, 46, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: pulse-hint 2s infinite ease-in-out;
+}
+
+@keyframes pulse-hint {
+  0%, 100% { opacity: 0.9; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.02); }
+}
+
+/* --- Marqueurs Personnalisés Leaflet --- */
+.sitrun-marker-start .start-badge {
+  background: #10b981;
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.5);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sitrun-marker-end .end-badge {
+  background: #fc5200;
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 10px rgba(252, 82, 0, 0.5);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sitrun-control-point .control-dot {
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  color: #0f172a;
+  border: 2px solid #fc5200;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  cursor: grab;
+  transition: transform 0.15s;
+}
+
+.sitrun-control-point .control-dot:hover {
+  transform: scale(1.3);
+  background: #fc5200;
+  color: #ffffff;
+}
+
+/* Badges kilométriques (1 km, 2 km...) */
+.sitrun-km-badge .km-bubble {
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  color: #fc5200;
+  border: 2px solid #fc5200;
+  border-radius: 50%;
+  font-family: var(--font-family);
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Curseur de survol synchronisé */
+.hover-pulse-marker {
+  position: relative;
+}
+
+.hover-pulse-marker .pulse-ring {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(252, 82, 0, 0.3);
+  animation: pulse-ring-anim 1.4s infinite;
+}
+
+.hover-pulse-marker .pulse-dot {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fc5200;
+  border: 2px solid #ffffff;
+}
+
+@keyframes pulse-ring-anim {
+  0% { transform: scale(0.6); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* --- Modale Strava Guide --- */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+}
+
+.modal-backdrop.active {
+  display: flex;
+}
+
+.modal-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  animation: modal-in 0.25s ease-out;
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-footer {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-strava-link {
+  background-color: var(--strava-orange);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --- Notifications Toast --- */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 3000;
+  pointer-events: none;
+}
+
+.toast-bubble {
+  background-color: rgba(19, 27, 46, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(252, 82, 0, 0.4);
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.toast-bubble.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 900px) {
+  .app-main {
+    flex-direction: column-reverse;
+  }
+  .sidebar {
+    width: 100%;
+    height: 50vh;
+  }
+  .map-container {
+    height: 50vh;
+  }
+  .floating-map-toolbar {
+    flex-wrap: wrap;
+  }
+  .search-wrapper {
+    width: 100%;
+  }
+}
+
+.app-header { gap: .75rem; }
+.sidebar-tabs { gap: .25rem; }
+.sidebar-tabs button { min-height: 44px; }
+.sidebar :where(button, input, select):focus-visible { outline: 2px solid #7bc9f5; outline-offset: 2px; }
+@media (max-width: 900px) {
+  .app-main { min-height: 0; }
+  .sidebar { min-height: 0; }
+  .sidebar-tabs { overflow-x: auto; }
+  .sidebar-tabs button { flex: 1 0 max-content; }
+}
+
+@media screen {
+  :root { --interface-accent: #187552; --interface-edge: color-mix(in srgb, var(--interface-accent) 58%, currentColor 42%); }
+  :where(h1, h2, h3) { text-wrap: balance; }
+  :where(button, input, select, textarea, a):focus-visible { outline: 2px solid var(--interface-edge); outline-offset: 3px; }
+  :where(.app-header) { box-shadow: inset 0 2px 0 var(--interface-edge); }
+  :where(.app-header) :where(h1), h1:where(.app-header) { letter-spacing: -.035em; line-height: 1.12; }
+  :where(.app-main > aside) { border-color: color-mix(in srgb, var(--interface-accent) 45%, transparent); }
+  :where(input[type="checkbox"], input[type="radio"], input[type="range"]) { accent-color: var(--interface-accent); }
+  ::selection { background: var(--interface-accent); color: white; }
+}
+
+@media screen {
+  .app-header h1 { letter-spacing: -.035em; }
+  .app-main :is(button, input, select):focus-visible { outline-color: #368e68; }
+}
