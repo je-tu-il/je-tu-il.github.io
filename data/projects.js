@@ -279,8 +279,8 @@ window.PROJECTS_DATA = [
     "category": "games",
     "categoryLabel": "Web, Jeux & Démos",
     "status": "Live Demo",
-    "isRunnable": false,
-    "runnableUrl": "",
+    "isRunnable": true,
+    "runnableUrl": "projects/sitrun/index.html",
     "githubUrl": "https://github.com/je-tu-il/SitRun",
     "techStack": [
       "Vue.js / React",
@@ -1812,8 +1812,8 @@ window.PROJECTS_DATA = [
     "category": "desktop",
     "categoryLabel": "Applications Desktop",
     "status": "Production",
-    "isRunnable": false,
-    "runnableUrl": "",
+    "isRunnable": true,
+    "runnableUrl": "projects/unfollowspy/index.html",
     "githubUrl": "https://github.com/je-tu-il/UnfollowSpy",
     "techStack": [
       "Python 3.12",
@@ -3687,8 +3687,8 @@ window.PROJECTS_DATA = [
     "category": "web",
     "categoryLabel": "Applications Web & Outils",
     "status": "Production",
-    "isRunnable": false,
-    "runnableUrl": "",
+    "isRunnable": true,
+    "runnableUrl": "projects/game-db/index.html",
     "githubUrl": "https://github.com/je-tu-il/Game-DB",
     "techStack": [
       "Python",
