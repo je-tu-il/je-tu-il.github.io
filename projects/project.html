@@ -6,12 +6,14 @@
   <title>Fiche projet | Je-tu-il</title>
   <link rel="icon" href="../favicon.svg">
   <link rel="stylesheet" href="../catalogue.css?v=atelier-2">
-  <link rel="stylesheet" href="demo.css?v=atelier-2">
+  <link rel="stylesheet" href="demo.css?v=atelier-3">
   <script defer src="../assets/portfolio-back.js?v=atelier-2"></script>
   <script defer src="../data/projects.js"></script>
   <script defer src="../data/readmes.js"></script>
   <script defer src="../data/markdown-renderer.js"></script>
-  <script defer src="project.js"></script>
+  <script defer src="workflows.js"></script>
+  <script defer src="interactive-demos.js?v=atelier-3"></script>
+  <script defer src="project.js?v=atelier-3"></script>
 </head>
 <body>
   <a data-portfolio-back href="../index.html#catalogue" class="btn-back-portfolio" aria-label="Retour au portfolio" title="Retour au portfolio">←</a>
@@ -31,7 +33,8 @@
         </section>
         <aside class="inner-panel">
           <h2>Accès au projet</h2>
-          <a id="liveDemoBtn" class="project-launch"></a>
+          <a id="liveDemoBtn" class="project-launch" hidden></a>
+          <p id="guidedDemo" hidden><a id="guidedDemoLink">Essayer le parcours interactif</a></p>
           <div class="project-resources">
             <a id="downloadZipBtn" hidden>ZIP</a>
             <a id="githubBtn" hidden>GitHub</a>

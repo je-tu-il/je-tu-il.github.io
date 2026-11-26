@@ -8,87 +8,119 @@ const root = path.join(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 const windowData = {};
 vm.runInNewContext(read('data/projects.js'), {window: windowData});
-vm.runInNewContext(read('data/demo-scenes.js'), {window: windowData});
 const projects = windowData.PROJECTS_DATA;
 const code = new vm.Script(read('projects/demo.js'));
 
-function openDemo(id) {
-  const nodes = new Map();
-  const create = () => ({
-    hidden: true,
-    children: [],
-    events: {},
-    focus() {},
-    append(child) { this.children.push(child); },
+function element(tag) {
+  return {
+    tag, children: [], events: {}, hidden: true, value: '', rows: [], cells: [], style: {},
     addEventListener(name, listener) { this.events[name] = listener; },
-  });
-  function get(name) {
-    if (!nodes.has(name)) nodes.set(name, create());
-    return nodes.get(name);
-  }
-  code.runInNewContext({
-    window: {...windowData, location: {search: '?id=' + encodeURIComponent(id)}},
-    document: {getElementById: get, createElement: create},
-    URLSearchParams,
-  });
-  return get;
+    setAttribute() {},
+    removeAttribute() {},
+    append(...children) { this.children.push(...children); },
+    replaceChildren(...children) { this.children = children; },
+    load() {},
+    getContext() { return {fillRect() {}, clearRect() {}}; },
+    querySelector(selector) { return this.children.flatMap(child => child.children).find(child => child.tag === selector); },
+    add(option) { if (!this.value) this.value = option.value; },
+    createTHead() { const head = element('thead'); this.append(head); return head; },
+    createTBody() { const body = element('tbody'); this.append(body); return body; },
+    insertRow() { const row = element('tr'); this.rows.push(row); return row; },
+    insertCell() { const cell = element('td'); this.cells.push(cell); return cell; },
+  };
 }
 
-test('the static catalogue and scenario catalogue cover the same 128 projects', () => {
+function openDemo(id) {
+  const nodes = new Map();
+  const get = name => {
+    if (!nodes.has(name)) nodes.set(name, element(name));
+    return nodes.get(name);
+  };
+  const href = 'https://portfolio.test/projects/demo.html?id=' + encodeURIComponent(id);
+  const location = new URL(href);
+  let redirected;
+  location.replace = target => { redirected = target; };
+  const document = {getElementById: get, createElement: element};
+  const window = {...windowData, location, setInterval() {}, crypto: require('node:crypto').webcrypto};
+  const context = vm.createContext({window, document, URL, URLSearchParams, TextEncoder, TextDecoder, Option: function Option(text, value) { this.text = text; this.value = value; }});
+  for (const script of ['projects/workflows.js', 'projects/interactive-demos.js']) vm.runInContext(read(script), context);
+  code.runInContext(context);
+  return {get, window, redirected};
+}
+
+test('the static and JSON catalogues contain the same 128 projects', () => {
   const json = require('../data/projects.json');
-  const ids = projects.map(project => project.id);
-  assert.equal(ids.length, 128);
-  assert.equal(new Set(ids).size, 128);
+  assert.equal(projects.length, 128);
+  assert.equal(new Set(projects.map(project => project.id)).size, projects.length);
   assert.deepEqual(JSON.parse(JSON.stringify(projects)), json);
-  assert.deepEqual(Object.keys(windowData.PORTFOLIO_DEMOS).sort(), Array.from(ids).sort());
-  assert.ok(ids.includes('wavedrop') && ids.includes('chatverdict'));
 });
 
-test('every project opens, runs a distinct scenario, resets, and links to existing pages', () => {
-  const outputs = new Set();
+test('each project exposes an interactive workflow, real web entry or an explicit pending state', () => {
   for (const project of projects) {
-    const get = openDemo(project.id);
-    const run = get('run');
-    const result = get('result');
-    const controls = get('controls');
-    assert.equal(get('scenario').hidden, false, project.id);
+    const {get, window, redirected} = openDemo(project.id);
     assert.equal(get('title').textContent, project.title);
-    const expected = windowData.PORTFOLIO_DEMOS[project.id];
-    assert.equal(run.textContent, expected.action);
-    for (const field of get('inputs').children) {
-      const input = field.children[0];
-      input.value = input.defaultValue;
-      input.valueAsNumber = Number(input.defaultValue);
+    const hasWorkflow = Boolean(window.PROJECT_DEMOS[project.id] || window.PORTFOLIO_WORKFLOWS[project.id]);
+    assert.equal(get('workflow').hidden, !hasWorkflow, project.id);
+    assert.equal(get('demoPending').hidden, Boolean(hasWorkflow || project.runnableUrl), project.id);
+    if (project.runnableUrl) {
+      const url = new URL(redirected || get('demoLive').href);
+      assert.equal(url.searchParams.get('utm_source'), 'portfolio');
+    } else if (!hasWorkflow) {
+      assert.equal(get('demoSheet').href, 'project.html?id=' + project.id);
     }
-    controls.events.submit({preventDefault() {}});
-    assert.ok(result.textContent && result.textContent !== 'Prêt à démarrer.', project.id);
-    outputs.add(result.textContent);
-    controls.events.reset();
-    assert.equal(result.textContent, 'Prêt à démarrer.');
-    assert.equal(run.textContent, expected.action);
   }
-  assert.equal(outputs.size, 128);
+  const {window} = openDemo('ddd-hugo-decrypte');
+  for (const id of Object.keys(window.PROJECT_DEMOS)) assert.ok(projects.some(project => project.id === id), id);
 });
 
 test('an unknown demo offers a return to the catalogue', () => {
-  const get = openDemo('__proto__');
-  assert.equal(get('scenario').hidden, true);
+  const {get} = openDemo('__proto__');
+  assert.equal(get('workflow').hidden, true);
   assert.equal(get('unavailable').hidden, false);
   assert.match(read('projects/demo.html'), /href="\.\.\/index\.html#catalogue"/);
 });
 
-test('NousDeux reveals both answers only after the second response', () => {
-  const get = openDemo('nousdeux-application-mobile-couple-intimit');
-  const submit = () => get('controls').events.submit({preventDefault() {}});
-  submit();
-  assert.match(get('run').textContent, /Alex/);
-  assert.doesNotMatch(get('result').textContent, /pique-nique/);
-  submit();
-  assert.match(get('result').textContent, /Camille.+Alex/);
-  assert.equal(get('run').disabled, true);
-  get('controls').events.reset();
-  assert.equal(get('run').disabled, false);
+test('NousDeux reveals live input only after both responses', () => {
+  const {get} = openDemo('nousdeux-application-mobile-couple-intimit');
+  const [, , controls, result] = get('workflow').children[0].children;
+  const [field, submit, reset] = controls.children;
+  const [input] = field.children;
+  input.value = 'Un pique-nique';
+  submit.events.click();
+  assert.match(submit.textContent, /Alex/);
+  assert.equal(result.children.length, 0);
+  input.value = 'Le bal';
+  submit.events.click();
+  const [table] = result.children;
+  const tableRows = table.children[1].children;
+  assert.equal(tableRows[0].children[1].textContent, 'Un pique-nique');
+  assert.equal(tableRows[1].children[1].textContent, 'Le bal');
+  reset.events.click();
+  assert.equal(submit.disabled, false);
 });
+
+test('IndexCite strips only the expected markers from visitor input', () => {
+  const {get} = openDemo('indexcite-nettoyeur-de-citations-ia-pour-obsidian');
+  const [, , controls, result, status] = get('workflow').children[0].children;
+  const [field, submit] = controls.children;
+  field.children[0].value = 'Un [lien](doc.md) [cite_search: 8]. Valeurs [0, 1].';
+  submit.events.click();
+  assert.equal(result.children[0].children[0].value, 'Un [lien](doc.md). Valeurs [0, 1].');
+  assert.match(status.textContent, /^1 /);
+});
+
+test('the December demo accumulates and removes sessions on the selected day', () => {
+  const {get} = openDemo('ddd-hugo-decrypte');
+  const [, , controls, , status] = get('workflow').children[0].children;
+  const [field, add, remove] = controls.children;
+  field.children[0].value = '31';
+  add.events.click();
+  add.events.click();
+  assert.match(status.textContent, /^2 sur 31 .*2 sur 496/);
+  remove.events.click();
+  assert.match(status.textContent, /^1 sur 31 .*1 sur 496/);
+});
+
 
 test('catalogue launches each web version directly and serves its entry assets', () => {
   const context = {URL, document: {baseURI: "https://portfolio.test/", getElementById() {}}, window: {}};
@@ -154,4 +186,24 @@ test('workflow state changes with the controls and can be reset', () => {
   assert.doesNotMatch(status.textContent, /remporte/);
   controls.children[0].events.click();
   assert.match(status.textContent, /remporte la manche/);
+});
+
+test('the PassApp demo encrypts the vault and requires the correct phrase to show the entry', async () => {
+  const {get} = openDemo('passapp-coffre-fort-d-centralis-local-first');
+  const [, , controls, result, status] = get('workflow').children[0].children;
+  const [phrase, , secret, add, lock, unlock] = controls.children;
+  phrase.children[0].value = 'phrase pour le test';
+  secret.children[0].value = 'secret fictif';
+  add.events.click();
+  const values = () => result.children[0].children[1].children.map(row => row.children[1].textContent);
+  assert.deepEqual(values(), ['secret fictif']);
+  await lock.events.click();
+  assert.deepEqual(values(), []);
+  phrase.children[0].value = 'phrase erronée';
+  await unlock.events.click();
+  assert.match(status.textContent, /incorrecte/);
+  assert.deepEqual(values(), []);
+  phrase.children[0].value = 'phrase pour le test';
+  await unlock.events.click();
+  assert.deepEqual(values(), ['secret fictif']);
 });

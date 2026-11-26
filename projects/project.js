@@ -26,6 +26,12 @@
     ? new URL(project.runnableUrl, new URL('../', location.href))
     : new URL('demo.html?id=' + encodeURIComponent(project.id), location.href);
   if (project.runnableUrl) launch.searchParams.set('utm_source', 'portfolio');
+  const guided = window.PORTFOLIO_WORKFLOWS?.[project.id] || window.PROJECT_DEMOS?.[project.id];
+  primary.hidden = !(project.runnableUrl || guided);
+  if (project.runnableUrl && guided) {
+    get('guidedDemoLink').href = 'demo.html?id=' + encodeURIComponent(project.id);
+    get('guidedDemo').hidden = false;
+  }
   primary.href = launch.href;
   primary.textContent = project.runnableUrl ? 'Ouvrir sur le web ↗' : 'Voir la démo →';
   for (const [id, href] of [['githubBtn', project.githubUrl], ['downloadZipBtn', project.downloadUrl]]) {
@@ -42,4 +48,3 @@
   }
   get('projectSheet').hidden = false;
 })();
-

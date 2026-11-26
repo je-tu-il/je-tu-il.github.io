@@ -6,11 +6,11 @@
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>Démo | Je-tu-il</title>
   <link rel="stylesheet" href="../catalogue.css?v=atelier-2">
-  <link rel="stylesheet" href="demo.css?v=atelier-2">
+  <link rel="stylesheet" href="demo.css?v=atelier-3">
   <script defer src="../data/projects.js"></script>
-  <script defer src="../data/demo-scenes.js"></script>
   <script defer src="workflows.js"></script>
-  <script defer src="demo.js?v=atelier-2"></script>
+  <script defer src="interactive-demos.js?v=atelier-3"></script>
+  <script defer src="demo.js?v=atelier-3"></script>
   <script defer src="../assets/portfolio-back.js?v=atelier-2"></script>
 </head>
 <body class="fullscreen-demo">
@@ -21,16 +21,10 @@
       <p id="description"></p>
     </header>
     <div id="workflow" hidden></div>
-    <section id="scenario" hidden aria-labelledby="scenario-title">
-      <h2 id="scenario-title">Exemple guidé</h2>
-      <form id="controls">
-        <div id="inputs"></div>
-        <div class="actions">
-          <button id="run" type="submit"></button>
-          <button id="reset" type="reset">Recommencer</button>
-        </div>
-      </form>
-      <p id="result" role="status" aria-atomic="true"></p>
+    <a id="demoLive" class="project-launch demo-live" hidden>Ouvrir l’application →</a>
+    <section id="demoPending" class="inner-panel" hidden>
+      <p>La démonstration interactive de ce projet est en préparation.</p>
+      <a id="demoSheet">Consulter la fiche du projet</a>
     </section>
     <p id="unavailable" hidden>Cette démo est introuvable.</p>
     <noscript>Activez JavaScript pour lancer la démo.</noscript>

@@ -47,13 +47,16 @@ function createProject(project) {
   description.textContent = project.tagline;
   const actions = document.createElement('div');
   actions.className = 'project-actions';
-  const primary = link(project.runnableUrl ? 'Ouvrir sur le web ↗' : 'Voir la démo →', launchUrl(project), 'project-launch');
+  const hasDemo = window.PORTFOLIO_WORKFLOWS?.[project.id] || window.PROJECT_DEMOS?.[project.id];
+  const label = project.runnableUrl ? 'Ouvrir sur le web ↗' : hasDemo ? 'Voir la démo →' : 'Voir le projet →';
+  const sheet = 'projects/project.html?id=' + encodeURIComponent(project.id);
+  const primary = link(label, project.runnableUrl || hasDemo ? launchUrl(project) : sheet, 'project-launch');
   primary.setAttribute('aria-label', primary.textContent + ' · ' + project.title);
   const resources = document.createElement('div');
   resources.className = 'project-resources';
   if (project.downloadUrl) resources.append(link('ZIP', project.downloadUrl));
   if (project.githubUrl) resources.append(link('GitHub', project.githubUrl));
-  resources.append(link('Fiche', 'projects/project.html?id=' + encodeURIComponent(project.id)));
+  if (project.runnableUrl || hasDemo) resources.append(link('Fiche', sheet));
   for (const resource of resources.children) {
     resource.setAttribute('aria-label', resource.textContent + ' · ' + project.title);
   }
