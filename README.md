@@ -1,7 +1,7 @@
 # 🌐 je-tu-il.github.io — Portfolio & Hub Officiel
 
 > **Site vitrine officiel de Jules R. (Je-tu-il) hébergé sur GitHub Pages : [https://je-tu-il.github.io](https://je-tu-il.github.io)**  
-> Hub interactif regroupant **35+ projets** personnels : démos jouables en direct dans le navigateur, ingénierie système bas niveau, applications mobiles iOS, cryptographie et IA générative.
+> Catalogue de projets personnels, avec applications web, démonstrations et fiches.
 
 ---
 
@@ -23,8 +23,7 @@
   * **[Portfolio Graphisme](projects/design-gallery/index.html)** : Galerie d'illustrations vectorielles (Champibad, La Danse des Œufs).
   * **[Fav Hub](projects/fav-hub/index.html)** : Annuaire instantané de ressources web.
   * **[CvModule](projects/cv-module/index.html)** : Éditeur modulaire de CV.
-* **🔍 Command Palette Universelle (`Ctrl + K` / `⌘ + K`)** :
-  * Recherche instantanée parmi les 39 projets avec navigation au clavier et lancement direct.
+* **Recherche par titre, mot-clé et technologie** avec filtres par catégorie.
 * **🏷️ Filtrage Multi-Catégories** :
   * Jeux & Émulateurs, Cybersécurité & Crypto, Web & IA, Mobile iOS, Système & Outils, 3D & Matériel, Concepts.
 * **📑 Fiches Techniques Exhaustives (`projects/project.html?id=...`)** :

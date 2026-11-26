@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Je-tu-il | Portfolio Développeur & Hub de Projets</title>
+  <title>Je-tu-il — Index des projets</title>
   <meta name="description" content="Portfolio officiel de Jules R. (Je-tu-il) : applications web, cybersécurité, portages calculatrice TI-84, mobile iOS, outils bas niveau et intelligence artificielle.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="canonical" href="https://je-tu-il.github.io/">
-  <meta property="og:title" content="Je-tu-il | Portfolio Développeur & Hub de Projets">
+  <meta property="og:title" content="Je-tu-il — Index des projets">
   <meta property="og:description" content="Explorez les applications iOS/Android, outils desktop, jeux web, projets 3D et solutions d'ingénierie logicielle de Je-tu-il.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://je-tu-il.github.io/">
@@ -28,147 +28,32 @@
     }
   }
   </script>
-<link rel="stylesheet" href="assets/fonts/fonts.css">
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="catalogue.css">
 </head>
 <body>
-  <!-- Ambient Grid Background -->
-  <div class="bg-grid"></div>
-
-  <!-- Navigation Bar -->
-  <header class="navbar">
-    <div class="container nav-container">
-      <a href="index.html" class="brand-link">
-        <img src="favicon.svg" alt="Logo Je-tu-il" class="brand-avatar" width="40" height="40" style="padding:0;background:transparent;">
-        <div class="brand-text">
-          <h2>Je-tu-il</h2>
-          <p>github.io/portfolio</p>
-        </div>
-      </a>
-
-      <div class="nav-actions">
-        <button class="btn-command-palette-trigger" onclick="openPalette()">
-          <span>🔍 Rechercher un projet</span>
-          <kbd>Ctrl K</kbd>
-        </button>
-
-        <a href="https://github.com/je-tu-il" target="_blank" rel="noopener noreferrer" class="nav-link">
-          <span>GitHub</span>
-          <span style="font-size:12px;">↗</span>
-        </a>
-      </div>
-    </div>
+  <header class="masthead page">
+    <a href="./" rel="home">Je-tu-il</a>
+    <a href="https://github.com/je-tu-il">GitHub ↗</a>
   </header>
-
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="container">
-      <div class="hero-badge">
-        <span>Portfolio de projets</span>
-      </div>
-
-      <h1 class="hero-title">
-        Ingénierie Logicielle,<br>Systèmes & Créativité
-      </h1>
-
-      <p class="hero-subtitle">
-        Explorez <strong><span data-project-total>127</span> projets</strong> et essayez leurs démos dans votre navigateur.
-      </p>
-
-      <!-- Stats Grid -->
-      <div class="stats-grid">
-        <div class="stat-box">
-          <div class="stat-number" data-project-total>127</div>
-          <div class="stat-label">Projets Répertoriés</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number" data-project-total>127</div>
-          <div class="stat-label">Démos en Ligne</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">8</div>
-          <div class="stat-label">Pôles d'Expertise</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number">100%</div>
-          <div class="stat-label">Local-First & Libre</div>
-        </div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="hero-buttons">
-        <button class="btn-hero-primary" onclick="setCategory('all', document.querySelector('.cat-pill[data-cat=all]')); document.getElementById('catalogue').scrollIntoView({behavior:'smooth'});">
-          <span>Explorer les démos</span>
-        </button>
-        <button class="btn-hero-secondary" onclick="openPalette()">
-          <span>⚡ Command Palette (Ctrl+K)</span>
-        </button>
-        <button class="btn-hero-secondary" id="copyLcSourceBtn" onclick="navigator.clipboard?.writeText('https://je-tu-il.github.io/apps.json'); this.innerText='✓ Lien Source copié !'; setTimeout(() => this.innerText='📱 Source LiveContainer (iOS)', 2200);">
-          <span>📱 Source LiveContainer (iOS)</span>
-        </button>
-      </div>
+  <main class="page" id="catalogue">
+    <div class="cover">
+      <h1>Index des<br>projets<span>.</span></h1>
+      <p><strong data-project-total></strong> projets</p>
     </div>
-  </section>
-
-  <!-- Controls Section (Search & Filter Pills) -->
-  <section class="controls-section" id="catalogue">
-    <div class="container">
-      <div class="search-input-wrapper">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="mainSearchInput" placeholder="Rechercher par mot-clé, technologie (React, Three.js, Swift, Rust, Python, C++)...">
-      </div>
-
-      <div class="category-pills">
-        <button class="cat-pill active" data-cat="all" onclick="setCategory('all', this)">🌟 Tous (<span data-count-category="all">127</span>)</button>
-        <button class="cat-pill" data-cat="runnable" onclick="setCategory('runnable', this)">✨ Versions web (<span data-count-category="runnable">13</span>)</button>
-        <button class="cat-pill" data-cat="desktop" onclick="setCategory('desktop', this)">🖥️ Desktop (<span data-count-category="desktop">16</span>)</button>
-        <button class="cat-pill" data-cat="mobile" onclick="setCategory('mobile', this)">📱 Mobile (<span data-count-category="mobile">13</span>)</button>
-        <button class="cat-pill" data-cat="games" onclick="setCategory('games', this)">🎮 Web & Jeux (<span data-count-category="games">20</span>)</button>
-        <button class="cat-pill" data-cat="3d-hardware" onclick="setCategory('3d-hardware', this)">🏢 Entreprise & 3D (<span data-count-category="3d-hardware">20</span>)</button>
-        <button class="cat-pill" data-cat="hardware" onclick="setCategory('hardware', this)">⚡ Hardware & Calcs (<span data-count-category="hardware">13</span>)</button>
-        <button class="cat-pill" data-cat="security" onclick="setCategory('security', this)">🛡️ Sécurité & Scripts (<span data-count-category="security">13</span>)</button>
-        <button class="cat-pill" data-cat="docs" onclick="setCategory('docs', this)">📚 Documentation (<span data-count-category="docs">7</span>)</button>
-        <button class="cat-pill" data-cat="concepts" onclick="setCategory('concepts', this)">🧪 Laboratoire & R&D (<span data-count-category="concepts">15</span>)</button>
-      </div>
-
-      <div class="count-indicator" id="countDisplay">
-        Chargement des projets...
-      </div>
+    <div class="catalogue-tools">
+      <label for="mainSearchInput">Rechercher un projet</label>
+      <input type="search" id="mainSearchInput" placeholder="Nom, mot-clé ou technologie" autocomplete="off">
+      <nav id="categoryTabs" aria-label="Catégories"></nav>
     </div>
-  </section>
-
-  <!-- Projects Grid Section -->
-  <main class="container">
-    <div class="projects-grid" id="projectsGrid"></div>
+    <p id="countDisplay" role="status" class="search-status"></p>
+    <div id="projectsGrid"></div>
+    <noscript>Activez JavaScript pour parcourir le catalogue.</noscript>
   </main>
-
-  <!-- Command Palette Modal (Raycast/Spotlight Style) -->
-  <div id="commandPalette" onclick="closePalette(event)">
-    <div class="palette-box">
-      <div class="palette-search-row">
-        <span>🔍</span>
-        <input type="text" id="paletteInput" placeholder="Rechercher un projet, un jeu, un outil..." autocomplete="off">
-      </div>
-      <div class="palette-results" id="paletteResults"></div>
-      <div class="palette-footer">
-        <div><kbd>↑</kbd> <kbd>↓</kbd> Naviguer • <kbd>↵</kbd> Ouvrir • <kbd>Esc</kbd> Fermer</div>
-        <div>Inspiré de Launcher App</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p style="margin-bottom:8px;">Portfolio et vitrine conçus pour <a href="https://je-tu-il.github.io">je-tu-il.github.io</a></p>
-      <p style="font-size:12px; color:var(--text-dim);">
-        Polices auto-hébergées localement (zéro fuite IP) • Aucun cookie publicitaire ni traceur •
-        <a href="mentions-legales.html" style="color:var(--accent-cyan);text-decoration:underline;">Mentions légales &amp; RGPD</a>
-      </p>
-    </div>
+  <footer class="page">
+    <a href="apps.json">Source LiveContainer</a>
+    <a href="mentions-legales.html">Mentions légales</a>
   </footer>
-
-  <script src="data/projects.js"></script>
-  <script src="main.js"></script>
+  <script src="data/projects.js" defer></script>
+  <script src="main.js" defer></script>
 </body>
 </html>

@@ -1,292 +1,136 @@
-/**
- * Portfolio Je-tu-il (https://je-tu-il.github.io)
- * Moteur JavaScript : Catalogue dynamique, filtrage instantané, Command Palette Raycast
- */
+const categories = new Map([
+  ['desktop', ['Applications desktop', '#a14630']],
+  ['mobile', ['Applications mobiles', '#386441']],
+  ['games', ['Web et jeux', '#315e79']],
+  ['web', ['Applications web', '#3d6265']],
+  ['3d-hardware', ['Entreprise et 3D', '#914e26']],
+  ['hardware', ['Électronique et calculatrices', '#565482']],
+  ['security', ['Sécurité et scripts', '#545c31']],
+  ['docs', ['Documentation', '#7d465e']],
+  ['concepts', ['Laboratoire et R&D', '#5d5146']],
+]);
 
-let allProjects = [];
-let activeCategory = 'all';
-let searchQuery = '';
-let paletteSelectedIndex = 0;
-let paletteFilteredList = [];
-
-// DOM Elements
-const gridContainer = document.getElementById('projectsGrid');
-const searchInput = document.getElementById('mainSearchInput');
-const countDisplay = document.getElementById('countDisplay');
-const paletteModal = document.getElementById('commandPalette');
-const paletteInput = document.getElementById('paletteInput');
-const paletteResults = document.getElementById('paletteResults');
+const grid = document.getElementById('projectsGrid');
+const search = document.getElementById('mainSearchInput');
+const status = document.getElementById('countDisplay');
+const tabs = document.getElementById('categoryTabs');
+const projects = window.PROJECTS_DATA || [];
 
 function demoUrl(project) {
-  return project.runnableUrl || "projects/demo.html?id=" + encodeURIComponent(project.id);
+  return project.runnableUrl || 'projects/demo.html?id=' + encodeURIComponent(project.id);
 }
 
-// Initialize
-async function initPortfolio() {
-  try {
-    if (window.PROJECTS_DATA && Array.isArray(window.PROJECTS_DATA)) {
-      allProjects = window.PROJECTS_DATA;
-    } else {
-      const res = await fetch('data/projects.json');
-      if (!res.ok) throw new Error("Erreur de chargement des données");
-      allProjects = await res.json();
-    }
-    updateCatalogueCounts();
-    renderProjects();
-    setupCommandPalette();
-    setupKeyboardShortcuts();
-  } catch (err) {
-    console.error("Échec chargement projects.json :", err);
-    if (gridContainer) {
-      gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #ef4444;">Impossible de charger les projets. Veuillez rafraîchir la page.</div>';
-    }
-  }
+function plainText(value) {
+  return String(value || '').normalize('NFD').replace(/\p{Mark}/gu, '').toLowerCase();
 }
 
-function updateCatalogueCounts() {
-  for (const node of document.querySelectorAll('[data-project-total]')) {
-    node.textContent = allProjects.length;
-  }
-  for (const node of document.querySelectorAll('[data-count-category]')) {
-    const category = node.dataset.countCategory;
-    node.textContent = allProjects.filter(project => category === 'all' ||
-      (category === 'runnable' ? project.isRunnable : project.category === category)).length;
-  }
+function launchUrl(project) {
+  const url = new URL(demoUrl(project), document.baseURI);
+  if (project.runnableUrl) url.searchParams.set('utm_source', 'portfolio');
+  return url.href;
 }
 
-// Filter and Render Projects
-function renderProjects() {
-  if (!gridContainer) return;
+function link(label, href, className) {
+  const anchor = document.createElement('a');
+  anchor.textContent = label;
+  anchor.href = href;
+  if (className) anchor.className = className;
+  return anchor;
+}
 
-  const q = searchQuery.toLowerCase().trim();
+function createProject(project) {
+  const card = document.createElement('article');
+  card.className = 'project';
+  const title = document.createElement('h3');
+  title.textContent = project.title;
+  const description = document.createElement('p');
+  description.textContent = project.tagline;
+  const actions = document.createElement('div');
+  actions.className = 'project-actions';
+  const primary = link(project.runnableUrl ? 'Ouvrir sur le web ↗' : 'Voir la démo →', launchUrl(project), 'project-launch');
+  primary.setAttribute('aria-label', primary.textContent + ' · ' + project.title);
+  const resources = document.createElement('div');
+  resources.className = 'project-resources';
+  if (project.downloadUrl) resources.append(link('ZIP', project.downloadUrl));
+  if (project.githubUrl) resources.append(link('GitHub', project.githubUrl));
+  resources.append(link('Fiche', 'projects/project.html?id=' + encodeURIComponent(project.id)));
+  for (const resource of resources.children) {
+    resource.setAttribute('aria-label', resource.textContent + ' · ' + project.title);
+  }
+  actions.append(primary, resources);
+  card.append(title, description, actions);
+  return card;
+}
 
-  const filtered = allProjects.filter(p => {
-    // Category Filter
-    if (activeCategory === 'runnable' && !p.isRunnable) return false;
-    if (activeCategory !== 'all' && activeCategory !== 'runnable' && p.category !== activeCategory) return false;
+function initCatalogue() {
+  const total = document.querySelector('[data-project-total]');
+  total.textContent = projects.length;
+  const sections = new Map();
+  const params = new URLSearchParams(window.location.search);
+  let selected = params.get('categorie') || 'all';
+  search.value = params.get('q') || '';
 
-    // Search Query Filter
-    if (!q) return true;
-    const matchTitle = (p.title || '').toLowerCase().includes(q);
-    const matchTagline = (p.tagline || '').toLowerCase().includes(q);
-    const matchDesc = (p.description || '').toLowerCase().includes(q);
-    const matchTech = (p.techStack || []).some(t => t.toLowerCase().includes(q));
-    const matchCat = (p.categoryLabel || '').toLowerCase().includes(q);
+  for (const [id, [label, color]] of categories) {
+    const section = document.createElement('section');
+    section.id = 'categorie-' + id;
+    section.style.setProperty('--ink-color', color);
+    const heading = document.createElement('h2');
+    heading.textContent = label;
+    const list = document.createElement('div');
+    list.className = 'project-list';
+    section.append(heading, list);
+    grid.append(section);
+    sections.set(id, {section, list});
+  }
 
-    return matchTitle || matchTagline || matchDesc || matchTech || matchCat;
+  const entries = projects.slice().sort((a, b) => a.title.localeCompare(b.title, 'fr')).map(project => {
+    const {list} = sections.get(project.category);
+    const card = createProject(project);
+    list.append(card);
+    const keywords = plainText([project.title, project.tagline, project.description, project.categoryLabel, ...project.techStack].join(' '));
+    return {project, card, keywords};
   });
 
-  // Update Count
-  if (countDisplay) {
-    countDisplay.innerText = `Affichage de ${filtered.length} sur ${allProjects.length} projets`;
+  const filters = new Map();
+  for (const [id, label] of [['all', 'Tous'], ['runnable', 'Versions web'], ...Array.from(categories, ([id, [label]]) => [id, label])]) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = label;
+    filters.set(id, button);
+    tabs.append(button);
+    button.addEventListener('click', () => {
+      selected = id;
+      filterProjects();
+    });
   }
+  if (!filters.has(selected)) selected = 'all';
 
-  // Empty state
-  if (filtered.length === 0) {
-    gridContainer.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
-        <div style="font-size: 32px; margin-bottom: 12px;">🔍</div>
-        <h3 style="font-size: 18px; color: #fff; margin-bottom: 8px;">Aucun projet ne correspond à votre recherche</h3>
-        <p style="font-size: 14px;">Essayez d'élargir votre recherche ou de sélectionner une autre catégorie.</p>
-      </div>
-    `;
-    return;
-  }
-
-  // Render cards
-  gridContainer.innerHTML = filtered.map(p => {
-    let statusClass = 'opensource';
-    if (p.isRunnable) statusClass = 'live';
-    else if (p.category === '3d-hardware') statusClass = 'hardware';
-    else if (p.category === 'concepts') statusClass = 'specs';
-
-    const techPills = (p.techStack || []).slice(0, 4).map(t => `<span class="tech-tag">${t}</span>`).join('');
-    
-    const isWeb = p.isRunnable && p.runnableUrl;
-    const directWebTarget = (p.runnableUrl && p.runnableUrl.startsWith('http')) ? '_blank' : '_self';
-    const directWebLink = isWeb
-      ? `<a href="${p.runnableUrl}" target="${directWebTarget}" rel="noopener noreferrer" class="btn-card-launch btn-card-web" title="Lancer la version web du projet">🌐 Version Web</a>`
-      : `<a href="projects/demo.html?id=${encodeURIComponent(p.id)}" class="btn-card-launch btn-card-sim" title="Tester le simulateur interactif">🎮 Démo</a>`;
-
-    const demoDocBtn = `<a href="projects/demo.html?id=${encodeURIComponent(p.id)}" class="btn-card-demo-md" title="Voir la démo interactive et la fiche documentation README.md">📄 Démo & Doc (.md)</a>`;
-
-    const repoLink = p.githubUrl
-      ? `<a href="${p.githubUrl}" target="_blank" rel="noopener noreferrer" class="btn-card-link" title="Consulter le code source sur GitHub">🐙 Dépôt ↗</a>`
-      : '';
-
-    const zipLink = p.downloadUrl
-      ? `<a href="${p.downloadUrl}" class="btn-card-link btn-card-zip" download title="Télécharger l'archive ZIP du code source">⬇️ ZIP</a>`
-      : '';
-
-    return `
-      <div class="project-card" data-id="${p.id}">
-        <div>
-          <div class="card-top">
-            <div class="card-icon">${p.icon || '🚀'}</div>
-            <div class="card-badges">
-              <span class="status-badge ${statusClass}">
-                ${p.isRunnable ? '✨ Démo en direct' : p.status}
-              </span>
-              <span class="card-category-tag">${p.categoryLabel || p.category}</span>
-            </div>
-          </div>
-
-          <h3 class="card-title">${p.title}</h3>
-          <p class="card-tagline">${p.tagline}</p>
-
-          <div class="card-tech-pills">
-            ${techPills}
-          </div>
-        </div>
-
-        <div class="card-actions">
-          <div class="card-actions-grid">
-            <div class="card-primary-row">
-              ${directWebLink}
-              ${demoDocBtn}
-            </div>
-            <div class="card-links-row">
-              ${repoLink}
-              ${zipLink}
-              <a href="projects/project.html?id=${encodeURIComponent(p.id)}" class="btn-card-details" title="Voir la fiche détaillée">Fiche →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-// Category filter button click
-function setCategory(cat, element) {
-  activeCategory = cat;
-  document.querySelectorAll('.cat-pill').forEach(btn => btn.classList.remove('active'));
-  if (element) element.classList.add('active');
-  renderProjects();
-}
-
-// Search input listener
-if (searchInput) {
-  searchInput.addEventListener('input', (e) => {
-    searchQuery = e.target.value;
-    renderProjects();
-  });
-}
-
-// Command Palette (Raycast / Spotlight modal)
-function setupCommandPalette() {
-  if (!paletteInput) return;
-
-  paletteInput.addEventListener('input', () => {
-    paletteSelectedIndex = 0;
-    renderPaletteResults();
-  });
-
-  paletteInput.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (paletteFilteredList.length > 0) {
-        paletteSelectedIndex = (paletteSelectedIndex + 1) % paletteFilteredList.length;
-        highlightPaletteItem();
-        scrollPaletteIntoView();
+  function filterProjects() {
+    const terms = plainText(search.value).trim().split(/\s+/);
+    const visible = new Set();
+    let count = 0;
+    for (const {project, card, keywords} of entries) {
+      const inCategory = selected === 'all' || selected === project.category || (selected === 'runnable' && Boolean(project.runnableUrl));
+      card.hidden = !(inCategory && terms.every(term => keywords.includes(term)));
+      if (!card.hidden) {
+        visible.add(project.category);
+        count++;
       }
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (paletteFilteredList.length > 0) {
-        paletteSelectedIndex = (paletteSelectedIndex - 1 + paletteFilteredList.length) % paletteFilteredList.length;
-        highlightPaletteItem();
-        scrollPaletteIntoView();
-      }
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      const selected = paletteFilteredList[paletteSelectedIndex];
-      if (selected) window.location.href = demoUrl(selected);
-    } else if (e.key === 'Escape') {
-      closePalette();
     }
-  });
-}
+    for (const [id, {section}] of sections) section.hidden = !visible.has(id);
+    for (const [id, button] of filters) button.setAttribute('aria-pressed', String(id === selected));
+    status.textContent = count === 0 ? 'Aucun projet trouvé.' : search.value.trim() ? count + (count === 1 ? ' résultat' : ' résultats') : '';
 
-function openPalette() {
-  if (!paletteModal) return;
-  paletteModal.classList.add('open');
-  paletteInput.value = '';
-  paletteSelectedIndex = 0;
-  renderPaletteResults();
-  setTimeout(() => paletteInput.focus(), 50);
-}
-
-function closePalette(e) {
-  if (!e || e.target.id === 'commandPalette' || e.key === 'Escape') {
-    if (paletteModal) paletteModal.classList.remove('open');
-  }
-}
-
-function renderPaletteResults() {
-  if (!paletteResults) return;
-
-  const q = paletteInput.value.toLowerCase().trim();
-
-  paletteFilteredList = allProjects.filter(p => {
-    if (!q) return true;
-    return p.title.toLowerCase().includes(q) ||
-           p.tagline.toLowerCase().includes(q) ||
-           (p.techStack || []).some(t => t.toLowerCase().includes(q));
-  });
-
-  if (paletteFilteredList.length === 0) {
-    paletteResults.innerHTML = `
-      <div style="padding: 24px; text-align: center; color: var(--text-dim); font-size: 13px;">
-        Aucun projet trouvé.
-      </div>
-    `;
-    return;
+    const url = new URL(window.location.href);
+    if (selected === 'all') url.searchParams.delete('categorie');
+    else url.searchParams.set('categorie', selected);
+    if (search.value.trim()) url.searchParams.set('q', search.value.trim());
+    else url.searchParams.delete('q');
+    if (url.href !== window.location.href) history.replaceState(null, '', url);
   }
 
-  paletteResults.innerHTML = paletteFilteredList.map((p, idx) => {
-    const isSelected = idx === paletteSelectedIndex;
-    const targetUrl = demoUrl(p);
-
-    return `
-      <a href="${targetUrl}" class="palette-item ${isSelected ? 'active' : ''}" onmouseenter="paletteSelectedIndex=${idx}; highlightPaletteItem();">
-        <div class="palette-item-left">
-          <span class="palette-item-icon">${p.icon || '🚀'}</span>
-          <div>
-            <div class="palette-item-title">${p.title}</div>
-            <div class="palette-item-sub">${p.tagline.substring(0, 70)}...</div>
-          </div>
-        </div>
-        <span class="palette-item-badge">${p.isRunnable ? 'Démo directe' : p.categoryLabel}</span>
-      </a>
-    `;
-  }).join('');
+  search.addEventListener('input', filterProjects);
+  filterProjects();
 }
 
-function highlightPaletteItem() {
-  const items = paletteResults.querySelectorAll('.palette-item');
-  items.forEach((it, i) => it.classList.toggle('active', i === paletteSelectedIndex));
-}
-
-function scrollPaletteIntoView() {
-  const item = paletteResults.children[paletteSelectedIndex];
-  if (item) item.scrollIntoView({ block: 'nearest' });
-}
-
-// Global Keyboard Shortcut (Ctrl+K or Cmd+K)
-function setupKeyboardShortcuts() {
-  window.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-      e.preventDefault();
-      if (paletteModal && paletteModal.classList.contains('open')) {
-        closePalette();
-      } else {
-        openPalette();
-      }
-    } else if (e.key === 'Escape') {
-      closePalette();
-    }
-  });
-}
-
-// Document Ready
-window.addEventListener('DOMContentLoaded', initPortfolio);
+if (grid) initCatalogue();

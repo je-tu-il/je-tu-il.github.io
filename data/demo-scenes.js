@@ -1,4 +1,8 @@
 window.PORTFOLIO_DEMOS = {
+  "ddd-hugo-decrypte": {
+    "action": "Calculer l’objectif",
+    "result": "Le 7 décembre : 7 vidéos, 28 au total."
+  },
   "aura-nutraceutics": {
     "action": "Afficher le bilan fictif",
     "result": "Habitudes à discuter : sommeil et horaires des repas."

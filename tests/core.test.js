@@ -34,11 +34,11 @@ function openDemo(id) {
   return get;
 }
 
-test('the static catalogue and scenario catalogue cover the same 127 projects', () => {
+test('the static catalogue and scenario catalogue cover the same 128 projects', () => {
   const json = require('../data/projects.json');
   const ids = projects.map(project => project.id);
-  assert.equal(ids.length, 127);
-  assert.equal(new Set(ids).size, 127);
+  assert.equal(ids.length, 128);
+  assert.equal(new Set(ids).size, 128);
   assert.deepEqual(JSON.parse(JSON.stringify(projects)), json);
   assert.deepEqual(Object.keys(windowData.PORTFOLIO_DEMOS).sort(), Array.from(ids).sort());
   assert.ok(ids.includes('wavedrop') && ids.includes('chatverdict'));
@@ -53,14 +53,8 @@ test('every project opens, runs a distinct scenario, resets, and links to existi
     const controls = get('controls');
     assert.equal(get('scenario').hidden, false, project.id);
     assert.equal(get('title').textContent, project.title);
-    assert.equal(get('details').href, 'project.html?id=' + project.id);
     const expected = windowData.PORTFOLIO_DEMOS[project.id];
     assert.equal(run.textContent, expected.action);
-    assert.equal(get('live').hidden, !project.isRunnable);
-    if (project.isRunnable) {
-      if (project.runnableUrl.startsWith('https://')) assert.equal(get('live').href, project.runnableUrl);
-      else assert.ok(fs.existsSync(path.join(root, project.runnableUrl)));
-    }
     for (const field of get('inputs').children) {
       const input = field.children[0];
       input.value = input.defaultValue;
@@ -73,7 +67,7 @@ test('every project opens, runs a distinct scenario, resets, and links to existi
     assert.equal(result.textContent, 'Prêt à démarrer.');
     assert.equal(run.textContent, expected.action);
   }
-  assert.equal(outputs.size, 127);
+  assert.equal(outputs.size, 128);
 });
 
 test('an unknown demo offers a return to the catalogue', () => {
@@ -97,12 +91,14 @@ test('NousDeux reveals both answers only after the second response', () => {
 });
 
 test('catalogue launches each web version directly and serves its entry assets', () => {
-  const context = {document: {getElementById() {}, addEventListener() {}}, window: {addEventListener() {}}};
+  const context = {URL, document: {baseURI: "https://portfolio.test/", getElementById() {}}, window: {}};
   vm.createContext(context);
   vm.runInContext(read('main.js'), context);
   for (const project of projects) {
     const expected = project.runnableUrl || 'projects/demo.html?id=' + project.id;
     assert.equal(context.demoUrl(project), expected);
+    const launch = new URL(context.launchUrl(project));
+    assert.equal(launch.searchParams.get('utm_source'), project.runnableUrl ? 'portfolio' : null);
     if (!project.isRunnable || /^https:\/\//.test(expected)) continue;
     const html = read(expected);
     for (const [, ref] of html.matchAll(/<(?:script|link)\b[^>]*?\b(?:src|href)=["']([^"'<>\s]+)["']/gi)) {

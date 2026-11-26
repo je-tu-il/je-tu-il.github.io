@@ -666,8 +666,8 @@
     "category": "games",
     "categoryLabel": "Web, Jeux & Démos",
     "status": "Live Demo",
-    "isRunnable": false,
-    "runnableUrl": "",
+    "isRunnable": true,
+    "runnableUrl": "projects/gens-mort/index.html",
     "githubUrl": "https://github.com/je-tu-il/Gens-Mort",
     "techStack": [
       "Phaser.js / React",
@@ -1493,8 +1493,8 @@
     "category": "concepts",
     "categoryLabel": "Laboratoire & R&D",
     "status": "Production",
-    "isRunnable": false,
-    "runnableUrl": "",
+    "isRunnable": true,
+    "runnableUrl": "projects/password-generator/index.html",
     "githubUrl": "https://github.com/je-tu-il/Secure",
     "techStack": [
       "JavaScript CSPRNG",
@@ -3801,5 +3801,29 @@
     "githubUrl": "https://github.com/je-tu-il/ChatVerdict",
     "folder": "03_WEB_ET_JEUX",
     "downloadUrl": "https://github.com/je-tu-il/ChatVerdict/archive/refs/heads/main.zip"
+  },
+  {
+    "id": "ddd-hugo-decrypte",
+    "title": "Décembre Décrypte Défi",
+    "tagline": "En décembre, regarde chaque jour autant de vidéos HugoDécrypte que le numéro du jour.",
+    "category": "games",
+    "categoryLabel": "Web et jeux",
+    "status": "Projet web",
+    "isRunnable": false,
+    "runnableUrl": "",
+    "githubUrl": "https://github.com/je-tu-il/ddd-hugo-decrypte",
+    "downloadUrl": "https://github.com/je-tu-il/ddd-hugo-decrypte/archive/refs/heads/main.zip",
+    "techStack": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Firebase"
+    ],
+    "description": "Un calendrier de suivi du défi HugoDécrypte, avec objectifs quotidiens et progression sur le mois.",
+    "features": [
+      "Calendrier des 31 jours",
+      "Suivi de la progression",
+      "Classement partagé"
+    ]
   }
 ]

@@ -325,9 +325,9 @@
         const demoBtn = document.getElementById('liveDemoBtn');
         demoBtn.style.display = 'inline-flex';
         const walkthrough = 'demo.html?id=' + encodeURIComponent(p.id);
-        demoBtn.href = p.runnableUrl
-          ? new URL(p.runnableUrl, new URL('../', window.location.href)).href
-          : walkthrough;
+        const launch = new URL(p.runnableUrl || walkthrough, new URL(p.runnableUrl ? '../' : './', window.location.href));
+        if (p.runnableUrl) launch.searchParams.set('utm_source', 'portfolio');
+        demoBtn.href = launch.href;
         demoBtn.textContent = p.runnableUrl ? '🌐 Ouvrir sur le web' : '🎮 Voir la démo';
 
         const simBtn = document.getElementById('interactiveSimBtn');

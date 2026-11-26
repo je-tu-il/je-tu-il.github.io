@@ -2,175 +2,35 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Démo & Documentation | Portfolio Je-tu-il</title>
-  <meta name="description" content="Démo & Documentation | Portfolio Je-tu-il — Application interactive et démonstration en ligne.">
-<link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Démo | Je-tu-il</title>
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
   <link rel="stylesheet" href="demo.css">
   <script defer src="../data/projects.js"></script>
-  <script defer src="../data/readmes.js"></script>
-  <script defer src="../data/markdown-renderer.js"></script>
   <script defer src="../data/demo-scenes.js"></script>
   <script defer src="workflows.js"></script>
   <script defer src="demo.js"></script>
 </head>
-<body>
-  <!-- Top Navigation Bar -->
-  <header class="demo-topbar">
-    <div class="topbar-left">
-      <nav aria-label="Navigation de la démo">
-        <a href="../index.html#catalogue" class="btn-back-portfolio">← Catalogue</a>
-      </nav>
-      <div class="topbar-project-title">
-        <span id="topIcon">🚀</span>
-        <span id="topTitle">Démo</span>
-      </div>
-    </div>
-
-    <!-- Mobile Segmented Tabs -->
-    <div class="mobile-view-tabs">
-      <button type="button" class="tab-btn active" id="tabDemoBtn" onclick="switchMobileTab('demo')">🎮 Démo</button>
-      <button type="button" class="tab-btn" id="tabReadmeBtn" onclick="switchMobileTab('readme')">📄 README.md</button>
-    </div>
-
-    <!-- Action Buttons (Repo, Download, Live) -->
-    <div class="topbar-actions">
-      <a id="details" class="btn-action" hidden>Fiche du projet</a>
-      <a id="live" class="btn-action btn-action-primary" hidden target="_blank" rel="noopener noreferrer">🌐 Version Web Plein Écran →</a>
-      <a id="githubRepoBtn" class="btn-action btn-action-repo" target="_blank" rel="noopener noreferrer" title="Voir le dépôt GitHub">
-        <span>🐙 GitHub</span>
-      </a>
-      <a id="downloadZipBtn" class="btn-action btn-action-zip" download title="Télécharger le code source ZIP complet">
-        <span>⬇️ Télécharger ZIP</span>
-      </a>
-    </div>
-  </header>
-
-  <!-- Split Layout: Demo on Left, README on Right -->
-  <main class="demo-split-layout">
-    <!-- Left Pane: Interactive Demo & Realistic Simulator -->
-    <section class="demo-pane" id="demoPane" aria-labelledby="title">
-      <div class="pane-header">
-        <div class="pane-title">
-          <span>🎮</span>
-          <span>Aperçu & Démo Interactive</span>
+<body class="fullscreen-demo">
+  <a href="../index.html#catalogue" class="btn-back-portfolio" aria-label="Retour au portfolio" title="Retour au portfolio">←</a>
+  <main class="demo-stage" aria-labelledby="title">
+    <h1 id="title">Démo</h1>
+    <p id="description" class="project-desc-text"></p>
+    <div id="workflow" hidden></div>
+    <section id="scenario" hidden aria-labelledby="scenario-title">
+      <h2 id="scenario-title">Exemple guidé</h2>
+      <form id="controls">
+        <div id="inputs"></div>
+        <div class="actions">
+          <button id="run" type="submit"></button>
+          <button id="reset" type="reset">Recommencer</button>
         </div>
-        <span class="project-category-badge" id="categoryBadge">Catégorie</span>
-      </div>
-
-      <div class="pane-body">
-        <div class="project-meta-box">
-          <p id="category" hidden></p>
-          <h1 id="title" class="project-heading-title">Démo du projet</h1>
-          <p id="description" class="project-desc-text"></p>
-        </div>
-
-        <!-- Embedded Live Web Version (for Runnable projects) -->
-        <div id="liveIframeWrapper" class="live-iframe-wrapper" hidden>
-          <div class="iframe-overlay-bar">
-            <button type="button" class="iframe-tool-btn" onclick="reloadIframe()" title="Recharger la démo">↻ Actualiser</button>
-            <a id="iframeExternalBtn" class="iframe-tool-btn" target="_blank" rel="noopener noreferrer" title="Ouvrir dans un nouvel onglet">↗ Plein Écran</a>
-          </div>
-          <iframe id="projectIframe" title="Application Web en direct" sandbox="allow-scripts allow-same-origin allow-forms allow-modals"></iframe>
-        </div>
-
-        <!-- Realistic Device Simulator Frame for Non-Web / Native / Hardware -->
-        <div id="deviceFrame" class="device-container">
-          <div class="device-frame desktop-frame" id="platformFrame">
-            <!-- Simulated Platform Bar -->
-            <div class="device-bar">
-              <div class="traffic-dots">
-                <span class="traffic-dot dot-red"></span>
-                <span class="traffic-dot dot-yellow"></span>
-                <span class="traffic-dot dot-green"></span>
-              </div>
-              <div class="device-bar-title" id="simTitleBar">Simulation Système</div>
-              <div style="width: 40px;"></div>
-            </div>
-
-            <!-- Workflow Custom Scenario Area -->
-            <div id="workflow" hidden></div>
-
-            <!-- Standard Interactive Scenario -->
-            <div id="scenario" hidden aria-labelledby="scenario-title">
-              <h2 id="scenario-title">Scénario interactif</h2>
-              <p class="scenario-intro muted">Interagissez avec le simulateur pour observer le comportement de l'application en direct.</p>
-              <form id="controls">
-                <div id="inputs"></div>
-                <div class="actions">
-                  <button id="run" type="submit"></button>
-                  <button id="reset" type="reset">Recommencer</button>
-                </div>
-              </form>
-              <p id="result" role="status" aria-atomic="true"></p>
-            </div>
-          </div>
-        </div>
-
-        <p id="unavailable" hidden style="color: #ef4444; padding: 20px; text-align: center;">Cette démo est introuvable. Choisissez un projet dans le catalogue.</p>
-        <noscript>Activez JavaScript pour lancer la démo.</noscript>
-      </div>
+      </form>
+      <p id="result" role="status" aria-atomic="true"></p>
     </section>
-
-    <!-- Right Pane: Formatted README.md Documentation Sheet -->
-    <aside class="readme-pane" id="readmePane" aria-label="Documentation README.md">
-      <div class="pane-header">
-        <div class="pane-title">
-          <span>📄</span>
-          <span>Fiche Technique • README.md</span>
-        </div>
-        <div style="display:flex; gap:8px;">
-          <button type="button" class="btn-action" id="copyMarkdownBtn" onclick="copyReadmeMarkdown()" title="Copier le Markdown brut">
-            <span>📋 Copier</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="pane-body">
-        <article id="readmeContent" class="markdown-body">
-          <p style="color: var(--text-muted);">Chargement de la documentation README.md...</p>
-        </article>
-      </div>
-    </aside>
+    <p id="unavailable" hidden>Cette démo est introuvable.</p>
+    <noscript>Activez JavaScript pour lancer la démo.</noscript>
   </main>
-
-  <script>
-    function switchMobileTab(tab) {
-      const demoPane = document.getElementById('demoPane');
-      const readmePane = document.getElementById('readmePane');
-      const tabDemoBtn = document.getElementById('tabDemoBtn');
-      const tabReadmeBtn = document.getElementById('tabReadmeBtn');
-      if (tab === 'demo') {
-        demoPane.classList.remove('hidden-mobile');
-        readmePane.classList.add('hidden-mobile');
-        tabDemoBtn.classList.add('active');
-        tabReadmeBtn.classList.remove('active');
-      } else {
-        demoPane.classList.add('hidden-mobile');
-        readmePane.classList.remove('hidden-mobile');
-        tabDemoBtn.classList.remove('active');
-        tabReadmeBtn.classList.add('active');
-      }
-    }
-
-    function reloadIframe() {
-      const ifr = document.getElementById('projectIframe');
-      if (ifr && ifr.src) ifr.src = ifr.src;
-    }
-
-    function copyReadmeMarkdown() {
-      const id = new URLSearchParams(window.location.search).get('id');
-      const raw = window.PROJECTS_READMES && window.PROJECTS_READMES[id];
-      if (raw && navigator.clipboard) {
-        navigator.clipboard.writeText(raw).then(() => {
-          const btn = document.getElementById('copyMarkdownBtn');
-          const old = btn.innerHTML;
-          btn.innerHTML = '<span>✅ Copié !</span>';
-          setTimeout(() => btn.innerHTML = old, 2000);
-        });
-      }
-    }
-  </script>
 </body>
 </html>
