@@ -5,18 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>Démo | Je-tu-il</title>
-  <link rel="stylesheet" href="../assets/fonts/fonts.css">
-  <link rel="stylesheet" href="demo.css">
+  <link rel="stylesheet" href="../catalogue.css?v=atelier-2">
+  <link rel="stylesheet" href="demo.css?v=atelier-2">
   <script defer src="../data/projects.js"></script>
   <script defer src="../data/demo-scenes.js"></script>
   <script defer src="workflows.js"></script>
-  <script defer src="demo.js"></script>
+  <script defer src="demo.js?v=atelier-2"></script>
+  <script defer src="../assets/portfolio-back.js?v=atelier-2"></script>
 </head>
 <body class="fullscreen-demo">
-  <a href="../index.html#catalogue" class="btn-back-portfolio" aria-label="Retour au portfolio" title="Retour au portfolio">←</a>
-  <main class="demo-stage" aria-labelledby="title">
-    <h1 id="title">Démo</h1>
-    <p id="description" class="project-desc-text"></p>
+  <a href="../index.html#catalogue" data-portfolio-back class="btn-back-portfolio" aria-label="Retour au portfolio" title="Retour au portfolio">←</a>
+  <main class="demo-stage page" aria-labelledby="title">
+    <header class="inner-cover">
+      <h1 id="title">Démo</h1>
+      <p id="description"></p>
+    </header>
     <div id="workflow" hidden></div>
     <section id="scenario" hidden aria-labelledby="scenario-title">
       <h2 id="scenario-title">Exemple guidé</h2>

@@ -74,8 +74,8 @@ test('web apps offer a return link only for a portfolio visit', () => {
   assert.equal(visit('/projects/laps/index.html', ''), 'https://portfolio.test/index.html#catalogue');
   assert.equal(visit('/projects/lostcall/index.html', ''), undefined);
   assert.equal(visit('/projects/laps/index.html', '?utm_source=autre'), undefined);
-  assert.equal(visit('/onboarding/login', '?utm_source=portfolio', '', false), 'https://je-tu-il.github.io/#catalogue');
-  assert.equal(visit('/dashboard', '', '', false), 'https://je-tu-il.github.io/#catalogue');
+  assert.equal(visit('/onboarding/login', '?utm_source=portfolio', '', false), 'https://je-tu-il.github.io/index.html#catalogue');
+  assert.equal(visit('/dashboard', '', '', false), 'https://je-tu-il.github.io/index.html#catalogue');
 });
 
 test('catalogue groups the projects and combines category and accent-insensitive search', () => {

@@ -119,14 +119,14 @@ function initCatalogue() {
     }
     for (const [id, {section}] of sections) section.hidden = !visible.has(id);
     for (const [id, button] of filters) button.setAttribute('aria-pressed', String(id === selected));
-    status.textContent = count === 0 ? 'Aucun projet trouvé.' : search.value.trim() ? count + (count === 1 ? ' résultat' : ' résultats') : '';
+    status.textContent = count === 0 ? 'Aucun projet trouvé.' : '';
 
     const url = new URL(window.location.href);
     if (selected === 'all') url.searchParams.delete('categorie');
     else url.searchParams.set('categorie', selected);
     if (search.value.trim()) url.searchParams.set('q', search.value.trim());
     else url.searchParams.delete('q');
-    if (url.href !== window.location.href) history.replaceState(null, '', url);
+    if (url.href !== window.location.href && url.protocol !== 'file:') history.replaceState(null, '', url);
   }
 
   search.addEventListener('input', filterProjects);

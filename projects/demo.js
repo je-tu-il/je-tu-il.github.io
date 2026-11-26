@@ -1,18 +1,6 @@
 (() => {
   'use strict';
   const get = id => document.getElementById(id);
-  const back = document.querySelector?.('.btn-back-portfolio');
-  if (back && document.referrer) {
-    const previous = new URL(document.referrer);
-    const catalogue = new URL(back.href);
-    const homepage = new URL('./', catalogue);
-    if (previous.origin === catalogue.origin && [catalogue.pathname, homepage.pathname].includes(previous.pathname)) {
-      catalogue.search = previous.search;
-      back.href = catalogue.href;
-    }
-  }
-
-
   const id = new URLSearchParams(window.location.search).get('id');
   const project = window.PROJECTS_DATA?.find(item => item.id === id);
   const scene = project && window.PORTFOLIO_DEMOS?.[project.id];
