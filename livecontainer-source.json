@@ -16,12 +16,20 @@
       "localizedDescription": "Une question par jour, souvenirs partagés, mini-jeux et widget pour cultiver votre complicité à deux.",
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/nousdeux.png",
       "tintColor": "#E11D48",
-      "version": "1.0.1",
-      "versionDate": "2026-10-24",
-      "versionDescription": "Version 1.0.1 — Build iOS officiel (NousDeux).",
-      "downloadURL": "https://github.com/je-tu-il/NousDeux/releases/download/v1.0.1/NousDeux.ipa",
-      "size": 147190840,
+      "version": "1.0.2",
+      "versionDate": "2026-11-27",
+      "versionDescription": "Archive iOS v1.0.2 pour installation hors App Store.",
+      "downloadURL": "https://github.com/je-tu-il/NousDeux/releases/download/v1.0.2/NousDeux.ipa",
+      "size": 33968965,
       "versions": [
+        {
+          "version": "1.0.2",
+          "buildNumber": "1",
+          "date": "2026-11-27",
+          "localizedDescription": "Archive iOS v1.0.2 pour installation hors App Store.",
+          "downloadURL": "https://github.com/je-tu-il/NousDeux/releases/download/v1.0.2/NousDeux.ipa",
+          "size": 33968965
+        },
         {
           "version": "1.0.1",
           "buildNumber": "1",
@@ -41,18 +49,18 @@
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/champibad.png",
       "tintColor": "#10B981",
       "version": "1.0.0",
-      "versionDate": "2026-11-25",
-      "versionDescription": "Version 1.0.0 — Build iOS officiel (Champibad).",
+      "versionDate": "2026-11-27",
+      "versionDescription": "Archive iOS v1.0.0 pour installation hors App Store.",
       "downloadURL": "https://github.com/je-tu-il/Champibad/releases/download/v1.0.0/Champibad-unsigned.ipa",
-      "size": 8371036,
+      "size": 8371398,
       "versions": [
         {
           "version": "1.0.0",
           "buildNumber": "1",
-          "date": "2026-11-25",
-          "localizedDescription": "Release v1.0.0 publiée sur GitHub.",
+          "date": "2026-11-27",
+          "localizedDescription": "Archive iOS v1.0.0 pour installation hors App Store.",
           "downloadURL": "https://github.com/je-tu-il/Champibad/releases/download/v1.0.0/Champibad-unsigned.ipa",
-          "size": 8371036
+          "size": 8371398
         }
       ]
     },
@@ -89,18 +97,18 @@
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/bestcam.png",
       "tintColor": "#10B981",
       "version": "1.0.0",
-      "versionDate": "2026-11-25",
-      "versionDescription": "Version 1.0.0 — Build iOS officiel (BestCam).",
+      "versionDate": "2026-11-27",
+      "versionDescription": "Archive iOS v1.0.0 pour installation hors App Store.",
       "downloadURL": "https://github.com/je-tu-il/BestCam/releases/download/v1.0.0/BestCam.ipa",
-      "size": 754608,
+      "size": 781753,
       "versions": [
         {
           "version": "1.0.0",
           "buildNumber": "1",
-          "date": "2026-11-25",
-          "localizedDescription": "Release v1.0.0 publiée sur GitHub.",
+          "date": "2026-11-27",
+          "localizedDescription": "Archive iOS v1.0.0 pour installation hors App Store.",
           "downloadURL": "https://github.com/je-tu-il/BestCam/releases/download/v1.0.0/BestCam.ipa",
-          "size": 754608
+          "size": 781753
         }
       ]
     },
@@ -208,12 +216,20 @@
       "localizedDescription": "Désignez qui commence (multi-touch, roue, dés, voix) et tenez les scores de 126+ jeux dont Yam's et Skull King.",
       "iconURL": "https://je-tu-il.github.io/assets/app-icons/fingerpick.png",
       "tintColor": "#F59E0B",
-      "version": "1.0.0",
-      "versionDate": "2026-11-20",
-      "versionDescription": "Version 1.0.0 — Build iOS officiel (StarterPlayer).",
-      "downloadURL": "https://github.com/je-tu-il/StarterPlayer/releases/download/v1.0.0/fingerpick.ipa",
-      "size": 5045832,
+      "version": "1.0.1",
+      "versionDate": "2026-11-27",
+      "versionDescription": "Archive iOS v1.0.1 pour installation hors App Store.",
+      "downloadURL": "https://github.com/je-tu-il/StarterPlayer/releases/download/v1.0.1/fingerpick.ipa",
+      "size": 4940993,
       "versions": [
+        {
+          "version": "1.0.1",
+          "buildNumber": "2",
+          "date": "2026-11-27",
+          "localizedDescription": "Archive iOS v1.0.1 pour installation hors App Store.",
+          "downloadURL": "https://github.com/je-tu-il/StarterPlayer/releases/download/v1.0.1/fingerpick.ipa",
+          "size": 4940993
+        },
         {
           "version": "1.0.0",
           "buildNumber": "1",
