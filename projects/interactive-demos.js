@@ -552,42 +552,6 @@
     });
   };
 
-  demos['dualaudio-routage-audio-par-oreille-pour-casque'] = root => {
-    const {controls, status} = panel(root, 'Affecter une piste à chaque oreille', 'Sélectionnez deux fichiers audio locaux, puis écoutez leur routage au casque.');
-    const inputs = ['Source gauche', 'Source droite'].map(label => field(controls, label, 'file', '', {accept: 'audio/*'}));
-    const Audio = window.AudioContext || window.webkitAudioContext;
-    if (!Audio) { status.textContent = 'Audio Web indisponible dans ce navigateur.'; return; }
-    let context;
-    let sources = [];
-    let request = 0;
-    const stop = () => { for (const source of sources) source.stop(); sources = []; };
-    action(controls, 'Écouter les deux pistes', async () => {
-      const files = inputs.map(input => input.files[0]);
-      if (files.some(file => !file)) { status.textContent = 'Choisissez deux fichiers audio.'; return; }
-      if (files.some(file => file.size > 20 * 1024 * 1024)) { status.textContent = 'Limite de 20 Mo par fichier pour cet essai.'; return; }
-      const token = ++request;
-      stop();
-      context ||= new Audio();
-      try {
-        await context.resume();
-        const buffers = await Promise.all(files.map(async file => context.decodeAudioData(await file.arrayBuffer())));
-        if (token !== request) return;
-        const start = context.currentTime + .05;
-        sources = buffers.map((buffer, index) => {
-          const source = context.createBufferSource();
-          const stereo = context.createStereoPanner();
-          stereo.pan.value = index ? 1 : -1;
-          source.buffer = buffer;
-          source.connect(stereo).connect(context.destination);
-          source.start(start);
-          return source;
-        });
-        status.textContent = 'Lecture : ' + files[0].name + ' à gauche, ' + files[1].name + ' à droite.';
-      } catch { if (token === request) status.textContent = 'Impossible de décoder ces pistes.'; }
-    });
-    action(controls, 'Arrêter', () => { request++; stop(); status.textContent = 'Lecture arrêtée.'; });
-  };
-
   demos['passapp-coffre-fort-d-centralis-local-first'] = root => {
     const {controls, result, status} = panel(root, 'Verrouiller et rouvrir un coffre local', 'Saisissez des identifiants fictifs. Le navigateur chiffre le coffre de cette session, qui disparaît en quittant la démo.');
     const phrase = field(controls, 'Phrase de déverrouillage fictive', 'password', '');

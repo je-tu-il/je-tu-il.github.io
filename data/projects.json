@@ -453,12 +453,12 @@
   {
     "id": "dualaudio-routage-audio-par-oreille-pour-casque",
     "title": "DualAudio — Routage Audio par Oreille pour Casque",
-    "tagline": "Application Windows élégante pour diffuser deux sources audio indépendantes séparément dans l'oreille gauche et l'oreille droite.",
+    "tagline": "Deux pistes au casque, une par oreille, avec volume indépendant et export WAV stéréo.",
     "category": "desktop",
     "categoryLabel": "Applications Desktop",
     "status": "Production",
-    "isRunnable": false,
-    "runnableUrl": "",
+    "isRunnable": true,
+    "runnableUrl": "projects/dual-audio/index.html",
     "githubUrl": "https://github.com/je-tu-il/Dual-Audio",
     "techStack": [
       "Python 3.10+",
