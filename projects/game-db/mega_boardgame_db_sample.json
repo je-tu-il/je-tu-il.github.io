@@ -1,0 +1,442 @@
+{
+  "database_metadata": {
+    "title": "Mega Board Game Database - Extraction Sample",
+    "version": "1.0.0",
+    "generated_at": "2026-11-17",
+    "description": "Exemple de structure enrichie pour base de données de jeux de société incluant éditions, dimensions, règles PDF et composants 2D/3D."
+  },
+  "games": [
+    {
+      "id": "bgg-13",
+      "name": "Catan",
+      "original_name": "Die Siedler von Catan",
+      "designer": [
+        "Klaus Teuber"
+      ],
+      "year_published": 1995,
+      "total_editions_count": 187,
+      "bgg_id": 13,
+      "rulebooks_pdf": [
+        {
+          "title": "Règles officielles du jeu de base (Français)",
+          "source": "Philibert / Asmodee",
+          "url": "https://www.philibertnet.com/fr/product/attachment/819",
+          "file_type": "pdf",
+          "file_size_mb": 2.98,
+          "language": "fr"
+        },
+        {
+          "title": "Catan Règles Express (Français)",
+          "source": "Philibert",
+          "url": "https://www.philibertnet.com/fr/product/attachment/3367",
+          "file_type": "pdf",
+          "language": "fr"
+        },
+        {
+          "title": "Official Base Rules & Almanac (English)",
+          "source": "Catan Studio Official",
+          "url": "https://www.catan.com/sites/default/files/2021-06/catan_base_rules_2020_200707.pdf",
+          "file_type": "pdf",
+          "file_size_mb": 3.66,
+          "language": "en"
+        }
+      ],
+      "editions": [
+        {
+          "edition_id": "catan-fr-standard-2015",
+          "name": "Catan - Édition Standard Française (5ème Édition)",
+          "year": 2015,
+          "publisher": "Filosofia / Asmodee / Kosmos",
+          "language": "Français",
+          "ean13": "3558380126133",
+          "box_image": {
+            "url": "https://cdn1.philibertnet.com/797512-thickbox_default/catane-3558380126133.jpg",
+            "resolution": "567x567",
+            "format": "jpeg"
+          },
+          "box_dimensions": {
+            "length_cm": 29.5,
+            "width_cm": 29.5,
+            "height_depth_cm": 7.5,
+            "weight_kg": 1.15,
+            "imperial": {
+              "length_in": 11.6,
+              "width_in": 11.6,
+              "depth_in": 3.0,
+              "weight_lbs": 2.54
+            }
+          }
+        },
+        {
+          "edition_id": "catan-us-5th-edition",
+          "name": "Catan - 5th Edition English",
+          "year": 2015,
+          "publisher": "Catan Studio",
+          "language": "English",
+          "upc": "029877030712",
+          "box_image": {
+            "url": "https://cf.geekdo-images.com/W3Bsga_uLP9kO91gZ7H8yw__original/img/M_3N3aT5JmXqNqm3h46qN1sM-g0=/0x0/filters:format(jpeg)/pic2419375.jpg",
+            "format": "jpeg"
+          },
+          "box_dimensions": {
+            "length_cm": 29.7,
+            "width_cm": 24.1,
+            "height_depth_cm": 7.6,
+            "weight_kg": 1.2,
+            "imperial": {
+              "length_in": 11.7,
+              "width_in": 9.5,
+              "depth_in": 3.0,
+              "weight_lbs": 2.65
+            }
+          }
+        },
+        {
+          "edition_id": "catan-3d-collector-2021",
+          "name": "Catan 3D Edition (Collector)",
+          "year": 2021,
+          "publisher": "Catan Studio / Kosmos",
+          "language": "Multilingue",
+          "ean13": "029877030743",
+          "box_image": {
+            "url": "https://cdn1.philibertnet.com/786634-home_default/catan-3d-set.jpg",
+            "format": "jpeg"
+          },
+          "box_dimensions": {
+            "length_cm": 40.0,
+            "width_cm": 30.5,
+            "height_depth_cm": 15.2,
+            "weight_kg": 4.8,
+            "imperial": {
+              "length_in": 15.75,
+              "width_in": 12.0,
+              "depth_in": 6.0,
+              "weight_lbs": 10.58
+            }
+          }
+        },
+        {
+          "edition_id": "catan-travel-edition",
+          "name": "Catan - Édition Voyage (Compact)",
+          "year": 2015,
+          "publisher": "Kosmos / Asmodee",
+          "language": "Français / Allemand",
+          "box_image": {
+            "url": "https://cf.geekdo-images.com/6cE8i_9G68p4jN1Z8w2B-Q__original/img/O8r9Qp43Q483F-f44Z6F4=/0x0/filters:format(jpeg)/pic2699841.jpg",
+            "format": "jpeg"
+          },
+          "box_dimensions": {
+            "length_cm": 14.0,
+            "width_cm": 14.0,
+            "height_depth_cm": 4.5,
+            "weight_kg": 0.35,
+            "imperial": {
+              "length_in": 5.5,
+              "width_in": 5.5,
+              "depth_in": 1.8,
+              "weight_lbs": 0.77
+            }
+          }
+        }
+      ],
+      "components": [
+        {
+          "name": "Tuiles Terrain Hexagonales (Hex Tiles)",
+          "quantity": 19,
+          "category": "board_tiles",
+          "details": "4 Forêts (Bois), 4 Prés (Laine), 4 Champs (Blé), 3 Collines (Argile), 3 Montagnes (Minerai), 1 Désert",
+          "image_2d": {
+            "type": "sprite_sheet_or_texture",
+            "url": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/tiles_diffuse.png"
+          },
+          "model_3d": {
+            "format": "obj / stl",
+            "mesh_url": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/hex_tile_base.obj",
+            "thingiverse_source": "https://www.thingiverse.com/thing:2525047",
+            "printables_source": "https://www.printables.com/model/13359-catan-style-board-game",
+            "tts_custom_mesh": {
+              "MaterialIndex": 1,
+              "MeshTypeIndex": 0,
+              "CastShadows": true
+            }
+          }
+        },
+        {
+          "name": "Route (Road)",
+          "quantity": 60,
+          "category": "player_piece",
+          "details": "15 routes par couleur (Rouge, Bleu, Blanc, Orange)",
+          "dimensions_mm": {
+            "length": 24,
+            "width": 4,
+            "height": 4
+          },
+          "model_3d": {
+            "format": "stl / obj",
+            "mesh_url": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/road.obj",
+            "printables_source": "https://www.printables.com/model/24341-catan-replacement-pieces"
+          }
+        },
+        {
+          "name": "Colonie (Settlement)",
+          "quantity": 20,
+          "category": "player_piece",
+          "details": "5 colonies par couleur",
+          "dimensions_mm": {
+            "length": 11,
+            "width": 11,
+            "height": 11
+          },
+          "model_3d": {
+            "format": "stl / obj",
+            "mesh_url": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/settlement.obj",
+            "printables_source": "https://www.printables.com/model/24341-catan-replacement-pieces"
+          }
+        },
+        {
+          "name": "Ville (City)",
+          "quantity": 16,
+          "category": "player_piece",
+          "details": "4 villes par couleur",
+          "dimensions_mm": {
+            "length": 14,
+            "width": 14,
+            "height": 18
+          },
+          "model_3d": {
+            "format": "stl / obj",
+            "mesh_url": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/city.obj",
+            "printables_source": "https://www.printables.com/model/24341-catan-replacement-pieces"
+          }
+        },
+        {
+          "name": "Pion Voleur (Robber)",
+          "quantity": 1,
+          "category": "neutral_pawn",
+          "details": "Pion cylindrique ou figurine sculptée représentant le brigand",
+          "model_3d": {
+            "format": "stl / obj",
+            "mesh_url": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/robber.obj",
+            "thingiverse_source": "https://www.thingiverse.com/thing:2604724"
+          }
+        },
+        {
+          "name": "Cartes Ressource (Resource Cards)",
+          "quantity": 95,
+          "category": "cards",
+          "details": "19 de chaque (Bois, Laine, Blé, Argile, Minerai)",
+          "dimensions_mm": {
+            "width": 44,
+            "height": 68
+          },
+          "image_2d": {
+            "card_front_sheet": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/cards_resources_deck.png",
+            "card_back": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/card_back.png"
+          }
+        },
+        {
+          "name": "Cartes Développement (Development Cards)",
+          "quantity": 25,
+          "category": "cards",
+          "details": "14 Chevaliers, 5 Points de Victoire, 2 Progrès Construction, 2 Progrès Découverte, 2 Progrès Monopole",
+          "dimensions_mm": {
+            "width": 44,
+            "height": 68
+          },
+          "image_2d": {
+            "card_front_sheet": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/cards_dev_deck.png",
+            "card_back": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/card_dev_back.png"
+          }
+        },
+        {
+          "name": "Jetons Numérotés (Number Tokens)",
+          "quantity": 18,
+          "category": "tokens",
+          "details": "Jetons de 2 à 12 avec lettres A à R et points statistiques",
+          "image_2d": {
+            "url": "https://raw.githubusercontent.com/BGG-Community/assets/main/catan/number_tokens_sheet.png"
+          },
+          "model_3d": {
+            "format": "stl",
+            "source": "https://www.thingiverse.com/thing:3189047"
+          }
+        },
+        {
+          "name": "Dés à 6 faces (Dice)",
+          "quantity": 2,
+          "category": "dice",
+          "details": "1 dé jaune + 1 dé rouge (ou 2 blancs)",
+          "dimensions_mm": {
+            "size": 16
+          }
+        }
+      ]
+    },
+    {
+      "id": "bgg-822",
+      "name": "Carcassonne",
+      "designer": [
+        "Klaus-Jürgen Wrede"
+      ],
+      "year_published": 2000,
+      "total_editions_count": 142,
+      "bgg_id": 822,
+      "rulebooks_pdf": [
+        {
+          "title": "Règles officielles Carcassonne (Français)",
+          "source": "Z-Man Games / Hans im Glück",
+          "url": "https://images.zmangames.com/filer_public/14/c1/14c1d4ba-4573-45f8-b3d5-037cfd3b0e01/zm7100_carcassonne_rules_fr.pdf",
+          "file_type": "pdf",
+          "language": "fr"
+        },
+        {
+          "title": "Official Rules Carcassonne (English)",
+          "source": "Z-Man Games",
+          "url": "https://images.zmangames.com/filer_public/e0/46/e046ee9d-b4ef-4b47-b765-74b88f98ec8d/zm7100_carcassonne_rules.pdf",
+          "file_type": "pdf",
+          "language": "en"
+        }
+      ],
+      "editions": [
+        {
+          "edition_id": "carcassonne-fr-v3-2021",
+          "name": "Carcassonne - Édition 3.0 Moderne",
+          "year": 2021,
+          "publisher": "Hans im Glück / Z-Man Games / Asmodee",
+          "language": "Français",
+          "ean13": "3558380082729",
+          "box_image": {
+            "url": "https://cdn2.philibertnet.com/530644-thickbox_default/carcassonne-v3-3558380082729.jpg",
+            "format": "jpeg"
+          },
+          "box_dimensions": {
+            "length_cm": 27.5,
+            "width_cm": 19.0,
+            "height_depth_cm": 6.8,
+            "weight_kg": 0.78,
+            "imperial": {
+              "length_in": 10.8,
+              "width_in": 7.5,
+              "depth_in": 2.7,
+              "weight_lbs": 1.72
+            }
+          }
+        },
+        {
+          "edition_id": "carcassonne-20th-anniversary",
+          "name": "Carcassonne 20ème Anniversaire (Édition Limitée)",
+          "year": 2021,
+          "publisher": "Hans im Glück / Z-Man Games",
+          "language": "Multilingue",
+          "box_image": {
+            "url": "https://cdn1.philibertnet.com/509532-thickbox_default/carcassonne-20eme-anniversaire.jpg",
+            "format": "jpeg"
+          },
+          "box_dimensions": {
+            "length_cm": 27.5,
+            "width_cm": 19.0,
+            "height_depth_cm": 7.2,
+            "weight_kg": 0.85,
+            "imperial": {
+              "length_in": 10.8,
+              "width_in": 7.5,
+              "depth_in": 2.8,
+              "weight_lbs": 1.87
+            }
+          }
+        },
+        {
+          "edition_id": "carcassonne-big-box-v6",
+          "name": "Carcassonne Big Box (Édition 6)",
+          "year": 2017,
+          "publisher": "Hans im Glück / Z-Man Games",
+          "language": "Français / Allemand",
+          "box_image": {
+            "url": "https://cdn2.philibertnet.com/374668-thickbox_default/carcassonne-big-box.jpg",
+            "format": "jpeg"
+          },
+          "box_dimensions": {
+            "length_cm": 43.0,
+            "width_cm": 31.8,
+            "height_depth_cm": 9.5,
+            "weight_kg": 2.3,
+            "imperial": {
+              "length_in": 16.9,
+              "width_in": 12.5,
+              "depth_in": 3.7,
+              "weight_lbs": 5.07
+            }
+          }
+        }
+      ],
+      "components": [
+        {
+          "name": "Meeples Standards (Partisans)",
+          "quantity": 40,
+          "category": "player_piece",
+          "details": "8 partisans par couleur (Jaune, Rouge, Vert, Bleu, Noir). Servent de chevaliers, voleurs, moines ou paysans.",
+          "dimensions_mm": {
+            "width": 16,
+            "height": 16,
+            "depth": 10
+          },
+          "model_3d": {
+            "format": "stl / obj",
+            "mesh_url": "https://raw.githubusercontent.com/BGG-Community/assets/main/carcassonne/meeple_standard.obj",
+            "thingiverse_source": "https://www.thingiverse.com/thing:2829283",
+            "printables_source": "https://www.printables.com/model/12345-carcassonne-meeple"
+          }
+        },
+        {
+          "name": "Pions Abbé (Abbots)",
+          "quantity": 5,
+          "category": "player_piece",
+          "details": "1 abbé par joueur (hauteur supérieure, forme de mitre)",
+          "dimensions_mm": {
+            "width": 16,
+            "height": 22,
+            "depth": 10
+          },
+          "model_3d": {
+            "format": "stl",
+            "thingiverse_source": "https://www.thingiverse.com/thing:2939317"
+          }
+        },
+        {
+          "name": "Tuiles Terrain de base (Landscape Tiles)",
+          "quantity": 72,
+          "category": "tiles",
+          "details": "Tuiles carrées en carton épais représentant des segments de ville, route, abbaye et pré. 1 tuile de départ au verso foncé.",
+          "dimensions_mm": {
+            "width": 45,
+            "height": 45,
+            "thickness": 2.2
+          },
+          "image_2d": {
+            "catalog_source": "WikiCarpedia (Carcassonne Complete Annotated Rules)",
+            "tile_matrix_url": "https://wikicarpedia.com/index.php/Tile_Reference_(2nd_edition)",
+            "tts_sprite_sheet": "https://raw.githubusercontent.com/BGG-Community/assets/main/carcassonne/tiles_c2_sheet.png"
+          },
+          "model_3d": {
+            "format": "obj / stl (Tuile 3D avec relief)",
+            "thingiverse_source": "https://www.thingiverse.com/thing:4573199"
+          }
+        },
+        {
+          "name": "Piste de Score (Score Track Board)",
+          "quantity": 1,
+          "category": "board",
+          "details": "Plateau de score numéroté de 0 à 49 points",
+          "dimensions_mm": {
+            "width": 250,
+            "height": 180,
+            "thickness": 2.0
+          },
+          "image_2d": {
+            "url": "https://raw.githubusercontent.com/BGG-Community/assets/main/carcassonne/scoreboard_texture.png"
+          }
+        }
+      ]
+    }
+  ]
+}
