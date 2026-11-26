@@ -1,16 +1,16 @@
 :root {
-  --bg-primary: #080d1a;
-  --bg-secondary: #0f172a;
-  --bg-card: rgba(17, 24, 39, 0.75);
-  --bg-card-hover: rgba(30, 41, 59, 0.85);
-  --border-color: rgba(56, 189, 248, 0.2);
+  --bg-primary: #212723;
+  --bg-secondary: #28312b;
+  --bg-card: #303932;
+  --bg-card-hover: #39453b;
+  --border-color: #828b7a;
   --border-glow: rgba(56, 189, 248, 0.4);
-  --accent-cyan: #06b6d4;
-  --accent-pink: #ec4899;
-  --accent-purple: #8b5cf6;
+  --accent-cyan: #adc8d8;
+  --accent-pink: #eca791;
+  --accent-purple: #c4b5d0;
   --accent-green: #10b981;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
+  --text-main: #fffaf0;
+  --text-muted: #dbd4c4;
   --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -24,9 +24,7 @@
 body {
   font-family: var(--font-family);
   background-color: var(--bg-primary);
-  background-image: 
-    radial-gradient(circle at 15% 20%, rgba(6, 182, 212, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 85% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+  background-image: none;
   color: var(--text-main);
   min-height: 100vh;
   display: flex;
@@ -35,7 +33,7 @@ body {
 
 header {
   padding: 1rem 1.5rem;
-  background: rgba(15, 23, 42, 0.85);
+  background: #28312b;
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-color);
   display: flex;
@@ -60,7 +58,7 @@ header {
 .logo-title {
   font-size: 1.25rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #38bdf8, #ec4899);
+  background: linear-gradient(135deg, #38bdf8, #eca791);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -239,7 +237,7 @@ textarea:focus, input[type="text"]:focus {
   padding: 1rem;
   border: none;
   border-radius: 0.85rem;
-  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+  background: linear-gradient(135deg, #adc8d8, #c4b5d0);
   color: #fff;
   font-size: 1rem;
   font-weight: 700;
@@ -311,7 +309,7 @@ canvas#spectrumCanvas, canvas#opticalCanvas {
 .progress-fill {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, #06b6d4, #ec4899);
+  background: linear-gradient(90deg, #adc8d8, #eca791);
   transition: width 0.15s ease;
 }
 
@@ -393,3 +391,5 @@ footer {
   color: var(--text-muted);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+h1, h2 { font-family: Georgia, serif; }

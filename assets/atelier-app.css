@@ -1,0 +1,62 @@
+@import url("fonts/cormorant-garamond.css");
+@import url("fonts/dm-mono.css");
+
+:root[data-atelier-app] {
+  --atelier-paper: #efeadd;
+  --atelier-sheet: #fffaf0;
+  --atelier-ink: #212723;
+  --atelier-muted: #514e45;
+  --atelier-rule: #a49d8e;
+  --atelier-accent: #315e79;
+  --atelier-leaf: #ced4ac;
+  --atelier-title: 'Cormorant Garamond', Georgia, serif;
+  --atelier-label: 'DM Mono', ui-monospace, monospace;
+}
+
+:root[data-atelier-app="dark"], :root[data-atelier-app].dark {
+  --atelier-paper: #212723;
+  --atelier-sheet: #303932;
+  --atelier-ink: #fffaf0;
+  --atelier-muted: #dbd4c4;
+  --atelier-rule: #828b7a;
+  --atelier-accent: #adc8d8;
+}
+
+[data-atelier-app] body {
+  background-color: var(--atelier-paper);
+  background-image: none;
+}
+
+[data-atelier-app] :is(h1, h2, .page-title, .hero-title) {
+  font-family: var(--atelier-title);
+  text-wrap: balance;
+}
+
+[data-atelier-app] :is(.panel, .card, .tool-panel, .settings-panel, .mode-card, .sidebar, dialog, [data-slot="card"]) {
+  border-radius: .35rem;
+  border-color: var(--atelier-rule);
+  box-shadow: none;
+}
+
+[data-atelier-app="light"]:not(.dark) :is(.bg-white, .bg-slate-50, .bg-slate-100) {
+  background-color: var(--atelier-sheet);
+}
+[data-atelier-app="dark"] :is(.bg-slate-950, .bg-slate-900, .bg-darkBg) {
+  background-color: var(--atelier-paper);
+}
+[data-atelier-app="dark"] :is(.bg-slate-800, .bg-slate-900\/80) {
+  background-color: var(--atelier-sheet);
+}
+
+[data-atelier-app] :is(.btn-primary, .button-primary, button[data-variant="default"]) {
+  background: var(--atelier-accent);
+  color: var(--atelier-paper);
+  border-radius: .2rem;
+}
+
+[data-atelier-app] :is(button, select, a, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--atelier-accent);
+  outline-offset: 3px;
+}
+
+[data-atelier-app] :is(kbd, .eyebrow, .section-label) { font-family: var(--atelier-label); }
