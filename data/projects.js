@@ -3198,8 +3198,8 @@ window.PROJECTS_DATA = [
     "category": "mobile",
     "categoryLabel": "Applications Mobiles",
     "status": "Production",
-    "isRunnable": false,
-    "runnableUrl": "",
+    "isRunnable": true,
+    "runnableUrl": "projects/notime/index.html",
     "githubUrl": "https://github.com/je-tu-il/NoTime",
     "techStack": [
       "Node.js",
@@ -3431,8 +3431,8 @@ window.PROJECTS_DATA = [
     "category": "security",
     "categoryLabel": "Extensions, Securite & Scripts",
     "status": "Production",
-    "isRunnable": false,
-    "runnableUrl": "",
+    "isRunnable": true,
+    "runnableUrl": "projects/indexcite/index.html",
     "githubUrl": "https://github.com/je-tu-il/IndexCite",
     "techStack": [
       "HTML5",

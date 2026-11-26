@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html data-atelier-app="light" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nettoyeur de Citations - Obsidian</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #16161a;
+      color: #212723;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .badge-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #315e79, #25495d);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: white;
+    }
+    h1 { font-size: 1.15rem; font-weight: 600; }
+    p.sub { font-size: 0.85rem; color: #514e45; margin-top: 2px; }
+    .badge-pill {
+      background: #e2e7d2;
+      color: #315e79;
+      border: 1px solid #828b7a;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-left: 6px;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .stat-badge {
+      background: #fffaf0;
+      border: 1px solid #a49d8e;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      color: #514e45;
+    }
+    .stat-badge strong { color: #386441; }
+    .btn-clear {
+      background: #fffaf0;
+      border: 1px solid #a49d8e;
+      color: #212723;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.15s;
+    }
+    .btn-clear:hover { background: #a49d8e; }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      flex: 1;
+      min-height: 520px;
+    }
+    @media (max-width: 800px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+    .panel {
+      background: #fffaf0;
+      border: 1px solid #a49d8e;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .panel-header {
+      background: #e6e1d2;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #a49d8e;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .panel-header.left { color: #514e45; }
+    .panel-header.right { color: #386441; }
+    .btn-copy {
+      background: #315e79;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+    .btn-copy:hover { background: #25495d; }
+    .btn-copy.copied { background: #059669; }
+
+    textarea {
+      flex: 1;
+      width: 100%;
+      background: #121215;
+      color: #212723;
+      border: none;
+      padding: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      resize: none;
+      outline: none;
+    }
+    textarea::placeholder { color: #52525b; }
+    #output { color: #212723; background: #fffaf0; }
+  
+header h1 { font-size: clamp(1.35rem, 4vw, 2.2rem); letter-spacing: -.035em; }
+.toolbar, .panel-header { gap: .5rem; flex-wrap: wrap; }
+.panel { min-width: 0; }
+.btn-clear, .btn-copy { min-height: 44px; }
+:where(a, button, input, textarea):focus-visible { outline: 2px solid #315e79; outline-offset: 3px; }
+@media (max-width: 720px) {
+  .main-grid { grid-template-columns: minmax(0, 1fr); }
+}
+</style>
+  <link rel="stylesheet" href="../../assets/atelier-app.css?v=1">
+  <script defer src="../../assets/portfolio-back.js?v=atelier-2"></script>
+</head>
+<body>
+
+  <header>
+    <div class="title-group">
+      <div class="badge-icon">✦</div>
+      <div>
+        <h1>Nettoyeur de Citations <span class="badge-pill">Obsidian</span></h1>
+        <p class="sub">Supprime, [citation: ...] — Protège les intervalles [0, 1] et liens</p>
+      </div>
+    </div>
+    <div class="toolbar">
+      <div class="stat-badge">Supprimés : <strong id="count">0</strong></div>
+      <button class="btn-clear" onclick="clearBoxes()">Effacer</button>
+    </div>
+  </header>
+
+  <div class="main-grid">
+    <!-- Entrée brute -->
+    <div class="panel">
+      <div class="panel-header left">
+        <span>Texte brut (Coller ici)</span>
+      </div>
+      <textarea id="input" placeholder="Collez votre cours ici..." oninput="cleanText()"></textarea>
+    </div>
+
+    <!-- Résultat propre -->
+    <div class="panel">
+      <div class="panel-header right">
+        <span>Texte propre</span>
+        <button class="btn-copy" id="btn-copy" onclick="copyText()">
+          <span>Copier le texte propre</span>
+        </button>
+      </div>
+      <textarea id="output" readonly placeholder="Le texte nettoyé apparaîtra ici instantanément..."></textarea>
+    </div>
+  </div>
+
+  <script>
+    const inputArea = document.getElementById('input');
+    const outputArea = document.getElementById('output');
+    const countBadge = document.getElementById('count');
+    const copyBtn = document.getElementById('btn-copy');
+
+    // REGEX SÉCURISÉE :
+    // Ne matche QUE les balises contenant explicitement un mot-clé de citation :
+    // -, [citation: ...], (avec ou sans backticks)
+    // - Ignore totalement les intervalles numériques comme [0, 1], [0, +\infty[, etc.
+    const CITATION_REGEX = /`?\[(?:cite(?:_search|_source)?|citation|source)\s*:\s*[^\]]+\]`?/gi;
+
+    function cleanText() {
+      const val = inputArea.value;
+      if (!val) {
+        outputArea.value = '';
+        countBadge.textContent = '0';
+        return;
+      }
+
+      const matches = val.match(CITATION_REGEX);
+      countBadge.textContent = matches ? matches.length : 0;
+
+      // 1. Suppression stricte des citations uniquement
+      let res = val.replace(CITATION_REGEX, '');
+
+      // 2. Nettoyage cosmétique : espace surnuméraire éventuel avant la ponctuation
+      res = res.replace(/ +([.,;:!?])/g, '$1');
+
+      outputArea.value = res;
+    }
+
+    async function copyText() {
+      if (!outputArea.value) return;
+
+      try {
+        await navigator.clipboard.writeText(outputArea.value);
+        triggerCopySuccess();
+      } catch (e) {
+        outputArea.select();
+        document.execCommand('copy');
+        triggerCopySuccess();
+      }
+    }
+
+    function triggerCopySuccess() {
+      copyBtn.textContent = 'Copié !';
+      copyBtn.classList.add('copied');
+      setTimeout(() => {
+        copyBtn.textContent = 'Copier le texte propre';
+        copyBtn.classList.remove('copied');
+      }, 1500);
+    }
+
+    function clearBoxes() {
+      inputArea.value = '';
+      outputArea.value = '';
+      countBadge.textContent = '0';
+      inputArea.focus();
+    }
+  </script>
+</body>
+</html>

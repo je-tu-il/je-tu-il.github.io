@@ -1,6 +1,7 @@
 (() => {
   const get = id => document.getElementById(id);
-  const id = new URLSearchParams(window.location.search).get('id');
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
   const project = window.PROJECTS_DATA?.find(item => item.id === id);
   if (!project) {
     get('unavailable').hidden = false;
@@ -11,7 +12,9 @@
   get('title').textContent = project.title;
   get('description').textContent = project.tagline;
   const workflow = window.PORTFOLIO_WORKFLOWS?.[id] || window.PROJECT_DEMOS?.[id];
-  if (workflow) {
+  const guided = !project.runnableUrl || params.get('mode') === 'parcours';
+  if (workflow && guided) {
+    get('guidedLabel').hidden = false;
     const stage = get('workflow');
     workflow(stage);
     stage.hidden = false;
@@ -21,7 +24,7 @@
   if (project.runnableUrl) {
     const url = new URL(project.runnableUrl, new URL('../', window.location.href));
     url.searchParams.set('utm_source', 'portfolio');
-    if (!workflow) {
+    if (!workflow || !guided) {
       window.location.replace(url.href);
       return;
     }

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html data-atelier-app="dark" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoTime • Fond d'écran Memento Mori pour iPhone</title>
+  <meta name="description" content="Actualisez automatiquement votre fond d'écran iPhone chaque matin à 6h avec votre vie en semaines. 1 point = 1 semaine.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23000'/><circle cx='50' cy='50' r='18' fill='%23fff'/></svg>">
+  <link rel="stylesheet" href="../../assets/atelier-app.css?v=1">
+  <script defer src="../../assets/portfolio-back.js?v=atelier-2"></script>
+</head>
+<body data-portfolio-preview>
+  <div class="glow-bg"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="badge">0 € • 100% Automatique • Calibré pour iPhone 13 (iOS 16, 17, 18+)</div>
+      <h1>NoTime <span>Memento Mori</span></h1>
+      <p class="subtitle">
+        Chaque matin à <strong>06:00</strong>, votre fond d'écran s'actualise tout seul.
+        <br>
+        Une vie entière en semaines : <span class="tag tag-white">Points blancs = semaines vécues</span>, 
+        <span class="tag tag-red">Point rouge = semaine actuelle</span>, 
+        <span class="tag tag-gray">Points gris = l'avenir</span>.
+      </p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="grid-layout">
+      <!-- Left: Controls & Setup -->
+      <section class="controls-column">
+        <!-- Step 1: Config -->
+        <div class="card">
+          <div class="card-header">
+            <span class="step-num">1</span>
+            <h2>Votre Date & Personnalisation</h2>
+          </div>
+          <div class="form-group">
+            <label for="dob">Date de naissance</label>
+            <input type="date" id="dob" value="1998-05-14" min="1920-01-01" max="2026-12-31">
+          </div>
+
+          <div class="form-group">
+            <label>Espérance de vie estimée</label>
+            <div class="button-toggle-group" id="lifespan-group">
+              <button type="button" class="btn-toggle" data-years="75">75 ans</button>
+              <button type="button" class="btn-toggle active" data-years="80">80 ans</button>
+              <button type="button" class="btn-toggle" data-years="85">85 ans</button>
+              <button type="button" class="btn-toggle" data-years="90">90 ans</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Couleur de la semaine actuelle</label>
+            <div class="color-options" id="color-options">
+              <button type="button" class="color-btn active" data-color="#FF453A" style="--c: #FF453A" title="Rouge Apple"></button>
+              <button type="button" class="color-btn" data-color="#FFFFFF" style="--c: #FFFFFF" title="Blanc pur"></button>
+              <button type="button" class="color-btn" data-color="#FFD60A" style="--c: #FFD60A" title="Or"></button>
+              <button type="button" class="color-btn" data-color="#30D158" style="--c: #30D158" title="Vert"></button>
+              <button type="button" class="color-btn" data-color="#0A84FF" style="--c: #0A84FF" title="Bleu"></button>
+            </div>
+          </div>
+
+          <!-- Fine Tuning for iPhone 13 -->
+          <div class="tuning-section">
+            <div class="tuning-title">
+              <span>🎯 Calibrage iPhone 13 & Écran Verrouillé</span>
+            </div>
+
+            <div class="form-group range-group">
+              <div class="range-header">
+                <label for="top-offset">Position sous l'heure (Dégagement haut)</label>
+                <span class="range-val" id="top-offset-val">860 px</span>
+              </div>
+              <input type="range" id="top-offset" min="700" max="1050" step="10" value="860">
+              <div class="range-sub">Augmentez si des points touchent encore l'heure ou vos widgets</div>
+            </div>
+
+            <div class="form-group range-group">
+              <div class="range-header">
+                <label for="margin-zoom">Zoom / Largeur de la grille</label>
+                <span class="range-val" id="margin-zoom-val">Zoom max (42px)</span>
+              </div>
+              <input type="range" id="margin-zoom" min="20" max="90" step="2" value="42">
+              <div class="range-sub">Réduire la marge agrandit la grille sur toute la largeur</div>
+            </div>
+
+            <div class="form-group range-group">
+              <div class="range-header">
+                <label for="dot-size">Taille des points</label>
+                <span class="range-val" id="dot-size-val">5.2 px</span>
+              </div>
+              <input type="range" id="dot-size" min="3.5" max="7.0" step="0.2" value="5.2">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="show-text" checked>
+              <span>Afficher les statistiques en bas (Semaine X / Y • Z% vécu)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Life Statistics -->
+        <div class="card stats-card">
+          <div class="card-header">
+            <span class="icon">⏳</span>
+            <h2>Votre Bilan de Vie Actuel</h2>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-val" id="stat-age">--</div>
+              <div class="stat-lbl">Âge actuel</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val" id="stat-passed">--</div>
+              <div class="stat-lbl">Semaines vécues</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val" id="stat-left">--</div>
+              <div class="stat-lbl">Semaines restantes</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val highlight" id="stat-percent">--%</div>
+              <div class="stat-lbl">Temps écoulé</div>
+            </div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+          </div>
+        </div>
+
+        <!-- Step 2: iOS Automation Guide -->
+        <div class="card shortcut-card">
+          <div class="card-header">
+            <span class="step-num">2</span>
+            <h2>Exporter le fond d’écran</h2>
+          </div>
+
+          <p class="card-desc">Téléchargez cet aperçu. L’actualisation quotidienne nécessite une instance NoTime avec son API.</p>
+
+
+          <div class="download-actions">
+            <button type="button" id="download-btn" class="btn-secondary">
+              📥 Télécharger l'image actuelle (PNG HD iPhone 13)
+            </button>
+          </div>
+
+          <p id="export-status" role="status"></p>
+        </div>
+
+        <!-- Deployment guide -->
+        <div class="card deployment-card">
+          <div class="card-header">
+            <span class="icon">☁️</span>
+            <h2>Hébergement Gratuit (Vercel en 1 Clic)</h2>
+          </div>
+          <p class="card-desc">
+            Pour que votre iPhone puisse accéder à votre URL personnalisée 24h/24 sans laisser votre ordinateur allumé, déployez ce projet gratuitement sur <strong>Vercel</strong> :
+          </p>
+          <div class="deploy-steps">
+            <code>git init && git add . && git commit -m "NoTime"</code>
+            <code>npx vercel</code>
+            <p>Le service fonctionne à vie, consomme 0 € (moins de 30 requêtes/mois sur les 100 000 offertes) et répond en 40 ms.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Phone Mockup Live Preview -->
+      <section class="preview-column">
+        <div class="preview-sticky">
+          <div class="preview-header">
+            <span class="live-dot"></span>
+            Aperçu Réel iPhone 13 (1170 × 2532)
+          </div>
+
+          <div class="phone-frame">
+            <!-- iPhone 13 Notch -->
+            <div class="iphone13-notch">
+              <div class="speaker-earpiece"></div>
+              <div class="camera-lens"></div>
+            </div>
+
+            <!-- Lockscreen Clock Mockup -->
+            <div class="lockscreen-overlay">
+              <div class="lock-date" id="mockup-date">Mardi 12 Novembre</div>
+              <div class="lock-clock">06:00</div>
+            </div>
+
+            <!-- Wallpaper SVG container -->
+            <div class="wallpaper-container" id="wallpaper-preview">
+              <!-- SVG will be injected here -->
+            </div>
+
+            <!-- Lockscreen Bottom Actions -->
+            <div class="lockscreen-bottom">
+              <div class="bottom-action-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
+              <div class="home-indicator"></div>
+              <div class="bottom-action-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="preview-caption">
+            Les points sont dégagés sous l'horloge et les widgets avec une largeur optimisée plein écran.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>NoTime • Conçu pour ne jamais oublier la valeur du temps • Inspiré de Tim Urban (Wait But Why)</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

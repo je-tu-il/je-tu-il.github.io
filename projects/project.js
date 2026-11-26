@@ -29,11 +29,11 @@
   const guided = window.PORTFOLIO_WORKFLOWS?.[project.id] || window.PROJECT_DEMOS?.[project.id];
   primary.hidden = !(project.runnableUrl || guided);
   if (project.runnableUrl && guided) {
-    get('guidedDemoLink').href = 'demo.html?id=' + encodeURIComponent(project.id);
+    get('guidedDemoLink').href = 'demo.html?id=' + encodeURIComponent(project.id) + '&mode=parcours';
     get('guidedDemo').hidden = false;
   }
   primary.href = launch.href;
-  primary.textContent = project.runnableUrl ? 'Ouvrir sur le web ↗' : 'Voir la démo →';
+  primary.textContent = project.runnableUrl ? 'Ouvrir sur le web ↗' : 'Essayer le parcours →';
   for (const [id, href] of [['githubBtn', project.githubUrl], ['downloadZipBtn', project.downloadUrl]]) {
     if (!href) continue;
     const anchor = get(id);

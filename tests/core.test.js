@@ -30,13 +30,13 @@ function element(tag) {
   };
 }
 
-function openDemo(id) {
+function openDemo(id, guided = true) {
   const nodes = new Map();
   const get = name => {
     if (!nodes.has(name)) nodes.set(name, element(name));
     return nodes.get(name);
   };
-  const href = 'https://portfolio.test/projects/demo.html?id=' + encodeURIComponent(id);
+  const href = 'https://portfolio.test/projects/demo.html?id=' + encodeURIComponent(id) + (guided ? '&mode=parcours' : '');
   const location = new URL(href);
   let redirected;
   location.replace = target => { redirected = target; };
@@ -71,6 +71,17 @@ test('each project exposes an interactive workflow, real web entry or an explici
   }
   const {window} = openDemo('ddd-hugo-decrypte');
   for (const id of Object.keys(window.PROJECT_DEMOS)) assert.ok(projects.some(project => project.id === id), id);
+});
+
+test('a web demo opens the app itself even when a separate guided version exists', () => {
+  for (const id of ['nousdeux-application-mobile-couple-intimit', 'notime-memento-mori-wallpaper-engine-pour-iphone', 'indexcite-nettoyeur-de-citations-ia-pour-obsidian']) {
+    const {get, redirected} = openDemo(id, false);
+    const rootUrl = 'https://portfolio.test/';
+    const expected = new URL(projects.find(project => project.id === id).runnableUrl, rootUrl);
+    expected.searchParams.set('utm_source', 'portfolio');
+    assert.equal(redirected, expected.href, id);
+    assert.equal(get('workflow').hidden, true, id);
+  }
 });
 
 test('an unknown demo offers a return to the catalogue', () => {

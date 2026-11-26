@@ -48,7 +48,7 @@ function createProject(project) {
   const actions = document.createElement('div');
   actions.className = 'project-actions';
   const hasDemo = window.PORTFOLIO_WORKFLOWS?.[project.id] || window.PROJECT_DEMOS?.[project.id];
-  const label = project.runnableUrl ? 'Ouvrir sur le web ↗' : hasDemo ? 'Voir la démo →' : 'Voir le projet →';
+  const label = project.runnableUrl ? 'Ouvrir sur le web ↗' : hasDemo ? 'Essayer le parcours →' : 'Voir le projet →';
   const sheet = 'projects/project.html?id=' + encodeURIComponent(project.id);
   const primary = link(label, project.runnableUrl || hasDemo ? launchUrl(project) : sheet, 'project-launch');
   primary.setAttribute('aria-label', primary.textContent + ' · ' + project.title);
